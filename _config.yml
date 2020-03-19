@@ -6,15 +6,16 @@
 # https://learn-the-web.algonquindesign.ca/topics/markdown-yaml-cheat-sheet/#yaml
 # https://learnxinyminutes.com/docs/yaml/
 
-title: fastpages
-description: An easy to use blogging platform with support for Jupyter Notebooks.
+title: khalido
+description: A public log, written using words and numbers.
 github_username: khalido
 # you can comment the below line out if your repo name is not different than your baseurl
 github_repo: "khalido.org"
 
 # OPTIONAL: override baseurl and url if using a custom domain
 # Note: leave out the trailing / from this value. 
-url: "https://khalido.github.io" # the base hostname & protocol for your site, e.g. http://example.com
+#url: "https://khalido.github.io" # the base hostname & protocol for your site, e.g. http://example.com
+url: "https://khalido.org" # my custom domain
 
 ###########################################################
 #########  Special Instructions for baseurl ###############
@@ -34,7 +35,8 @@ url: "https://khalido.github.io" # the base hostname & protocol for your site, e
 #
 # 3. You must replace the parameter `baseurl` in _action_files/settings.ini with the same value as you set here but WITHOUT QUOTES.
 #
-baseurl: "/khalido.org" # the subpath of your site, e.g. "/blog".
+#baseurl: "/khalido.org" # the subpath of your site, e.g. "/blog".
+baseurl: "" # custom baseurl
 
 # Github and twitter are optional:
 minima:
