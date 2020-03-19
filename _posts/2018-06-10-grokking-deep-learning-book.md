@@ -1,10 +1,10 @@
 ---
 title: "Grokking Deep Learning by Andrew Trask"
-date: 2018-05-10T01:21:48Z
-cover: /img/grokking-deep-learning.png
-tags:
-- books
-- deep learning
+description: review
+image: /images/grokking-deep-learning.png
+category: [books, deep learning]
+layout: post
+toc: false
 ---
 
 Andrew Trask is an AI superstar, having come up with the idea for Generative Adverserial Networks (GANS) - one of the most exicting new AI techniques today - in a bar.

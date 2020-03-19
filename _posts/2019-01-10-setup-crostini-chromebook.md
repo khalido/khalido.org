@@ -1,9 +1,9 @@
 ---
 title: "Setting up Linux on a Chromebook with Crostini"
-date: 2018-08-24
-lastmod: 2019-08-7
-tags:
-- chromebooks
+description: "some old setup notes"
+category: [chromebooks]
+layout: post
+toc: false
 ---
 
 ChromeOS supports a built in Linux - running inside a container running insde a VM. Turn it on by going to settings and pressing the on button for Linux (beta). This gives us a bare bones Linux install running Debian Stretch. So here goes all the things I did to customize it.
