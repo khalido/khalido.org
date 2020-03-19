@@ -1,11 +1,9 @@
 ---
 title: "Googles Best Practices for ML Engineering"
-date: 2018-07-29
-draft: true
-tags:
-- python
-- machine learning
-- deep learning
+description: my read through notes on googles ml guide 
+category: [machine learning]
+layout: post
+toc: false
 ---
 
 Notes on [Google's best practices guide for ML engineering](https://developers.google.com/machine-learning/guides/rules-of-ml/):

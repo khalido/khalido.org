@@ -1,8 +1,9 @@
 ---
-title: "Blogs and other resources to follow"
-date: 2018-07-12T01:21:48Z
-tags:
-- resources
+title: "Data Science blogs"
+description: useful data science related blogs 
+category: [data science]
+layout: post
+toc: false
 ---
 
 Blogs on data science, AI, machine learning etc etc. which I liked.
