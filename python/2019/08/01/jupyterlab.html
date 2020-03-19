@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Jupyter Lab tips | fastpages</title>
+<meta name="generator" content="Jekyll v4.0.0" />
+<meta property="og:title" content="Jupyter Lab tips" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="My collection of tips and tricks for using jupyter lab." />
+<meta property="og:description" content="My collection of tips and tricks for using jupyter lab." />
+<link rel="canonical" href="https://khalido.github.io/khalido.org/python/2019/08/01/jupyterlab.html" />
+<meta property="og:url" content="https://khalido.github.io/khalido.org/python/2019/08/01/jupyterlab.html" />
+<meta property="og:site_name" content="fastpages" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2019-08-01T00:00:00-05:00" />
+<script type="application/ld+json">
+{"datePublished":"2019-08-01T00:00:00-05:00","headline":"Jupyter Lab tips","description":"My collection of tips and tricks for using jupyter lab.","mainEntityOfPage":{"@type":"WebPage","@id":"https://khalido.github.io/khalido.org/python/2019/08/01/jupyterlab.html"},"@type":"BlogPosting","url":"https://khalido.github.io/khalido.org/python/2019/08/01/jupyterlab.html","dateModified":"2019-08-01T00:00:00-05:00","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/khalido.org/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://khalido.github.io/khalido.org/feed.xml" title="fastpages" /><link rel="shortcut icon" type="image/x-icon" href="/khalido.org/images/favicon.ico"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Jupyter Lab tips | fastpages</title>
+<meta name="generator" content="Jekyll v4.0.0" />
+<meta property="og:title" content="Jupyter Lab tips" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="My collection of tips and tricks for using jupyter lab." />
+<meta property="og:description" content="My collection of tips and tricks for using jupyter lab." />
+<link rel="canonical" href="https://khalido.github.io/khalido.org/python/2019/08/01/jupyterlab.html" />
+<meta property="og:url" content="https://khalido.github.io/khalido.org/python/2019/08/01/jupyterlab.html" />
+<meta property="og:site_name" content="fastpages" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2019-08-01T00:00:00-05:00" />
+<script type="application/ld+json">
+{"datePublished":"2019-08-01T00:00:00-05:00","headline":"Jupyter Lab tips","description":"My collection of tips and tricks for using jupyter lab.","mainEntityOfPage":{"@type":"WebPage","@id":"https://khalido.github.io/khalido.org/python/2019/08/01/jupyterlab.html"},"@type":"BlogPosting","url":"https://khalido.github.io/khalido.org/python/2019/08/01/jupyterlab.html","dateModified":"2019-08-01T00:00:00-05:00","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+<link href="https://unpkg.com/@primer/css/dist/primer.css" rel="stylesheet" />
+<link rel="stylesheet" href="//use.fontawesome.com/releases/v5.0.7/css/all.css"><link type="application/atom+xml" rel="alternate" href="https://khalido.github.io/khalido.org/feed.xml" title="fastpages" />
+
+<script>
+function wrap_img(fn) {
+    if (document.attachEvent ? document.readyState === "complete" : document.readyState !== "loading") {
+        var elements = document.querySelectorAll(".post img");
+        Array.prototype.forEach.call(elements, function(el, i) {
+            if (el.getAttribute("title")) {
+                const caption = document.createElement('figcaption');
+                var node = document.createTextNode(el.getAttribute("title"));
+                caption.appendChild(node);
+                const wrapper = document.createElement('figure');
+                wrapper.className = 'image';
+                el.parentNode.insertBefore(wrapper, el);
+                el.parentNode.removeChild(el);
+                wrapper.appendChild(el);
+                wrapper.appendChild(caption);
+            }
+        });
+    } else { document.addEventListener('DOMContentLoaded', fn); }
+}
+window.onload = wrap_img;
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function(){
+    // add link icon to anchor tags
+    var elem = document.querySelectorAll(".anchor-link")
+    elem.forEach(e => (e.innerHTML = '<i class="fas fa-link fa-xs"></i>'));
+    });
+</script>
+</head><body><header class="site-header">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/khalido.org/">fastpages</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/khalido.org/about/">About Me</a><a class="page-link" href="/khalido.org/search/">Search</a><a class="page-link" href="/khalido.org/categories/">Tags</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Jupyter Lab tips</h1><p class="page-description">My collection of tips and tricks for using jupyter lab.</p><p class="post-meta post-meta-title"><time class="dt-published" datetime="2019-08-01T00:00:00-05:00" itemprop="datePublished">
+        Aug 1, 2019
+      </time>
+       • <span class="read-time" title="Estimated read time">
+    
+    
+      2 min read
+    
+</span></p>
+
+    
+      <p class="category-tags"><i class="fas fa-tags category-tags-icon"></i></i> 
+      
+        <a class="category-tags-link" href="/khalido.org/categories/#python">python</a>
+        
+      
+      </p>
+    
+
+    </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <ul class="section-nav">
+<li class="toc-entry toc-h2"><a href="#magic-commands">magic commands</a></li>
+<li class="toc-entry toc-h2"><a href="#extensions">Extensions</a></li>
+<li class="toc-entry toc-h2"><a href="#blog-with-jupyter-notebooks">blog with jupyter notebooks</a></li>
+</ul><p>My collection of tips and tricks for using jupyter lab.</p>
+
+<p><a href="https://jupyterlab.readthedocs.io/en/stable/">Jupyterlab</a> is already installed with <a href="https://www.anaconda.com/distribution/">Anaconda</a>, but if using miniconda install it by:</p>
+
+<p><code class="highlighter-rouge">conda install -c conda-forge jupyterlab ipywidgets</code></p>
+
+<h2 id="magic-commands">
+<a class="anchor" href="#magic-commands" aria-hidden="true"><span class="octicon octicon-link"></span></a>magic commands</h2>
+
+<p>list all magic commands: <code class="highlighter-rouge">%lsmagic</code></p>
+
+<p>My shortlist:</p>
+
+<ul>
+  <li>Load a file: <code class="highlighter-rouge">%load ./hello_world.py</code>
+</li>
+  <li>time a cell: <code class="highlighter-rouge">%%time</code>
+</li>
+</ul>
+
+<h2 id="extensions">
+<a class="anchor" href="#extensions" aria-hidden="true"><span class="octicon octicon-link"></span></a>Extensions</h2>
+
+<ul>
+  <li>
+<a href="https://github.com/jupyterlab/jupyterlab-toc">Table of Contents</a> - displays a toc in the sidebar.</li>
+  <li>
+<a href="https://github.com/krassowski/jupyterlab-go-to-definition">Go to Definition</a> - <code class="highlighter-rouge">ctrl-alt-b</code> jumps to the point in the notebok the variable or function is defined</li>
+</ul>
+
+<p><a href="https://www.npmjs.com/search?q=keywords:jupyterlab-extension">Jupyterlab extensions</a> are built using nodejs, so install that by:</p>
+
+<p>Step 1: install <a href="https://github.com/nvm-sh/nvm#install--update-script">nvm</a>, a script to install nodejs:</p>
+
+<p><code class="highlighter-rouge">curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.34.0/install.sh | bash</code></p>
+
+<p>step 2: install nodejs itself by:</p>
+
+<p><code class="highlighter-rouge">nvm install node</code></p>
+
+<p>Install all the extensions then build in one go by:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>jupyter labextension install @jupyter-widgets/jupyterlab-manager --no-build &amp;&amp; \
+jupyter labextension install @jupyterlab/toc --no-build &amp;&amp; \
+jupyter lab build --minimize=False
+</code></pre></div></div>
+
+<p>Note: the build flag is because building was taking too long without this.</p>
+
+<h2 id="blog-with-jupyter-notebooks">
+<a class="anchor" href="#blog-with-jupyter-notebooks" aria-hidden="true"><span class="octicon octicon-link"></span></a>blog with jupyter notebooks</h2>
+
+<p>So there are tools like Pelican which are setup directly with jupyter notebooks, but I had already set up a hugo powered blog since its free, easy and just works, so my mini shortcut is to put all my notebooks the hugo content directory and run a little script there which converts the jupyter notebooks to markdown files:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">os</span>
+
+<span class="c1"># path to jupyter notebooks 
+</span><span class="n">path</span> <span class="o">=</span> <span class="s">'content/'</span>
+
+<span class="c1"># Find all jupyter notebooks in the content folder (and its subfolders)
+</span><span class="n">all_ipynb_files</span> <span class="o">=</span> <span class="p">[</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+                   <span class="k">for</span> <span class="n">root</span><span class="p">,</span> <span class="n">dirs</span><span class="p">,</span> <span class="n">files</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">walk</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+                       <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">files</span>
+                           <span class="k">if</span> <span class="n">name</span><span class="o">.</span><span class="n">endswith</span><span class="p">((</span><span class="s">".ipynb"</span><span class="p">))]</span>
+
+<span class="c1"># Remove all notebooks from checkpoint folders
+</span><span class="n">ipynb_files</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">all_ipynb_files</span> <span class="k">if</span> <span class="s">".ipynb_checkpoints"</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">x</span><span class="p">]</span>
+
+<span class="c1"># converting to markdown, one at a time
+</span><span class="k">for</span> <span class="n">notebook</span> <span class="ow">in</span> <span class="n">ipynb_files</span><span class="p">:</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="n">f</span><span class="s">'jupyter nbconvert --to markdown {notebook}'</span><span class="p">)</span>
+
+<span class="k">print</span><span class="p">(</span><span class="n">f</span><span class="s">"Converted {len(ipynb_files)} jupter notebooks to markdown."</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>The above works just fine, but i had a problem: the web server wasn’t displaying images from the jupyter notebook posts.</p>
+
+<p>One solution is to go through every markdown file and fix the link so it points to the right file, but the easiest solution Google found me was this:</p>
+
+<p>In the nbconvert config file <code class="highlighter-rouge">~/.jupyter/jupyter_nbconvert_config.py</code> put the following line:</p>
+
+<p><code class="highlighter-rouge">c.NbConvertApp.output_files_dir = '{notebook_name}'</code></p>
+
+<p>This saves the output file in a folder which is the same as the notebook name - I’ve found that way then the netlify webserver just serves up the image files without having to rewrite the image path inside the markdown file.</p>
+
+<p><em>Note: this post is a work in progress…</em></p>
+
+  </div><a class="u-url" href="/khalido.org/python/2019/08/01/jupyterlab.html" hidden></a>
+</article>
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/khalido.org/"></data>
+
+  <div class="wrapper">
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col">
+        <p class="feed-subscribe">
+          <a href="/khalido.org/feed.xml">
+            <svg class="svg-icon orange">
+              <use xlink:href="/khalido.org/assets/minima-social-icons.svg#rss"></use>
+            </svg><span>Subscribe</span>
+          </a>
+        </p>
+      </div>
+      <div class="footer-col">
+        <p>An easy to use blogging platform with support for Jupyter Notebooks.</p>
+      </div>
+    </div>
+
+    <div class="social-links"><ul class="social-media-list"><li><a rel="me" href="https://github.com/khalido" title="khalido"><svg class="svg-icon grey"><use xlink:href="/khalido.org/assets/minima-social-icons.svg#github"></use></svg></a></li><li><a rel="me" href="https://twitter.com/ko" title="ko"><svg class="svg-icon grey"><use xlink:href="/khalido.org/assets/minima-social-icons.svg#twitter"></use></svg></a></li></ul>
+</div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>
