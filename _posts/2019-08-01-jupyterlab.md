@@ -1,8 +1,9 @@
 ---
-title: "Jupyter Lab tips and tricks"
-date: 2019-08-01
-tags:
-- jupyter
+title: Jupyter Lab tips
+description: My collection of tips and tricks for using jupyter lab.
+toc: true
+layout: post
+categories: [python]
 ---
 
 My collection of tips and tricks for using jupyter lab.
