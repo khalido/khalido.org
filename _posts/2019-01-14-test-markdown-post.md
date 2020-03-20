@@ -9,6 +9,8 @@ hide: true
 
 # Example Markdown Post
 
+_default fastpage post, left here for the time being_
+
 ## Basic setup
 
 Jekyll requires blog post files to be named according to the following format:

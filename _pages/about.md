@@ -6,8 +6,9 @@ permalink: /about/
 
 This is an about page. Once upon a time I had a blog. Its long gone. Than I had another. And another. And then a tumbler and who knows what else.
 
-This is 2020 iteration.
+This is the 2020 iteration.
 
+### misc
 
 This website is powered by **[fastpages](https://github.com/fastai/fastpages)** [^1].
 
