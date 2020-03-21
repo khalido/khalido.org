@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Setting up Linux on a Chromebook with Crostini | khalido</title>
+<meta name="generator" content="Jekyll v4.0.0" />
+<meta property="og:title" content="Setting up Linux on a Chromebook with Crostini" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="some old setup notes" />
+<meta property="og:description" content="some old setup notes" />
+<link rel="canonical" href="https://khalido.org/chromebooks/2019/01/setup-crostini-chromebook" />
+<meta property="og:url" content="https://khalido.org/chromebooks/2019/01/setup-crostini-chromebook" />
+<meta property="og:site_name" content="khalido" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2019-01-10T00:00:00-06:00" />
+<script type="application/ld+json">
+{"description":"some old setup notes","headline":"Setting up Linux on a Chromebook with Crostini","dateModified":"2019-01-10T00:00:00-06:00","datePublished":"2019-01-10T00:00:00-06:00","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://khalido.org/chromebooks/2019/01/setup-crostini-chromebook"},"url":"https://khalido.org/chromebooks/2019/01/setup-crostini-chromebook","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://khalido.org/feed.xml" title="khalido" /><link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Setting up Linux on a Chromebook with Crostini | khalido</title>
+<meta name="generator" content="Jekyll v4.0.0" />
+<meta property="og:title" content="Setting up Linux on a Chromebook with Crostini" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="some old setup notes" />
+<meta property="og:description" content="some old setup notes" />
+<link rel="canonical" href="https://khalido.org/chromebooks/2019/01/setup-crostini-chromebook" />
+<meta property="og:url" content="https://khalido.org/chromebooks/2019/01/setup-crostini-chromebook" />
+<meta property="og:site_name" content="khalido" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2019-01-10T00:00:00-06:00" />
+<script type="application/ld+json">
+{"description":"some old setup notes","headline":"Setting up Linux on a Chromebook with Crostini","dateModified":"2019-01-10T00:00:00-06:00","datePublished":"2019-01-10T00:00:00-06:00","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://khalido.org/chromebooks/2019/01/setup-crostini-chromebook"},"url":"https://khalido.org/chromebooks/2019/01/setup-crostini-chromebook","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+<link href="https://unpkg.com/@primer/css/dist/primer.css" rel="stylesheet" />
+<link rel="stylesheet" href="//use.fontawesome.com/releases/v5.0.7/css/all.css"><link type="application/atom+xml" rel="alternate" href="https://khalido.org/feed.xml" title="khalido" />
+
+<script>
+function wrap_img(fn) {
+    if (document.attachEvent ? document.readyState === "complete" : document.readyState !== "loading") {
+        var elements = document.querySelectorAll(".post img");
+        Array.prototype.forEach.call(elements, function(el, i) {
+            if (el.getAttribute("title")) {
+                const caption = document.createElement('figcaption');
+                var node = document.createTextNode(el.getAttribute("title"));
+                caption.appendChild(node);
+                const wrapper = document.createElement('figure');
+                wrapper.className = 'image';
+                el.parentNode.insertBefore(wrapper, el);
+                el.parentNode.removeChild(el);
+                wrapper.appendChild(el);
+                wrapper.appendChild(caption);
+            }
+        });
+    } else { document.addEventListener('DOMContentLoaded', fn); }
+}
+window.onload = wrap_img;
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function(){
+    // add link icon to anchor tags
+    var elem = document.querySelectorAll(".anchor-link")
+    elem.forEach(e => (e.innerHTML = '<i class="fas fa-link fa-xs"></i>'));
+    });
+</script>
+</head><body><header class="site-header">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/">khalido</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/about/">About Me</a><a class="page-link" href="/search/">Search</a><a class="page-link" href="/categories/">Tags</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Setting up Linux on a Chromebook with Crostini</h1><p class="page-description">some old setup notes</p><p class="post-meta post-meta-title"><time class="dt-published" datetime="2019-01-10T00:00:00-06:00" itemprop="datePublished">
+        Jan 10, 2019
+      </time>
+       • <span class="read-time" title="Estimated read time">
+    
+    
+      6 min read
+    
+</span></p>
+
+    
+      <p class="category-tags"><i class="fas fa-tags category-tags-icon"></i></i> 
+      
+        <a class="category-tags-link" href="/categories/#chromebooks">chromebooks</a>
+        
+      
+      </p>
+    
+
+    </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <p>ChromeOS supports a built in Linux - running inside a container running insde a VM. Turn it on by going to settings and pressing the on button for Linux (beta). This gives us a bare bones Linux install running Debian Stretch. So here goes all the things I did to customize it.</p>
+
+<p>Most of these tips are from the <a href="https://www.reddit.com/r/Crostini/wiki/index">reddit crostini wiki</a>, I’ve put all the ones I’m using in one page for a handy reference.</p>
+
+<ul>
+  <li><a href="#install-all-the-apps">Install all the apps</a>
+    <ul>
+      <li><a href="#use-backports-to-get-recent-packages">use backports to get recent packages</a></li>
+      <li><a href="#flatpak">flatpak</a></li>
+      <li><a href="#vs-code">vs code</a></li>
+      <li><a href="#markdown-app">markdown app</a></li>
+    </ul>
+  </li>
+  <li><a href="#install-anaconda-for-a-better-python">install anaconda for a better python</a>
+    <ul>
+      <li><a href="#jupyter-lab">jupyter lab</a></li>
+      <li><a href="#install-a-r-kernel">install a R kernel</a></li>
+    </ul>
+  </li>
+  <li><a href="#make-the-terminal-nicer-to-use">make the terminal nicer to use</a>
+    <ul>
+      <li><a href="#fix-window-shortcuts">fix window shortcuts</a></li>
+      <li><a href="#multiplex-all-the-things">multiplex all the things</a></li>
+      <li><a href="#jazz-up-the-shell">jazz up the shell</a></li>
+      <li><a href="#setup-vim-proper-like">setup vim proper like</a></li>
+    </ul>
+  </li>
+  <li><a href="#download-all-my-git-repos">Download all my git repos</a></li>
+</ul>
+
+<h2 id="install-all-the-apps">Install all the apps</h2>
+
+<h3 id="use-backports-to-get-recent-packages">use backports to get recent packages</h3>
+
+<p>the default crostini container/vm whatever is running debian stretch, which is nice and stable, but has a lot of old packages in its repo.</p>
+
+<p>To install apps, use the backports repo, which contains newer packages from debian testing and unstable. This is already configured in ChromeOS (at least in 76). Hopefully newer versions of ChromeOS switch to the 2019 release of Debian.</p>
+
+<p>by default apt will pull old packages from stretch, so to install something from backports:</p>
+
+<p><code class="highlighter-rouge">sudo apt -t stretch-backports install package_name</code></p>
+
+<h3 id="flatpak">flatpak</h3>
+
+<p>Even stretch-backports is full of not new enough apps. So for really new versions use flatpak.</p>
+
+<p>Install flatpak: <code class="highlighter-rouge">sudo apt install -t stretch-backports flatpak</code></p>
+
+<p>Add the flatpak repo:</p>
+
+<p><code class="highlighter-rouge">sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo</code></p>
+
+<p>Install apps by going to the app page on flathub and copying the install line at the bottom - for example to install <a href="https://flathub.org/apps/details/de.wolfvollprecht.UberWriter">Uberwriter</a> its:</p>
+
+<p><code class="highlighter-rouge">sudo flatpak install flathub de.wolfvollprecht.UberWriter</code></p>
+
+<p>Note: you need sudo to install and update flatpak apps in crostini.</p>
+
+<h3 id="vs-code">vs code</h3>
+
+<p>Anaconda can automatically install VS Code, but to <a href="https://www.reddit.com/r/Crostini/wiki/howto/install-vscode">install it directly</a>:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>curl <span class="nt">-L</span> https://go.microsoft.com/fwlink/?LinkID<span class="o">=</span>760868 <span class="o">&gt;</span> vscode.deb
+<span class="nb">sudo </span>apt <span class="nb">install</span> ./vscode.deb
+</code></pre></div></div>
+
+<p>Useful plugins:</p>
+
+<ul>
+  <li><a href="https://marketplace.visualstudio.com/items?itemName=yzhang.markdown-all-in-one">Markdown All in One</a></li>
+  <li><a href="https://marketplace.visualstudio.com/items?itemName=ms-python.python">Python</a></li>
+</ul>
+
+<h3 id="markdown-app">markdown app</h3>
+
+<p>Currently I’m using <a href="http://thomaswilburn.net/caret/">Caret</a> - a chromeos text editor app which runs lightening fast.</p>
+
+<p>vs code can handle markdown nicely, but I find it too slow on Crostini. I prefer <a href="https://typora.io/">Typora.io</a> or <a href="http://caret.io/">Caret.io</a> for markdown and vs code is for coding. BUT all these apps are based on electron, and currently run slow on Crostini, and will continue being slow until Crostini gets GPU accleration.</p>
+
+<p>Install Caret by downloading the <a href="https://github.com/careteditor/releases-beta/releases">latest beta release .deb</a> and:</p>
+
+<p><code class="highlighter-rouge">sudo apt install ./caret-beta.deb</code></p>
+
+<p>Install Typora - haven’t tested this out, especially adding repo. Apparently you have to <code class="highlighter-rouge">sudo apt install software-properties-common</code> first before adding a repo.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># add Typora's repository</span>
+<span class="nb">sudo </span>add-apt-repository <span class="s1">'deb https://typora.io/linux ./'</span>
+<span class="nb">sudo </span>apt update
+
+<span class="c"># install typora</span>
+<span class="nb">sudo </span>apt <span class="nb">install </span>typora
+</code></pre></div></div>
+
+<h2 id="install-anaconda-for-a-better-python">install anaconda for a better python</h2>
+
+<p>Note: install <a href="https://docs.conda.io/en/latest/miniconda.html">miniconda</a> instead to save space if needed.</p>
+
+<p>go to the <a href="https://www.anaconda.com/download/#linux">Anaconda linux download page</a> and copy the url, then download it:</p>
+
+<p><code class="highlighter-rouge">curl -O https://repo.anaconda.com/archive/Anaconda3-2019.07-Linux-x86_64.sh</code> # (update url)</p>
+
+<p>Install by <code class="highlighter-rouge">bash Anaconda3-2019.07-Linux-x86_64.sh</code> - change filename to whatever the downloaded file name is.</p>
+
+<h3 id="jupyter-lab">jupyter lab</h3>
+
+<p>Works out of the box with Anaconda. If using miniconda, install by</p>
+
+<p><code class="highlighter-rouge">conda install -c conda-forge jupyterlab</code></p>
+
+<p>Other useful stuff for Jupyter:</p>
+
+<p>To install <a href="https://github.com/mauhai/awesome-jupyterlab">extensions</a>, first install nodejs:</p>
+
+<p>Step 1: install <a href="https://github.com/nvm-sh/nvm#install--update-script">nvm</a>, a script to install nodejs</p>
+
+<p><code class="highlighter-rouge">curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.34.0/install.sh | bash</code></p>
+
+<p>step 2: install nodejs itself by:</p>
+
+<p><code class="highlighter-rouge">nvm install node</code></p>
+
+<p>Some seful jupyterlab extensions:</p>
+
+<p>See https://github.com/mauhai/awesome-jupyterlab</p>
+
+<ul>
+  <li>show a <a href="https://github.com/jupyterlab/jupyterlab-toc">toc</a> from markdown headings: <code class="highlighter-rouge">jupyter labextension install @jupyterlab/toc</code></li>
+</ul>
+
+<p>todo: try out <a href="https://nteract.io/">nteract</a> - a react based desktop front end for jupyter.</p>
+
+<h3 id="install-a-r-kernel">install a R kernel</h3>
+
+<p>I hate doing this, but sometimes you need R. So here goes:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>conda create -n R r-essentials r-base
+</code></pre></div></div>
+
+<p>Presto! now R should show up as a kernel in jupyter.</p>
+
+<p>Intall r packages inside the r environment by using the conda r channel - note that many packages seems to be prefaced with <code class="highlighter-rouge">r-</code>:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>conda install -c r r-plotly
+</code></pre></div></div>
+
+<h2 id="make-the-terminal-nicer-to-use">make the terminal nicer to use</h2>
+
+<p>this is really important, cause if the terminal doesn’t look like something out of a movie, are you really doing something?</p>
+
+<p>I’m using <a href="https://gnunn1.github.io/tilix-web/">Tilix</a>, install by</p>
+
+<p><code class="highlighter-rouge">sudo apt -t stretch-backports install tilix</code></p>
+
+<h3 id="fix-window-shortcuts">fix window shortcuts</h3>
+
+<p>First up, the native terminal gobbles up some of my fav chromeos shortcuts, namely:</p>
+
+<ul>
+  <li>Maximize <code class="highlighter-rouge">Alt + =</code></li>
+  <li>Minimize <code class="highlighter-rouge">Alt + -</code></li>
+  <li>Dock window left/right <code class="highlighter-rouge">Alt + [</code>, <code class="highlighter-rouge">Alt + ]</code></li>
+  <li>Close window <code class="highlighter-rouge">Ctrl+Shift+W</code> - this is actually <code class="highlighter-rouge">Ctrl-W</code> normally, but terminal might need that hence shift.</li>
+</ul>
+
+<p>fix this by pressing <code class="highlighter-rouge">ctrl-shift-p</code> inside terminal, then scroll down to keyboard preferences and enter</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">{</span>
+  <span class="s2">"Alt-187"</span>: <span class="s2">"PASS"</span>,
+  <span class="s2">"Alt-189"</span>: <span class="s2">"PASS"</span>,
+  <span class="s2">"Alt-219"</span>: <span class="s2">"PASS"</span>,
+  <span class="s2">"Alt-221"</span>: <span class="s2">"PASS"</span>,
+  <span class="s2">"Ctrl-Shift-W"</span>: <span class="s2">"PASS"</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>This has to be done only once, since ChromeOS remembers the terminal settings across devices. So handy after a powerwash.</p>
+
+<h3 id="multiplex-all-the-things">multiplex all the things</h3>
+
+<p>If using Tilix, no need to do this, but for the native terminal,  install tmux:</p>
+
+<p><code class="highlighter-rouge">sudo apt -t stretch-backports install tmux</code></p>
+
+<p>the only thing I really do with tmux is to split the terminal horizontally, then splitting one horizontal terminal vertically, for a total of three windows. Now there is a lot more about sessions and whats not, but the bare basics are:</p>
+
+<p>start tmux by typing <code class="highlighter-rouge">tmux</code>, then press <code class="highlighter-rouge">ctrl+b</code> to enter command mode. <code class="highlighter-rouge">"</code> splits the window horizontally and <code class="highlighter-rouge">%</code> splits it vertically. To move around, press <code class="highlighter-rouge">ctrl-b arrow-key</code></p>
+
+<p>For more customizatoin, make a <code class="highlighter-rouge">.tmux.conf</code> in the home directory and add:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Enable mouse mode (tmux 2.1 and above)</span>
+<span class="nb">set</span> <span class="nt">-g</span> mouse on
+</code></pre></div></div>
+
+<h3 id="jazz-up-the-shell">jazz up the shell</h3>
+
+<p>rumour has it that crostini can have a heart attack if you change the shell, so stick with bash. Consider <a href="https://github.com/ohmybash/oh-my-bash">oh-my-bash</a> or <a href="https://github.com/ohmybash/oh-my-bash">bash-it</a> for hacker level coding.</p>
+
+<p>also install <a href="https://github.com/powerline/fonts">powerline-fonts</a> and select a powerline font for the terminal.</p>
+
+<p><code class="highlighter-rouge">sudo apt -t stretch-backports install fonts-powerline</code></p>
+
+<p>Useful shell tools:</p>
+
+<p><a href="https://tldr.sh">tldr</a> shows a short and useful help page for commands, e.g type <code class="highlighter-rouge">tldr curl</code> to get a synopsis of how to use curl.</p>
+
+<ul>
+  <li>Preferred install: <code class="highlighter-rouge">npm install -g tldr</code></li>
+  <li>If node not installed: <code class="highlighter-rouge">pip install tldr</code></li>
+</ul>
+
+<p><a href="https://github.com/sharkdp/bat">bat</a> a replacement for cat, displays files with syntax highlighting in the terminal. Right now as rendering problems in crostini, but hopefully will improve. Install by downloading the .deb and <code class="highlighter-rouge">sudo apt install ./bat_file.deb</code>.</p>
+
+<h3 id="setup-vim-proper-like">setup vim proper like</h3>
+
+<p>install plugin manager for vim - I went with <a href="https://github.com/junegunn/vim-plug">vim-plug</a>:</p>
+
+<p>edit <code class="highlighter-rouge">~/.vimrc</code> so it has this stuff:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="s2">" install vim-plug if not installed
+if empty(glob('~/.vim/autoload/plug.vim'))
+  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+    </span><span class="se">\ </span><span class="s2">https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  autocmd VimEnter * PlugInstall --sync | source </span><span class="nv">$MYVIMRC</span><span class="s2">
+endif
+
+"</span> plugin directory, don<span class="s1">'t use standard Vim names like '</span>plugin<span class="s1">'
+call plug#begin('</span>~/.vim/plugged<span class="s1">')
+
+" plugins go here
+" ---------------
+" highlights code problems: https://github.com/w0rp/ale
+Plug '</span>w0rp/ale<span class="s1">'
+" adds a status bar: https://github.com/itchyny/lightline.vim
+Plug '</span>itchyny/lightline.vim<span class="s1">'
+" distraction free writing: https://github.com/junegunn/goyo.vim
+Plug '</span>junegunn/goyo.vim<span class="s1">'
+" for python auto completion: https://github.com/davidhalter/jedi-vim
+Plug '</span>davidhalter/jedi-vim<span class="s1">'
+
+" Initialize plugin system
+call plug#end()
+
+" don'</span>t <span class="nb">break </span>mid word
+<span class="nb">set </span>linebreak
+
+</code></pre></div></div>
+
+<p>run <code class="highlighter-rouge">:PlugInstall</code> in vim to install plugs (if needed).</p>
+
+<h2 id="download-all-my-git-repos">Download all my git repos</h2>
+
+<p>This command will grab json output of the first (or last?) 200 repos in my github and git clone them all one by one into the directory this command was run.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>curl <span class="nt">-s</span> https://api.github.com/users/khalido/repos?per_page<span class="o">=</span>200 | <span class="nb">grep</span> <span class="se">\"</span>clone_url<span class="se">\"</span> | <span class="nb">awk</span> <span class="s1">'{print $2}'</span> | <span class="nb">sed</span> <span class="nt">-e</span> <span class="s1">'s/"//g'</span> <span class="nt">-e</span> <span class="s1">'s/,//g'</span> | xargs <span class="nt">-n1</span> git clone
+</code></pre></div></div>
+
+  </div><a class="u-url" href="/chromebooks/2019/01/setup-crostini-chromebook" hidden></a>
+</article>
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col">
+        <p class="feed-subscribe">
+          <a href="/feed.xml">
+            <svg class="svg-icon orange">
+              <use xlink:href="/assets/minima-social-icons.svg#rss"></use>
+            </svg><span>Subscribe</span>
+          </a>
+        </p>
+      </div>
+      <div class="footer-col">
+        <p>A public log, written using words and numbers.</p>
+      </div>
+    </div>
+
+    <div class="social-links"><ul class="social-media-list"><li><a rel="me" href="https://github.com/khalido" title="khalido"><svg class="svg-icon grey"><use xlink:href="/assets/minima-social-icons.svg#github"></use></svg></a></li><li><a rel="me" href="https://twitter.com/ko" title="ko"><svg class="svg-icon grey"><use xlink:href="/assets/minima-social-icons.svg#twitter"></use></svg></a></li></ul>
+</div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>
