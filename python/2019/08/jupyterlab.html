@@ -3,9 +3,9 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
-<title>Jupyter Lab tips | khalido</title>
+<title>Jupyter Lab | khalido</title>
 <meta name="generator" content="Jekyll v4.0.0" />
-<meta property="og:title" content="Jupyter Lab tips" />
+<meta property="og:title" content="Jupyter Lab" />
 <meta property="og:locale" content="en_US" />
 <meta name="description" content="My collection of tips and tricks for using jupyter lab." />
 <meta property="og:description" content="My collection of tips and tricks for using jupyter lab." />
@@ -15,7 +15,7 @@
 <meta property="og:type" content="article" />
 <meta property="article:published_time" content="2019-08-01T00:00:00-05:00" />
 <script type="application/ld+json">
-{"description":"My collection of tips and tricks for using jupyter lab.","headline":"Jupyter Lab tips","dateModified":"2019-08-01T00:00:00-05:00","datePublished":"2019-08-01T00:00:00-05:00","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://khalido.org/python/2019/08/jupyterlab"},"url":"https://khalido.org/python/2019/08/jupyterlab","@context":"https://schema.org"}</script>
+{"description":"My collection of tips and tricks for using jupyter lab.","headline":"Jupyter Lab","dateModified":"2019-08-01T00:00:00-05:00","datePublished":"2019-08-01T00:00:00-05:00","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://khalido.org/python/2019/08/jupyterlab"},"url":"https://khalido.org/python/2019/08/jupyterlab","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 <link rel="stylesheet" href="/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://khalido.org/feed.xml" title="khalido" /><!-- the google_analytics_id gets auto inserted from the config file -->
 
@@ -24,9 +24,9 @@
 <script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','//www.google-analytics.com/analytics.js','ga');ga('create','UA-161500410-1','auto');ga('require','displayfeatures');ga('send','pageview');</script>
 
 <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico"><!-- Begin Jekyll SEO tag v2.6.1 -->
-<title>Jupyter Lab tips | khalido</title>
+<title>Jupyter Lab | khalido</title>
 <meta name="generator" content="Jekyll v4.0.0" />
-<meta property="og:title" content="Jupyter Lab tips" />
+<meta property="og:title" content="Jupyter Lab" />
 <meta property="og:locale" content="en_US" />
 <meta name="description" content="My collection of tips and tricks for using jupyter lab." />
 <meta property="og:description" content="My collection of tips and tricks for using jupyter lab." />
@@ -36,7 +36,7 @@
 <meta property="og:type" content="article" />
 <meta property="article:published_time" content="2019-08-01T00:00:00-05:00" />
 <script type="application/ld+json">
-{"description":"My collection of tips and tricks for using jupyter lab.","headline":"Jupyter Lab tips","dateModified":"2019-08-01T00:00:00-05:00","datePublished":"2019-08-01T00:00:00-05:00","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://khalido.org/python/2019/08/jupyterlab"},"url":"https://khalido.org/python/2019/08/jupyterlab","@context":"https://schema.org"}</script>
+{"description":"My collection of tips and tricks for using jupyter lab.","headline":"Jupyter Lab","dateModified":"2019-08-01T00:00:00-05:00","datePublished":"2019-08-01T00:00:00-05:00","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://khalido.org/python/2019/08/jupyterlab"},"url":"https://khalido.org/python/2019/08/jupyterlab","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
 <link href="https://unpkg.com/@primer/css/dist/primer.css" rel="stylesheet" />
@@ -97,7 +97,7 @@ window.onload = wrap_img;
         <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
-    <h1 class="post-title p-name" itemprop="name headline">Jupyter Lab tips</h1><p class="page-description">My collection of tips and tricks for using jupyter lab.</p><p class="post-meta post-meta-title"><time class="dt-published" datetime="2019-08-01T00:00:00-05:00" itemprop="datePublished">
+    <h1 class="post-title p-name" itemprop="name headline">Jupyter Lab</h1><p class="page-description">My collection of tips and tricks for using jupyter lab.</p><p class="post-meta post-meta-title"><time class="dt-published" datetime="2019-08-01T00:00:00-05:00" itemprop="datePublished">
         Aug 1, 2019
       </time>
        • <span class="read-time" title="Estimated read time">
@@ -120,14 +120,22 @@ window.onload = wrap_img;
 
   <div class="post-content e-content" itemprop="articleBody">
     <ul class="section-nav">
+<li class="toc-entry toc-h2"><a href="#install">Install</a></li>
 <li class="toc-entry toc-h2"><a href="#magic-commands">magic commands</a></li>
 <li class="toc-entry toc-h2"><a href="#extensions">Extensions</a></li>
 <li class="toc-entry toc-h2"><a href="#blog-with-jupyter-notebooks">blog with jupyter notebooks</a></li>
 </ul><p>My collection of tips and tricks for using jupyter lab.</p>
 
+<h2 id="install">
+<a class="anchor" href="#install" aria-hidden="true"><span class="octicon octicon-link"></span></a>Install</h2>
+
 <p><a href="https://jupyterlab.readthedocs.io/en/stable/">Jupyterlab</a> is already installed with <a href="https://www.anaconda.com/distribution/">Anaconda</a>, but if using miniconda install it by:</p>
 
 <p><code class="highlighter-rouge">conda install -c conda-forge jupyterlab ipywidgets</code></p>
+
+<p>To make plotly work with Jlab you need a bunch of extensions, so putting details here:</p>
+
+<p><code class="highlighter-rouge">conda install -c plotly plotly</code></p>
 
 <h2 id="magic-commands">
 <a class="anchor" href="#magic-commands" aria-hidden="true"><span class="octicon octicon-link"></span></a>magic commands</h2>
@@ -151,11 +159,13 @@ window.onload = wrap_img;
 <a href="https://github.com/jupyterlab/jupyterlab-toc">Table of Contents</a> - displays a toc in the sidebar.</li>
   <li>
 <a href="https://github.com/krassowski/jupyterlab-go-to-definition">Go to Definition</a> - <code class="highlighter-rouge">ctrl-alt-b</code> jumps to the point in the notebok the variable or function is defined</li>
+  <li>
+<a href="https://plotly.com/python/getting-started/">Plotly</a> - enables plotly interactive plots</li>
 </ul>
 
 <p><a href="https://www.npmjs.com/search?q=keywords:jupyterlab-extension">Jupyterlab extensions</a> are built using nodejs, so install that by:</p>
 
-<p>Step 1: install <a href="https://github.com/nvm-sh/nvm#install--update-script">nvm</a>, a script to install nodejs:</p>
+<p>step 1: install <a href="https://github.com/nvm-sh/nvm#install--update-script">nvm</a>, a script to install nodejs:</p>
 
 <p><code class="highlighter-rouge">curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.34.0/install.sh | bash</code></p>
 
@@ -163,17 +173,21 @@ window.onload = wrap_img;
 
 <p><code class="highlighter-rouge">nvm install node</code></p>
 
-<p>Install all the extensions then build in one go by:</p>
+<p>Now install all the Jupyter extensions you want. The below installs all the extensions then builds it in one go by:</p>
 
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>jupyter labextension install @jupyter-widgets/jupyterlab-manager --no-build &amp;&amp; \
 jupyter labextension install @jupyterlab/toc --no-build &amp;&amp; \
-jupyter lab build --minimize=False
+jupyter labextension install jupyterlab-plotly --no-build &amp;&amp; \
+jupyter labextension install plotlywidget --no-build &amp;&amp; \
+jupyter lab build --dev-build=False --minimize=False
 </code></pre></div></div>
 
-<p>Note: the build flag is because building was taking too long without this.</p>
+<p>Note: the build flags are needed (on my install) cause building was taking too long without this. It needs a better simple way to install extensions without needing node.</p>
 
 <h2 id="blog-with-jupyter-notebooks">
 <a class="anchor" href="#blog-with-jupyter-notebooks" aria-hidden="true"><span class="octicon octicon-link"></span></a>blog with jupyter notebooks</h2>
+
+<p>Note: just use <a href="https://fastpages.fast.ai/">fastpages</a> to blog with notebooks, but otherwise read on.</p>
 
 <p>So there are tools like Pelican which are setup directly with jupyter notebooks, but I had already set up a hugo powered blog since its free, easy and just works, so my mini shortcut is to put all my notebooks the hugo content directory and run a little script there which converts the jupyter notebooks to markdown files:</p>
 
