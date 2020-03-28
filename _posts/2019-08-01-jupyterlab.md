@@ -1,5 +1,5 @@
 ---
-title: Jupyter Lab tips
+title: Jupyter Lab
 description: My collection of tips and tricks for using jupyter lab.
 toc: true
 layout: post
@@ -8,9 +8,15 @@ categories: [python]
 
 My collection of tips and tricks for using jupyter lab.
 
+## Install
+
 [Jupyterlab](https://jupyterlab.readthedocs.io/en/stable/) is already installed with [Anaconda](https://www.anaconda.com/distribution/), but if using miniconda install it by:
 
 `conda install -c conda-forge jupyterlab ipywidgets`
+
+To make plotly work with Jlab you need a bunch of extensions, so putting details here:
+
+`conda install -c plotly plotly`
 
 ## magic commands
 
@@ -25,10 +31,11 @@ My shortlist:
 
 - [Table of Contents](https://github.com/jupyterlab/jupyterlab-toc) - displays a toc in the sidebar.
 - [Go to Definition](https://github.com/krassowski/jupyterlab-go-to-definition) - `ctrl-alt-b` jumps to the point in the notebok the variable or function is defined
+- [Plotly](https://plotly.com/python/getting-started/) - enables plotly interactive plots
 
 [Jupyterlab extensions](https://www.npmjs.com/search?q=keywords:jupyterlab-extension) are built using nodejs, so install that by:
 
-Step 1: install [nvm](https://github.com/nvm-sh/nvm#install--update-script), a script to install nodejs:
+step 1: install [nvm](https://github.com/nvm-sh/nvm#install--update-script), a script to install nodejs:
 
 `curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.34.0/install.sh | bash`
 
@@ -36,17 +43,21 @@ step 2: install nodejs itself by:
 
 `nvm install node`
 
-Install all the extensions then build in one go by:
+Now install all the Jupyter extensions you want. The below installs all the extensions then builds it in one go by:
 
 ```
 jupyter labextension install @jupyter-widgets/jupyterlab-manager --no-build && \
 jupyter labextension install @jupyterlab/toc --no-build && \
-jupyter lab build --minimize=False
+jupyter labextension install jupyterlab-plotly --no-build && \
+jupyter labextension install plotlywidget --no-build && \
+jupyter lab build --dev-build=False --minimize=False
 ```
 
-Note: the build flag is because building was taking too long without this.
+Note: the build flags are needed (on my install) cause building was taking too long without this. It needs a better simple way to install extensions without needing node.
 
 ## blog with jupyter notebooks
+
+Note: just use [fastpages](https://fastpages.fast.ai/) to blog with notebooks, but otherwise read on.
 
 So there are tools like Pelican which are setup directly with jupyter notebooks, but I had already set up a hugo powered blog since its free, easy and just works, so my mini shortcut is to put all my notebooks the hugo content directory and run a little script there which converts the jupyter notebooks to markdown files:
 
