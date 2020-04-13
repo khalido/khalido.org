@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>MacOS | khalido</title>
+<meta name="generator" content="Jekyll v4.0.0" />
+<meta property="og:title" content="MacOS" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="setup notes for osx" />
+<meta property="og:description" content="setup notes for osx" />
+<link rel="canonical" href="https://khalido.org/mac/2020/04/setup-mac" />
+<meta property="og:url" content="https://khalido.org/mac/2020/04/setup-mac" />
+<meta property="og:site_name" content="khalido" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2020-04-11T00:00:00-05:00" />
+<script type="application/ld+json">
+{"description":"setup notes for osx","headline":"MacOS","dateModified":"2020-04-11T00:00:00-05:00","datePublished":"2020-04-11T00:00:00-05:00","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://khalido.org/mac/2020/04/setup-mac"},"url":"https://khalido.org/mac/2020/04/setup-mac","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://khalido.org/feed.xml" title="khalido" /><!-- the google_analytics_id gets auto inserted from the config file -->
+
+
+
+<script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','//www.google-analytics.com/analytics.js','ga');ga('create','UA-161500410-1','auto');ga('require','displayfeatures');ga('send','pageview');</script>
+
+<link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>MacOS | khalido</title>
+<meta name="generator" content="Jekyll v4.0.0" />
+<meta property="og:title" content="MacOS" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="setup notes for osx" />
+<meta property="og:description" content="setup notes for osx" />
+<link rel="canonical" href="https://khalido.org/mac/2020/04/setup-mac" />
+<meta property="og:url" content="https://khalido.org/mac/2020/04/setup-mac" />
+<meta property="og:site_name" content="khalido" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2020-04-11T00:00:00-05:00" />
+<script type="application/ld+json">
+{"description":"setup notes for osx","headline":"MacOS","dateModified":"2020-04-11T00:00:00-05:00","datePublished":"2020-04-11T00:00:00-05:00","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://khalido.org/mac/2020/04/setup-mac"},"url":"https://khalido.org/mac/2020/04/setup-mac","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+<link href="https://unpkg.com/@primer/css/dist/primer.css" rel="stylesheet" />
+<link rel="stylesheet" href="//use.fontawesome.com/releases/v5.0.7/css/all.css"><link type="application/atom+xml" rel="alternate" href="https://khalido.org/feed.xml" title="khalido" /><!-- the google_analytics_id gets auto inserted from the config file -->
+
+
+
+<script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','//www.google-analytics.com/analytics.js','ga');ga('create','UA-161500410-1','auto');ga('require','displayfeatures');ga('send','pageview');</script>
+
+
+
+<script>
+function wrap_img(fn) {
+    if (document.attachEvent ? document.readyState === "complete" : document.readyState !== "loading") {
+        var elements = document.querySelectorAll(".post img");
+        Array.prototype.forEach.call(elements, function(el, i) {
+            if (el.getAttribute("title")) {
+                const caption = document.createElement('figcaption');
+                var node = document.createTextNode(el.getAttribute("title"));
+                caption.appendChild(node);
+                const wrapper = document.createElement('figure');
+                wrapper.className = 'image';
+                el.parentNode.insertBefore(wrapper, el);
+                el.parentNode.removeChild(el);
+                wrapper.appendChild(el);
+                wrapper.appendChild(caption);
+            }
+        });
+    } else { document.addEventListener('DOMContentLoaded', fn); }
+}
+window.onload = wrap_img;
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function(){
+    // add link icon to anchor tags
+    var elem = document.querySelectorAll(".anchor-link")
+    elem.forEach(e => (e.innerHTML = '<i class="fas fa-link fa-xs"></i>'));
+    });
+</script>
+</head><body><header class="site-header">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/">khalido</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/about/">About Me</a><a class="page-link" href="/search/">Search</a><a class="page-link" href="/categories/">Tags</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">MacOS</h1><p class="page-description">setup notes for osx</p><p class="post-meta post-meta-title"><time class="dt-published" datetime="2020-04-11T00:00:00-05:00" itemprop="datePublished">
+        Apr 11, 2020
+      </time>
+       • <span class="read-time" title="Estimated read time">
+    
+    
+      2 min read
+    
+</span></p>
+
+    
+      <p class="category-tags"><i class="fas fa-tags category-tags-icon"></i></i> 
+      
+        <a class="category-tags-link" href="/categories/#mac">mac</a>
+        
+      
+      </p>
+    
+
+    </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <ul class="section-nav">
+<li class="toc-entry toc-h1"><a href="#install-the-latest-macos">Install the latest macOS</a></li>
+<li class="toc-entry toc-h1"><a href="#interface-tweaks">Interface tweaks</a>
+<ul>
+<li class="toc-entry toc-h2"><a href="#manual-tweaks">manual tweaks</a></li>
+<li class="toc-entry toc-h2"><a href="#finder">Finder</a></li>
+</ul>
+</li>
+<li class="toc-entry toc-h1"><a href="#app-setup">App setup</a>
+<ul>
+<li class="toc-entry toc-h2"><a href="#homebrew-aka-easy-install-apps">homebrew aka easy install apps</a></li>
+<li class="toc-entry toc-h2"><a href="#cli-apps">cli apps</a></li>
+<li class="toc-entry toc-h2"><a href="#essential-apps">essential apps</a></li>
+<li class="toc-entry toc-h2"><a href="#a-better-app-launcher">A better app launcher</a></li>
+</ul>
+</li>
+<li class="toc-entry toc-h1"><a href="#dev-setup">Dev setup</a></li>
+<li class="toc-entry toc-h1"><a href="#links">links</a></li>
+</ul><h1 id="install-the-latest-macos">
+<a class="anchor" href="#install-the-latest-macos" aria-hidden="true"><span class="octicon octicon-link"></span></a>Install the latest macOS</h1>
+
+<p>If starting with a old mac, I recommend doing a factory reset and installing the latest macos.</p>
+
+<p>Power on the mac and keep holding down <code class="highlighter-rouge">Option/Alt + Command + R</code> until a spinning globe appears. This boots you into recovery mode and offers to reinstall the latest version of OSX, which for me is <a href="https://www.apple.com/au/macos/catalina/">10.15: Catalina</a>.</p>
+
+<p>I had to format the disk before installing as the installer wasn’t recognizing it. The eraser defaulted to the old MAC disk format, change that to <code class="highlighter-rouge">AFPS</code> with scheme <code class="highlighter-rouge">GUID Partition Map</code>. I’m used to case insensitive systems on linux, but on MacOS some apps don’t like that, so regular AFPS seems to be the best option.</p>
+
+<p>Also see:</p>
+
+<ul>
+  <li>
+<a href="https://support.apple.com/en-au/HT204904">Apple reset page</a> and <a href="https://support.apple.com/en-au/HT201314">recovery page</a>.</li>
+</ul>
+
+<h1 id="interface-tweaks">
+<a class="anchor" href="#interface-tweaks" aria-hidden="true"><span class="octicon octicon-link"></span></a>Interface tweaks</h1>
+
+<h2 id="manual-tweaks">
+<a class="anchor" href="#manual-tweaks" aria-hidden="true"><span class="octicon octicon-link"></span></a>manual tweaks</h2>
+
+<ul>
+  <li>autohide the dock: Its just a waste of space. No one should be looking or clicking on the dock anyways.</li>
+  <li>Don’t press, tap! System Preferences &gt; Trackpad &gt; Tap to click</li>
+  <li>
+<a href="https://support.apple.com/en-za/HT204609">three finger drag</a> is awesome. 
+Accessibility -&gt; Mouse &amp; Trackpad -&gt; Options -&gt; Enable dragging (choose 3 finger drag)</li>
+</ul>
+
+<h2 id="finder">
+<a class="anchor" href="#finder" aria-hidden="true"><span class="octicon octicon-link"></span></a>Finder</h2>
+
+<p>New finder window open in home dir.</p>
+
+<h1 id="app-setup">
+<a class="anchor" href="#app-setup" aria-hidden="true"><span class="octicon octicon-link"></span></a>App setup</h1>
+
+<h2 id="homebrew-aka-easy-install-apps">
+<a class="anchor" href="#homebrew-aka-easy-install-apps" aria-hidden="true"><span class="octicon octicon-link"></span></a>homebrew aka easy install apps</h2>
+
+<p><a href="https://brew.sh/">homebrew</a> installs all the packages.</p>
+
+<p>Install it by pasting this in a terminal:</p>
+
+<ul>
+  <li>
+<code class="highlighter-rouge">sudo xcode-select --install</code> - this installs the xcode cli</li>
+  <li>
+<code class="highlighter-rouge">/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"</code> downloads and installs brew.</li>
+</ul>
+
+<p>Most cli tools are installed by: <code class="highlighter-rouge">brew install wget</code> and gui apps by: ` brew cask install firefox`.</p>
+
+<p>Other useful commands:</p>
+
+<ul>
+  <li>
+<code class="highlighter-rouge">brew update</code> updates brew itself and all the packages it can install</li>
+  <li>
+<code class="highlighter-rouge">brew upgrade</code> upgrades all packages installed by homebrew</li>
+</ul>
+
+<h2 id="cli-apps">
+<a class="anchor" href="#cli-apps" aria-hidden="true"><span class="octicon octicon-link"></span></a>cli apps</h2>
+
+<ul>
+  <li>
+<a href="">neofetch</a> displays nifty info about your system in the terminal. Don’t install this using brew as that installs way too much stuff.</li>
+</ul>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>brew install curl 
+</code></pre></div></div>
+
+<h2 id="essential-apps">
+<a class="anchor" href="#essential-apps" aria-hidden="true"><span class="octicon octicon-link"></span></a>essential apps</h2>
+
+<ul>
+  <li>
+<a href="https://github.com/rxhanson/Rectangle">Rectangle</a> window manager, cause life is too short to use a mouse to resize windows.</li>
+  <li>[itsycal] adds a small dropdown calendar to the menubar</li>
+  <li>
+<a href="https://karabiner-elements.pqrs.org/">Karabiner Elements</a> to modify keyboard shortcuts, in particular make the capslock key into a super key which can launch alred.</li>
+  <li>
+<a href="">Alfred</a> is a super duper launcher for macos. I remap capslock to launching it.</li>
+  <li>
+<a href="">Visual Studio code</a> is my cross-platform editor of choice. its awesome.</li>
+  <li>
+<a href="">slack</a> gotta talk to all the work colleages</li>
+  <li>
+<a href="">spotify</a> gotten listen to music</li>
+  <li>
+<a href="https://zoom.us/">zoom</a> - video chat service of choice in 2020, even for companies paying tons of money to other companies for video calls!</li>
+</ul>
+
+<p>This installs them all in one fell swoop.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>brew cask install \
+    rectangle \
+    itsycal \
+    karabiner-elements \
+    alfred \
+    google-chrome \
+    visual-studio-code \
+    slack \
+    spotify \
+    zoomus
+</code></pre></div></div>
+
+<h2 id="a-better-app-launcher">
+<a class="anchor" href="#a-better-app-launcher" aria-hidden="true"><span class="octicon octicon-link"></span></a>A better app launcher</h2>
+
+<p><a href="https://www.alfredapp.com/">Alred</a> replaces spotlight.</p>
+
+<h1 id="dev-setup">
+<a class="anchor" href="#dev-setup" aria-hidden="true"><span class="octicon octicon-link"></span></a>Dev setup</h1>
+
+<p>Install a nicer terminal: <code class="highlighter-rouge">brew cask install iterm2</code> cause why not.</p>
+
+<p>update git cause the macos version is old: <code class="highlighter-rouge">brew install git</code> and do the basic git setup:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git config --global user.name "khalido"
+git config --global user.email "myname@gmail.com"
+git config --global color.ui auto
+</code></pre></div></div>
+
+<p>Install neofetch cause its looks nice to see your system stats in a terminal: <code class="highlighter-rouge">brew install neofetch</code></p>
+
+<h1 id="links">
+<a class="anchor" href="#links" aria-hidden="true"><span class="octicon octicon-link"></span></a>links</h1>
+
+<ul>
+  <li><a href="https://github.com/nicolashery/mac-dev-setup">setup mac for dev</a></li>
+  <li><a href="https://mac.iamdeveloper.com/posts/my-mac-setup-2m05/">another setup</a></li>
+</ul>
+
+  </div><a class="u-url" href="/mac/2020/04/setup-mac" hidden></a>
+</article>
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col">
+        <p class="feed-subscribe">
+          <a href="/feed.xml">
+            <svg class="svg-icon orange">
+              <use xlink:href="/assets/minima-social-icons.svg#rss"></use>
+            </svg><span>Subscribe</span>
+          </a>
+        </p>
+      </div>
+      <div class="footer-col">
+        <p>A public log, written using words and numbers.</p>
+      </div>
+    </div>
+
+    <div class="social-links"><ul class="social-media-list"><li><a rel="me" href="https://github.com/khalido" title="khalido"><svg class="svg-icon grey"><use xlink:href="/assets/minima-social-icons.svg#github"></use></svg></a></li><li><a rel="me" href="https://twitter.com/ko" title="ko"><svg class="svg-icon grey"><use xlink:href="/assets/minima-social-icons.svg#twitter"></use></svg></a></li></ul>
+</div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>
