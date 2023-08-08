@@ -1,25 +1,37 @@
-# Astro Starter Kit: Blog
+# khalido.org
 
-```
-npm create astro@latest -- --template blog
-```
+something something
 
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/withastro/astro/tree/latest/examples/blog)
-[![Open with CodeSandbox](https://assets.codesandbox.io/github/button-edit-lime.svg)](https://codesandbox.io/p/sandbox/github/withastro/astro/tree/latest/examples/blog)
-[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/withastro/astro?devcontainer_path=.devcontainer/blog/devcontainer.json)
+# Content structure
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+Currently 
 
-![blog](https://github.com/withastro/astro/assets/2244813/ff10799f-a816-4703-b967-c78997e8323d)
+## Blog
 
-Features:
+where all the bloggy posts go.
 
-- ✅ Minimal styling (make it your own!)
-- ✅ 100/100 Lighthouse performance
-- ✅ SEO-friendly with canonical URLs and OpenGraph data
-- ✅ Sitemap support
-- ✅ RSS Feed support
-- ✅ Markdown & MDX support
+Below are some sub categories which I'll write a custom template for later using Astro's [custom collections](https://docs.astro.build/en/guides/content-collections/) feature.
+
+## Books
+
+Use some nice API to get some book deets e.g cover, link to a few sites etc
+
+## Receipes
+
+Recepies I use regularly. Short, to the point and all vegetarian. Most of them are basically the same but different ingredients, all based on the basic desi karahi and keema base receipe.
+
+Shoutout to various family members for the actual recepies!
+
+Recepies I want but can't make yet:
+
+- the karachi anda dal bun kebab
+- a non baked biryani 
+- a desi-english style stew
+
+
+# Astro stuff
+
+clean this up later
 
 ## 🚀 Project Structure
 

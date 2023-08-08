@@ -1,0 +1,44 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import BaseHead from '../../components/BaseHead.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import { SITE_TITLE, SITE_DESCRIPTION } from '../../consts';
+import { getCollection } from 'astro:content';
+import FormattedDate from '../../components/FormattedDate.astro';
+
+const posts = (await getCollection('blog')).sort(
+	(a, b) => a.data.pubDate.valueOf() - b.data.pubDate.valueOf()
+).reverse();
+
+const tags = [...new Set(posts.map((post) => post.data.tags).flat())];
+---
+
+<BaseLayout>
+
+	<!-- search box -->
+	<input class="px-4 py-3 w-80 text-xl" type="text" id="postSearch" placeholder="Search">
+	
+		<ul id="searchresults" class="list-none text-lg pt-4 pb-2 px-2">
+		  {
+			posts.map((post) => (
+			  <li class="py-0.5"><a class="no-underline hover:underline text-gray-800" href={`/blog/${post.slug}`}>{post.data.title}</a>
+  
+		  <span class="align-middle pl-4 py-0.5">
+			{post.data.tags.map((tag) => (
+			  <a class="pr-2 0.75rem; no-underline opacity-50 text-purple-400 text-sm hover:underline hover:bg-yellow-200" href={`/tags/${tag}`}>{tag}</a>
+			  ))}
+		  </span>
+		  {/* <span class="text-right text-sm"><FormattedDate date={post.data.pubDate} /></span> */}
+  
+			  </li>
+			))
+		  }
+		</ul>
+  
+  
+	</BaseLayout>
+
+
+  
+  
