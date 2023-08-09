@@ -1,0 +1,46 @@
+---
+const { name, n } = Astro.props;
+const nums = Array.from(Array(12).keys(), (i) => i + 1);
+//console.log(nums);
+
+---
+
+<p class="bg-red-100 p-3 border-2 border-yellow-400">
+  my first ever component! Two vars gets passed in: text: <span
+    class="font-bold border-2 border-rose-600">{name}</span
+  >
+  int: <span class="font-bold border-2 border-rose-600">{n}</span>
+  the int even multiplies! Times Table below: for {n}
+</p>
+
+<form method="POST">
+  <label class="text-sm">
+    Enter Number: (does nothing for now)
+    <input
+      id="number"
+      type="number"
+      name="number"
+      min="1"
+      max="999"
+      onchange="myFunction(event)"
+      value="num"
+      placeholder="888"
+    />
+  </label>
+  <button>Submit</button>
+</form>
+
+<script>
+    let num = document.getElementById('number');
+console.log(num[0]);
+    </script>
+
+<ul class="p-0">
+  {
+    nums.map((k) => (
+      <li class="leading-tight">
+        {k} times {n} = {k * n}
+      </li>
+    ))
+  }
+</ul>

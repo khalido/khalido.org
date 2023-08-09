@@ -1,22 +1,22 @@
 ---
-import BaseLayout from '../../layouts/BaseLayout.astro';
-import FormattedDate from '../../components/FormattedDate.astro';
-import { CollectionEntry, getCollection } from 'astro:content';
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import FormattedDate from "../../components/FormattedDate.astro";
+import { CollectionEntry, getCollection } from "astro:content";
+
+const { tag } = Astro.params;
+//console.log("const tag: ", tag)
 
 export async function getStaticPaths() {
   const allPosts = await getCollection("blog");
 
-  const tags: string[] = [];
-
   // using .toLowerCase() here to get rid of case sensitivity
-  allPosts.forEach((post) => {
-    post.data.tags.forEach((tag) => {
-      tags.push(tag.toLowerCase());
-    });
-  });
+  const tags = [...new Set(allPosts.map((post) => post.data.tags).flat())]
+    .sort()
+    .map((tag) => tag.toLowerCase());
+  //console.log(tags);
 
-  // using a new array from a set, we can get rid of duplicate tags
-  return Array.from(new Set(tags)).map((tag) => {
+  // update this to deal with two tags in the future
+  let filtered_posts = Array.from(tags).map((tag) => {
     return {
       params: { tag },
       // only keep the blogposts that contain the tag itself
@@ -27,38 +27,74 @@ export async function getStaticPaths() {
       },
     };
   });
+
+  return filtered_posts;
 }
 
+// what is this doing?, if I remove it seems to do nothing
 interface Props {
   tag: string;
   blogposts: CollectionEntry<"blog">[];
 }
 
 const { blogposts } = Astro.props;
+
+{
+  /* Posts are in chronological order, do I want them in alphabetical order? */
+}
+blogposts
+  .sort((a, b) => a.data.pubDate.valueOf() - b.data.pubDate.valueOf())
+  .reverse();
+
+//console.log("this should be the filtered posts: ", blogposts.length);
+
+{/* figure out later how to build pages for two tags i.e books+nonfiction
+if (tag.includes("+")) {
+  console.log("handle the tag", tag);
+} else {
+  console.log("no + found in tag", tag);
+}
+ */}
 ---
 
 <BaseLayout>
+  <h2 class="font-bold p-2">
+    posts tagged
+    <span class="text-yellow-700">{tag}</span>
+  </h2>
 
   <!-- search box -->
-  <input class="px-4 py-3 w-80 text-xl" type="text" id="postSearch" placeholder="Search">
-  
-	  <ul id="searchresults" class="list-none text-lg pt-4 pb-2 px-2">
-		{
-		  blogposts.map((post) => (
-			<li class="py-0.5"><a class="no-underline hover:underline text-gray-800" href={`/blog/${post.slug}`}>{post.data.title}</a>
+  <input
+    class="px-4 py-3 w-80 text-xl"
+    type="text"
+    id="postSearch"
+    placeholder="Search"
+  />
 
-        <span class="align-middle pl-4 py-0.5">
-          {post.data.tags.map((tag) => (
-            <a class="pr-2 0.75rem; no-underline opacity-50 text-purple-400 text-sm hover:underline hover:bg-yellow-200" href={`/tags/${tag}`}>{tag}</a>
+  <ul id="searchresults" class="list-none text-lg pt-4 pb-2 px-2">
+    {
+      blogposts.map((post) => (
+        <li class="py-0.5">
+          <a
+            class="no-underline hover:underline text-gray-800"
+            href={`/blog/${post.slug}`}
+          >
+            {post.data.title}
+          </a>
+
+          <span class="align-middle pl-4 py-0.5">
+            {post.data.tags.map((tag) => (
+              <a
+                class="pr-2 0.75rem; no-underline opacity-50 text-purple-400 text-sm hover:underline hover:bg-yellow-200"
+                href={`/tags/${tag}`}
+              >
+                {tag}
+              </a>
             ))}
-        </span>
-        {/* <span class="text-right text-sm"><FormattedDate date={post.data.pubDate} /></span> */}
-
-			</li>
-		  ))
-		}
-	  </ul>
-
-
-  </BaseLayout>
-
+          </span>
+          {/* <span class="text-right text-sm"><FormattedDate date={post.data.pubDate} /></span> */}
+        </li>
+      ))
+    }
+  </ul>
+</BaseLayout>
