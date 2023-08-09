@@ -3,7 +3,6 @@ title: Advent of Code 2016
 description: Notes on some of the AOC16 puzzles
 pubDate: 2019-02-02
 toc: true
-layout: post
 tags:
   - python
 ---
