@@ -5,7 +5,6 @@ pubDate: 2017-08-15
 description: "notes from the course"
 tags: 
     - courses
-layout: post
 toc: true
 ---
 

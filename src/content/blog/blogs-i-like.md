@@ -1,8 +1,7 @@
 ---
 title: "Data Science blogs"
 description: useful data science related blogs
-category: [data science]
-layout: post
+category: [data-science]
 toc: false
 pubDate: 2019-03-04
 tags:

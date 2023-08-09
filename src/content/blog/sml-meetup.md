@@ -4,7 +4,7 @@ description: "notes from the meetup"
 pubDate: 2018-08-20
 tags:
   - meetup
-  - data science
+  - data-science
 ---
 
 # SML 2018-08: Deep Reinforcement Learning

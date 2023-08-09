@@ -6,7 +6,7 @@ rating: 4
 author: Anuk Arudpragasam
 tags:
   - books
-  - sri lanka
+  - sri-lanka
 ---
 
 # A Passage North
