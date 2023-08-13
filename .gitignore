@@ -5,6 +5,8 @@ dist/
 
 # dependencies
 node_modules/
+dist/
+*.tsbuildinfo
 
 # logs
 npm-debug.log*
@@ -19,3 +21,6 @@ pnpm-debug.log*
 
 # macOS-specific files
 .DS_Store
+
+# apps
+.obsidian

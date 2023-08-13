@@ -3,18 +3,23 @@ import type { CollectionEntry } from 'astro:content';
 import BaseHead from '../components/BaseHead.astro';
 import FormattedDate from '../components/FormattedDate.astro';
 import BaseLayout from './BaseLayout.astro';
+import TOC from '@components/TOC.astro'
 
 
 type Props = CollectionEntry<'blog'>['data'];
 
-const { title, description, pubDate, updatedDate, tags } = Astro.props;
+
+const { title, description, pubDate, updatedDate, tags, headings } = Astro.props;
+
+console.log("---------");
+console.log(title, headings)
 ---
 
 <BaseLayout>
         
 
 <article class="prose md:prose-lg">
-
+	<TOC pageHeadings={headings} />
 	<slot />
 
     <!-- post meta info div-->
