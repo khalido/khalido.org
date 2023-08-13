@@ -175,10 +175,6 @@ tl;dr big brother view of your citizen/student or other entity
 [Coalesce hands on guide](https://guides.coalesce.io/foundations/#0)
 * skipped as its just a straightforward no code data join+transformations
 
-> 1. In the Column Editor on the right hand side of the screen, select Data Type and Transform under Attributes. Clarify the Data Type as STRING and enter the transformation `UPPER({{SRC}})`in the Transform field.
-
-Code is easier tha
-
 ## LLM's inside snowflake
 
 tl;dr: run your own llm or a partner llm all inside snowflake on top of you data
