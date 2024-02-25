@@ -29,6 +29,8 @@ npm run dev -- --host # expose on your local network, handy for checking on a ph
 ```
 Why npm has this extra `--` before the `--host`???
 
+Upgrade astro by `npx @astrojs/upgrade`
+
 Setup integrations:
 
 * [mdx](https://docs.astro.build/en/guides/integrations-guide/mdx/) - to use components inside posts

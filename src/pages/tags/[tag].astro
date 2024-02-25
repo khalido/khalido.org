@@ -8,20 +8,31 @@ const { tag } = Astro.params;
 
 export async function getStaticPaths() {
   const allPosts = await getCollection("blog");
+  const allAsides = await getCollection("asides");
 
   // using .toLowerCase() here to get rid of case sensitivity
-  const tags = [...new Set(allPosts.map((post) => post.data.tags).flat())]
+  const posttags = [...new Set(allPosts.map((post) => post.data.tags).flat())]
     .sort()
     .map((tag) => tag.toLowerCase());
   //console.log(tags);
 
-  // update this to deal with two tags in the future
+  // tags for asides
+  const asidetags = [...new Set(allAsides.map((post) => post.data.tags).flat())]
+    .sort()
+    .map((tag) => tag.toLowerCase());
+    console.log("aside tags", asidetags);
+
+  // now to combine the two into one big tags thing
+  const tags = new Set([...posttags, ...asidetags]);
+  console.log("combined tags", tags);
+
+    // update this to deal with two tags in the future
   let filtered_posts = Array.from(tags).map((tag) => {
     return {
       params: { tag },
       // only keep the blogposts that contain the tag itself
       props: {
-        blogposts: allPosts.filter((post) =>
+        blogposts: allPosts.concat(allAsides).filter((post) =>
           post.data.tags.map((tag) => tag.toLowerCase()).includes(tag)
         ),
       },
@@ -79,7 +90,7 @@ if (tag.includes("+")) {
             class="no-underline hover:underline text-gray-800"
             href={`/blog/${post.slug}`}
           >
-            {post.data.title}
+            {post.data.title} {post.data.tags}
           </a>
 
           <span class="align-middle pl-4 py-0.5">
