@@ -1,7 +1,6 @@
 ---
 title: "deeplearning.ai: Neural Networks and Deep Learning"
 pubDate: 2016-01-01
-image: /images/deeplearningai-1-of-5-cert.png
 tags:
   - courses
 ---

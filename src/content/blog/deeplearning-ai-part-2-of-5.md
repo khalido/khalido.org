@@ -2,7 +2,6 @@
 title: "deeplearning.ai: Improving Deep Neural Networks"
 pubDate: 2017-01-01
 description: my notes on part 2 of the deeplearning.ai course
-image: /imgages/deeplearningai-2-of-5-cert.png
 tags:
   - courses
 ---
