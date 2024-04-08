@@ -391,7 +391,7 @@ Map reduce is a way to deal with very large data sets by distributing work over 
 - the mapreduce implementation reaggregrates the key value pairs incoming from all the servers (sorted by keys)
 - we write a reduce which does something else
 - simple mapreduce example: - map takes in sentences, sends them off to diff machines to process, - those machines send back key:value pairs, say we are just counting words so we get back from machine 1: `"the":1`, `"the":1`, `"a":4` and machine 2 sends back "the":4, "a"10, - there can be a combine step here, which takes the output from one mapper and combines it, so the two `the` words from machine 1 become one `"the":2`. this reduces network traffic and makes the work upstream easier. the combine output has to be of the same type as the mapper, since combine is just an optional optimizatizion step not a DO WORK thing. - the mapreduce thingamajig aggregrates all the key:value pairs and sends them to the - reduce function, which counts the words and finally we end up with "the":6 and "a":14
-  ![](/img/mapreduce.png) - Udacity has a [course on mapreduce with hadoop](https://www.udacity.com/course/intro-to-hadoop-and-mapreduce--ud617)
+  `![](/img/mapreduce.png)` - Udacity has a [course on mapreduce with hadoop](https://www.udacity.com/course/intro-to-hadoop-and-mapreduce--ud617)
 
 ### Lecture 15: MapReduce Combiners and Spark ([video](https://matterhorn.dce.harvard.edu/engage/player/watch.html?id=10964b32-dcdc-49d2-b766-039b707a5c37), [slides](https://github.com/cs109/2015/raw/master/Lectures/15a-MapReduce_Combiner.pdf))
 

@@ -82,7 +82,7 @@ There are lots of things people are working on, as well as tons of existing info
 
 Prototype:
 
-![](/img/prototype_chat_1.png) ![](/img/prototype_chat_2.png)
+`![](/img/prototype_chat_1.png) ![](/img/prototype_chat_2.png)`
 
 Have a simple, easy to use way to ask questions about services available, and where possible help the user to use them by asking questions relevant for that service and filling out the form (or sending the relevant link).
 

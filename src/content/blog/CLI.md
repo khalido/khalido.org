@@ -5,7 +5,6 @@ description: "misc CLI stuff"
 tags:
   - dev
 ---
-
 # CLI things
 
 Add environment variables:

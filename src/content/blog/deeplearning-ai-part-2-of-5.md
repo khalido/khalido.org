@@ -33,7 +33,7 @@ Train / Dev / Test sets
 
 Bias / Variance
 
-![](/img/bias-variance.png)
+`![](/img/bias-variance.png)`
 
 - high bias - model is under fitting, or not even fitting the training set
 - high variance - model is over fitting the training and dev set

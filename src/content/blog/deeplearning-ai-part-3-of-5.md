@@ -218,7 +218,7 @@ There are lots of ways to improve a deep learning system, so its important to ss
 - error analysis helps us pick useful actions which will have meaningful improvements.
 - we can evaluate multiple ideas in parallel - use a spreadsheet to help decide:
 
-![](img/eval-multiple-ideas.png)
+`![](img/eval-multiple-ideas.png)`
 
 - so summarize errors, find categories, prioritize important ones
 
@@ -338,4 +338,4 @@ There are lots of ways to improve a deep learning system, so its important to ss
 
 course [done and dusted](https://www.coursera.org/account/accomplishments/certificate/QZESAQHSKF3K):
 
-![](img/deeplearningai-3-of-5-cert.png)
+`![](img/deeplearningai-3-of-5-cert.png)`
