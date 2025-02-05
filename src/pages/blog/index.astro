@@ -1,51 +1,35 @@
 ---
-import BaseHead from "../../components/BaseHead.astro";
-import Header from "../../components/Header.astro";
-import Footer from "../../components/Footer.astro";
-import { SITE_TITLE, SITE_DESCRIPTION } from "../../consts";
+import BaseLayout from "@layouts/BaseLayout.astro";
 import { getCollection } from "astro:content";
-import FormattedDate from "../../components/FormattedDate.astro";
+import TagCloud from "@components/TagCloud.astro";
+import ContentList from "@components/ContentList.astro";
+import { getPreview, sortByDate, getAllTags } from "@scripts/content";
 
-const posts = (await getCollection("blog"))
-    .sort((a, b) => a.data.pubDate.valueOf() - b.data.pubDate.valueOf())
-    .reverse();
-const tags = [...new Set(posts.map((post) => post.data.tags).flat())];
+// Get all content from blog collection, filter out draft only in prod
+const allPosts = await getCollection("blog", ({ data }) => {
+    return import.meta.env.PROD ? data.draft !== true : true;
+});
+
+// Prepare content with summary and sort by date
+const allContent = sortByDate(
+    await Promise.all(
+        allPosts.map(async (post) => ({
+            id: post.id,
+            slug: post.slug,
+            data: {
+                ...post.data,
+                preview: await getPreview(post),
+            },
+        })),
+    ),
+);
+
+// Get unique tags from all content
+const allTags = getAllTags(allPosts);
 ---
 
-<!doctype html>
-<html lang="en">
-    <head>
-        <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
-    </head>
-    <body>
-        <Header />
-        <main>
-            <section>
-                <ul>
-                    {
-                        posts.map((post) => (
-                            <li>
-                                <a href={`/blog/${post.id}/`}>
-                                    <h4 class="title">{post.data.title}</h4>
-
-                                    {post.data.tags.map((tag) => (
-                                        <p>
-                                            <a href={`/tags/${tag}`}>{tag}</a>
-                                        </p>
-                                    ))}
-
-                                    <p class="date">
-                                        <FormattedDate
-                                            date={post.data.pubDate}
-                                        />
-                                    </p>
-                                </a>
-                            </li>
-                        ))
-                    }
-                </ul>
-            </section>
-        </main>
-        <Footer />
-    </body>
-</html>
+<BaseLayout title="khalido.org: Blog">
+    <h1 class="text-3xl mb-8">Blog Posts</h1>
+    <TagCloud tags={allTags} />
+    <ContentList contents={allContent} />
+</BaseLayout>
