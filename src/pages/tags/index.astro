@@ -1,33 +1,20 @@
 ---
-import BaseLayout from "../../layouts/BaseLayout.astro";
-import BaseHead from "../../components/BaseHead.astro";
-import Header from "../../components/Header.astro";
-import Footer from "../../components/Footer.astro";
-import { SITE_TITLE, SITE_DESCRIPTION } from "../../consts";
+import BaseLayout from "@layouts/BaseLayout.astro";
 import { getCollection } from "astro:content";
-import FormattedDate from "../../components/FormattedDate.astro";
-import TagCloud from "../components/TagCloud.astro";
-import ContentList from "../components/ContentList.astro";
+import TagCloud from "@components/TagCloud.astro";
+import ContentList from "@components/ContentList.astro";
+import { getPreview, sortByDate, getAllTags } from "@scripts/content";
 
-const posts = (await getCollection("blog"))
-  .sort((a, b) => a.data.pubDate.valueOf() - b.data.pubDate.valueOf())
-  .reverse();
+// Get all content from blog collection, filter out draft only in prod
+const allPosts = await getCollection("blog", ({ data }) => {
+    return import.meta.env.PROD ? data.draft !== true : true;
+});
 
-const tags = [...new Set(posts.map((post) => post.data.tags).flat())].sort();
-const allTags = [
-  ...new Set([...posts, ...asides].map((content) => content.data.tags).flat()),
-].sort();
+// Get unique tags from all content
+const allTags = getAllTags(allPosts);
 ---
 
-<BaseLayout>
-  <TagCloud tags={allTags} />
-
-  <input
-    class="px-4 py-3 w-80 text-xl"
-    type="text"
-    id="postSearch"
-    placeholder="Search"
-  />
-
-  <ContentList contents={allContent} />
+<BaseLayout title="khalido.org: Tags">
+    <h1 class="text-3xl mb-8">All Tags</h1>
+    <TagCloud tags={allTags} />
 </BaseLayout>
