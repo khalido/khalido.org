@@ -1,12 +1,10 @@
 ---
 title: "deeplearning.ai: Improving Deep Neural Networks"
-pubDate: 2017-01-01
-description: my notes on part 2 of the deeplearning.ai course
+date: 2017-01-01
+summary: my notes on part 2 of the deeplearning.ai course
 tags:
   - courses
 ---
-
-# deeplearning.ai: Improving Deep Neural Networks
 
 [Improving Deep Neural Networks: Hyperparameter tuning, Regularization and Optimization](https://www.coursera.org/learn/deep-neural-network/home/welcome)
 

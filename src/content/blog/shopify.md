@@ -1,7 +1,7 @@
 ---
 title: "Shopify"
-description: "notes for setting up a shopify site"
-pubDate: 2022-01-12
+summary: "notes for setting up a shopify site"
+date: 2022-01-12
 draft: True
 tags:
   - web
@@ -29,7 +29,7 @@ Shopify has a [local delivery app](https://apps.shopify.com/local-delivery) whic
 <span style="font-size:34px">Local Delivery</span>
 <br><br>
 </strong>
-<span style="font-size:18px">Order #{{ order_number }} on {{ created_at | pubDate: "%Y-%m-%d %H:%M" }}.</span>
+<span style="font-size:18px">Order #{{ order_number }} on {{ created_at | date: "%Y-%m-%d %H:%M" }}.</span>
 <br/><br/><br/>
 
 <strong><span style="text-transform:uppercase;font-size:26px">{{ shipping_address.name }}</strong></span><br/>

@@ -1,14 +1,11 @@
 ---
 title: Termination Shock
-pubDate: 2022-01-19
+date: 2022-01-19
 rating: 3.5
-author: Neal Stephenson
 tags:
   - books
   - climate
 ---
-
-# Termination Shock
 
 This is a book about climate change, all hung about on characters. Now Neal is great at learning things and telling them to you, and I've enjoyed his earlier works, info dumps and all. I like fantastical characters, like Jack, Eliza and Enoch Root in the Baroque Cycle, but this book... has a lot of ideas and interesting exposition on how a thing could practically happen, but don't read it for the ppl.
 

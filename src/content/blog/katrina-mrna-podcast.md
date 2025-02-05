@@ -1,10 +1,9 @@
 ---
-pubDate: 2023-08-21
+date: 2023-08-21
 tags:
   - science
   - podcasts
-  - _aside_tag_test
-  - apps
+  - books
 ---
 
 The [Joe Walker podcast](https://josephnoelwalker.com/) has a [great inteview](https://josephnoelwalker.com/147-katalin-kariko/) with Katalin Karikó, one of the scientists/founders behind mRNA technology.

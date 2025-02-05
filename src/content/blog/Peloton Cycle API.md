@@ -1,7 +1,7 @@
 ---
 title: Peloton Cycle API
-description: Trying out the API
-pubDate: 2023-03-02
+summary: Trying out the API
+date: 2023-03-02
 tags:
   - python
 toc: true

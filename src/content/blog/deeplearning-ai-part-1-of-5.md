@@ -1,11 +1,9 @@
 ---
 title: "deeplearning.ai: Neural Networks and Deep Learning"
-pubDate: 2016-01-01
+date: 2016-01-01
 tags:
   - courses
 ---
-
-# deeplearning.ai: Neural Networks and Deep Learning
 
 It had been a while since I finished Udacity's Deep Learning course, so as a refresher I signed up for Andrew NG's [deeplearning.ai](https://www.deeplearning.ai/) course.
 

@@ -1,0 +1,20 @@
+---
+interface Props {
+  tags: string[];
+}
+
+const { tags } = Astro.props;
+---
+
+<p class="pb-3">
+  {
+    tags.map((tag) => (
+      <a
+        class="no-underline opacity-90 text-purple-500 hover:underline hover:bg-yellow-200"
+        href={`/tags/${tag}`}
+      >
+        {tag}
+      </a>
+    ))
+  }
+</p>

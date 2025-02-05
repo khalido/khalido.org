@@ -1,11 +1,9 @@
 ---
 title: Jupyter Lab tips and tricks
-pubDate: 2019-08-04
+date: 2019-08-04
 tags:
   - jupyter
 ---
-
-# Jupyter Lab tips and tricks
 
 My collection of tips and tricks for using jupyter lab.
 

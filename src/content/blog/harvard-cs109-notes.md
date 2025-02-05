@@ -1,7 +1,7 @@
 ---
 title: "Notes for Harvard's Cs109 data science class"
-pubDate: 2017-04-04
-description: Notes as I worked through CS109.
+date: 2017-04-04
+summary: Notes as I worked through CS109.
 tags:
   - python
   - data-science

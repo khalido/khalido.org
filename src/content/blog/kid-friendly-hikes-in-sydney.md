@@ -1,6 +1,6 @@
 ---
 title: Short hikes in Sydney
-pubDate: 2021-08-06
+date: 2021-08-06
 tags:
   - hikes
   - sydney

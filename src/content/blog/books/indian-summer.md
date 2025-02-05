@@ -1,14 +1,12 @@
 ---
 title: "Indian Summer: The Secret History of the End of an Empire"
-pubDate: 2021-10-19
+date: 2021-10-19
 rating: 5
 author: Alex Von Tunzelmann
 tags:
   - books
   - history
 ---
-
-# Indian Summer: The Secret History of the End of an Empire
 
 A good, easy to read book on how the British exited their Indian empire and left behind a fractured subcontinent.
 

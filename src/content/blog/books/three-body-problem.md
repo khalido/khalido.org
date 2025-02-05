@@ -1,6 +1,6 @@
 ---
 title: The Three Body Problem
-pubDate: 2020-10-19
+date: 2020-10-19
 rating: 5
 author: Cixin Liu
 tags:

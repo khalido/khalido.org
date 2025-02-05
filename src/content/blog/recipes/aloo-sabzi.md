@@ -1,11 +1,9 @@
 ---
 title: Aloo Sabzi
-pubDate: 2021-08-04
+date: 2021-08-04
 tags:
   - recipes
 ---
-
-# Aloo Sabzi
 
 The basic aloo sabzi. If made right, its awesome. This is the staple breakfast/lunch/camping/everything Pakistani dish.
 

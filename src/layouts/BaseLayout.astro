@@ -1,50 +1,51 @@
 ---
-import Header from '../components/Header.astro';
-import Footer from '../components/Footer.astro';
-import '../styles/global.css';
-const pageTitle = "Home Page";
-import Header from '../components/Header.astro';
-import Footer from '../components/Footer.astro';
+import BaseHead from "../components/BaseHead.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import "../styles/global.css";
+import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
+import Breadcrumbs from "@components/Breadcrumbs.astro";
 
-import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
+// Define interface for the layout props
+interface Props {
+    title?: string;
+    description?: string;
+    image?: string;
+}
 
+// Destructure props with defaults
+const {
+    title = SITE_TITLE,
+    description = SITE_DESCRIPTION,
+    image,
+} = Astro.props;
 ---
 
-<Header />
+<!doctype html>
+<html lang="en">
+    <head>
+        <BaseHead title={title} description={description} image={image} />
+    </head>
+    <body>
+        <div class="bg-yellow-100">
+            <header class="bg-yellow-400 p-4 sm:p-6 md:p-8 lg:p-10 xl:p-12">
+                <a
+                    href="/"
+                    class="text-3xl font-mono tracking-wider font-extrabold"
+                    >{SITE_TITLE}</a
+                >
+                <br />
+                <p>{SITE_DESCRIPTION}</p>
+            </header>
 
-<body>
-    {/* astro is stripping out the bg color class from body so moved to a div 
-    Check this later, then move the class="bg-yellow-100" back to body tag and delete this div */}
-    <div class="bg-yellow-100">
+            <div
+                class="max-w-3xl mx-auto px-4 py-5 sm:px-6 md:px-7 lg:max-w-4xl lg:px-8 xl:max-w-5xl xl:px-9 bg-gray-50"
+            >
+                <Breadcrumbs />
+                <slot />
+            </div>
 
-    <header class="bg-yellow-400 p-4 sm:p-6 md:p-8 lg:p-10 xl:p-12">
-        <a href="/" 
-        class="text-3xl font-mono tracking-wider font-extrabold"
-        >{SITE_TITLE}</a>
-        <br>
-        <p>{SITE_DESCRIPTION}</p>
-        
-    </header>
-
-<!--container setting paddings-->
-<div
-class="max-w-3xl
-  mx-auto
-  px-4 py-5
-  sm:px-6 
-  md:px-7 
-  lg:max-w-4xl lg:px-8
-  xl:max-w-5xl xl:px-9
-  bg-gray-50"
-  >
-
-  <slot />
-
-</div> <!-- closes first div after body -->
-
-<Footer />
-
-</div> <!--closing the background color div -->
-</body>
-
+            <Footer />
+        </div>
+    </body>
 </html>

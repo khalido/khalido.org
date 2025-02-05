@@ -1,12 +1,12 @@
 ---
 title: Teaching kids python 101
-pubDate: 2022-08-22
+date: 2022-08-22
 tags:
   - python
   - kids
 ---
 
-I first started out with scratch, which is pretty awesome and kids can create some pretty awesome (and complex!) projects very quickly. However, I noticed that it is hard to go back and read - the scratch blocks once assembled are hard for the same kid who put them together to quickly read and iterate on. 
+I first started out with scratch, which is pretty awesome and kids can create some pretty awesome (and complex!) projects very quickly. However, I noticed that it is hard to go back and read - the scratch blocks once assembled are hard for the same kid who put them together to quickly read and iterate on.
 
 A concrete example: Deep inside a scratch game, I tried to help a kid update the code for an input method - but it involved moving so many blocks that it was a real pain. Kid coded Scratch is like lego - to tinker with code you need to almost break apart the whole thing.
 

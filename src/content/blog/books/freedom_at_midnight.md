@@ -1,20 +1,17 @@
 ---
 title: Freedom at Midnight
-description: ...
-pubDate: 2013-05-13
+date: 2013-05-13
 rating: 1
 tags:
   - books
   - nonfiction
 ---
 
-# Freedom at Midnight
-
 Oh goody, yet another book written through colonial tinted glasses.
 
 It's a well written, easy reading book so I can see why it's so popular, and if it was labeled fictional, I'd give it four stars, for fictional it is, speaking of a world where the British Raj and it's leaders brought civilization to the masses, but the masses turned the wise Brits away even though they were led by that holiest of holy cows, Lord Mountbatten - and this turning away caused mass bloodshed in the process. It's almost a biblical story, and no wonder so many people still think fondly of empire, they probably read books like this one.
 
-The target audience for the book seems to be people who want to be able to understand just enough of the British Raj to absolve the Raj of any guilt and blame Jinnah and others for much of the ills of partition.
+The target audience for the book seems to be people who want to be able to understand just enough of the British Raj to absolve the Raj of any guilt and blame Jinnah and others for most of the ills of partition.
 
 The authors struggle with the very basic idea of why some brown people wanted independence, especially when the British were so benevolent and wise, and give up and just talk about it like it was just something which was happening, no hard feelings really, except against Jinnah.
 

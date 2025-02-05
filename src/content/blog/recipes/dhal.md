@@ -1,11 +1,10 @@
 ---
-title: Daal (lentils)
-pubDate: 2019-08-04
+title: Dhal (lentils)
+summary: A easy cooking dhal receipe.
+date: 2019-08-04
 tags:
   - recipes
 ---
-
-# Daal (lentils)
 
 A simple daal recipe.
 
@@ -18,16 +17,16 @@ A simple daal recipe.
 - 1 onion, chopped fine
 - a decent amount of cumin seeds (more than a tsp, less than a tbsp)
 - lots of garlic (3-5 cloves), or 2 tsp crushed garlic
-- a bit of ginger paste
-- two fresh chillis (omit if kids)
+- a bit of ginger (or 1 1/2 tsp ginger paste)
+- two fresh chilli's (omit if kids)
 - 1 cup frozen peas, defrost for a minute in boiling water and drain
 - coriander, chopped
 
 ## Spice
 
 - 1 tsp chilli (use 1/2 tsp if kids)
-- 2 tsp salt (1 tsp per cup of daal)
-- pinch of tumeric/haldi
+- 2 tsp salt 
+- 1/4 tsp tumeric/haldi
 - 1/4 tsp garam masala
 
 ## Directions
@@ -42,7 +41,7 @@ A simple daal recipe.
 
 Start this when the dhal seems to be about 10 minutes from being cooked:
 
-- Take a non stick saucepan, and a liberal amount of oil, the base should be coated.
+- Take a non stick saucepan, and a liberal amount of ghee or oil
 - thrown in cumin seeds into hot oil
 - after 2-3 minutes add the peas, salt
 

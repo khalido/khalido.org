@@ -1,11 +1,9 @@
 ---
 title: Bhaigan ka burta
-pubDate: 2021-12-02
+date: 2021-12-02
 tags:
   - recipes
 ---
-
-# Bhaigan ka burta
 
 Recipe from Lahore. Smokey yummy goodness.
 

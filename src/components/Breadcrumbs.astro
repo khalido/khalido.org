@@ -1,0 +1,40 @@
+---
+const { pathname } = Astro.url;
+const segments = pathname
+    .split("/")
+    .filter(Boolean)
+    .map((segment, index, array) => ({
+        text: segment.includes("+") ? segment.split("+").join(" + ") : segment,
+        url: "/" + array.slice(0, index + 1).join("/"),
+        isLast: index === array.length - 1,
+    }));
+---
+
+{
+    segments.length > 0 && (
+        <nav aria-label="Breadcrumb" class="mb-4 text-sm">
+            <ol class="flex items-center space-x-2">
+                <li>
+                    <a href="/" class="text-gray-600 hover:text-gray-900">
+                        home
+                    </a>
+                </li>
+                {segments.map(({ text, url, isLast }) => (
+                    <li class="flex items-center space-x-2">
+                        <span class="text-gray-400">/</span>
+                        {isLast ? (
+                            <span class="text-gray-900">{text}</span>
+                        ) : (
+                            <a
+                                href={url}
+                                class="text-gray-600 hover:text-gray-900"
+                            >
+                                {text}
+                            </a>
+                        )}
+                    </li>
+                ))}
+            </ol>
+        </nav>
+    )
+}

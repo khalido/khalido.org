@@ -1,22 +1,22 @@
 ---
-title: Kheera ka raita
-pubDate: 2020-09-12
+title: Kheera and mint raita
+date: 2020-09-12
 tags:
   - recipes
 ---
-
-# Kheera and mint raita
 
 cucumber + mint raita
 
 ## Ingredients
 
 - 1-2 tsp cumin seeds
-- 1 big cucmber or 2 smallish
-- 1-2 cup greek yoghurt (or more, whatever fits in your bowl)
+- pinch of chilli powder
+- 1 big cucumber or 2 smallish
+- 1-2 cup indian yoghurt (or more, whatever fits in your bowl)
 - half a bunch worth of fresh mint leaves, chopped fine
 - 1/2 tsp salt
-- 1 chilli, deseeded and cut (optional, cause a good raita isn't spicy, the food is.)
+- 1 chilli, chopped (optional, cause a good raita isn't too spicy, the food is.)
+- Optional: a bit of fresh coriander, chopped 
 
 ## Steps
 

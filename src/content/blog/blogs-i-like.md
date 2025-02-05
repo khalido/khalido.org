@@ -1,14 +1,12 @@
 ---
 title: "Data Science blogs"
-description: useful data science related blogs
+summary: useful data science related blogs
 category: [data-science]
 toc: false
-pubDate: 2019-03-04
+date: 2019-03-04
 tags:
-    - data
+  - data
 ---
-
-# Data Science blogs
 
 Blogs on data science, AI, machine learning etc etc. which I liked.
 

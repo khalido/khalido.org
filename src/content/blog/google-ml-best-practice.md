@@ -1,12 +1,10 @@
 ---
 title: "Googles Best Practices for ML Engineering"
-pubDate: 2019-03-02
-description: my read through notes on googles ml guide
+date: 2019-03-02
+summary: my read through notes on googles ml guide
 tags:
   - ml
 ---
-
-# Googles Best Practices for ML Engineering
 
 Notes on [Google's best practices guide for ML engineering](https://developers.google.com/machine-learning/guides/rules-of-ml/):
 

@@ -1,11 +1,9 @@
 ---
 title: Aloo Anda ka salan
-pubDate: 2021-12-14
+date: 2021-12-14
 tags:
   - recipes
 ---
-
-# Aloo Anda ka salan
 
 Shamsad ki recipe, punjabi style. This is what she makes at home for her family. Its the first time I ever had this dish in Pakistan.
 

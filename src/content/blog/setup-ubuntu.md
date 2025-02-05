@@ -1,7 +1,7 @@
 ---
 title: "Setup Linux"
-description: "setup notes for debian/ubuntu"
-pubDate: 2018-09-20
+summary: "setup notes for debian/ubuntu"
+date: 2018-09-20
 tags:
   - linux
 ---

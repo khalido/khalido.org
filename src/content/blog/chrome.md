@@ -1,14 +1,13 @@
 ---
 title: "Gooogle Chrome"
-pubDate: 2017-03-09
-description: "make chrome work better"
+date: 2017-03-09
+updated: 2020-03-09
+summary: "make chrome work better"
 tags:
   - apps
 ---
 
-# Google Chrome
-
-Notes on making Google chrome work for me. Needs updating for 2020.
+Notes on making Google chrome work for me. Needs updating for 2024.
 
 The two top things:
 

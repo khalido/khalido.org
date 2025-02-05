@@ -1,11 +1,9 @@
 ---
 title: Biryani
-pubDate: 2022-03-01
+date: 2022-03-01
 tags:
   - recipes
 ---
-
-# Biryani
 
 A vegetable biryani. Cooked using a [round cast iron enamelled casserole](https://www.lodgecastiron.com/product/enamel-casserole?sku=EC3CC43).
 

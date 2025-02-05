@@ -1,11 +1,9 @@
 ---
 title: Dhal Fry
-pubDate: 2020-09-12
+date: 2020-09-12
 tags:
   - recipes
 ---
-
-# Dhal Fry
 
 Recipe from Lahore. Needs some more tips from the original cook.
 

@@ -1,11 +1,9 @@
 ---
 title: Paneer Karhai
-pubDate: 2019-08-04
+date: 2019-08-04
 tags:
   - recipes
 ---
-
-# Paneer Karhai
 
 Home made recipe from FDT. This is a basic desi karhai receipe which can be used as the base for anything.
 

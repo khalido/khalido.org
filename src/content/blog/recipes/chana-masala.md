@@ -1,11 +1,9 @@
 ---
-title: Spicy Chickpeas
-pubDate: 2020-09-04
+title: Chana Masala aka spicy chickpeas
+date: 2020-09-04
 tags:
   - recipes
 ---
-
-# Chana Masala
 
 aka spicy chickpeas with a ton of ginger.
 

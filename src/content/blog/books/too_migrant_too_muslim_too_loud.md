@@ -1,15 +1,12 @@
 ---
-title: Too Migrant, Too Muslim, Too Loud 
-pubDate: 2021-07-08
-rating: 5
-author: Mehreen Faruqi
+title: Too Migrant, Too Muslim, Too Loud
+date: 2021-07-08
+rating: 4.5
 tags:
   - books
   - nonfiction
   - australia
 ---
-
-# Too Migrant, Too Muslim, Too Loud
 
 The book to read to get a handle of where Australia is today, and how politics works at the state and federal level.
 

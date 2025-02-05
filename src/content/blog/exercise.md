@@ -1,6 +1,6 @@
 ---
 title: Exercise
-pubDate: 2020-11-29
+date: 2020-11-29
 tags:
   - fitness
 ---

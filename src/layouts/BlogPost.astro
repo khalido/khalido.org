@@ -1,39 +1,116 @@
 ---
-import type { CollectionEntry } from 'astro:content';
-import BaseHead from '../components/BaseHead.astro';
-import FormattedDate from '../components/FormattedDate.astro';
-import BaseLayout from './BaseLayout.astro';
-import TOC from '@components/TOC.astro'
+import type { CollectionEntry } from "astro:content";
+import FormattedDate from "../components/FormattedDate.astro";
+import BaseLayout from "./BaseLayout.astro";
+import TOC from "@components/TOC.astro";
 
+type Props = CollectionEntry<"blog">["data"] & {
+    headings: { depth: number; slug: string; text: string }[];
+};
 
-type Props = CollectionEntry<'blog'>['data'];
+const { title, description, date, updated, tags, headings } = Astro.props;
 
-
-const { title, description, pubDate, updatedDate, tags, headings } = Astro.props;
-
-console.log("---------");
-console.log(title, headings)
+// Create site title in "khalido.org: Post Title" format
+const siteTitle = `khalido.org: ${title}`;
 ---
 
-<BaseLayout>
-        
+<BaseLayout title={siteTitle} description={description}>
+    <div class="lg:flex lg:justify-between lg:gap-8">
+        <!-- Main content -->
+        <article class="prose md:prose-base lg:w-3/4">
+            <!-- Add custom styles to override default prose h1 -->
+            <h1 class="!text-2xl !mt-4 !mb-2">{title}</h1>
 
-<article class="prose md:prose-lg">
-	<TOC pageHeadings={headings} />
-	<slot />
+            <!-- post meta info div-->
+            <div class="text-gray-600 text-base">
+                posted <time><FormattedDate date={date} /></time>
+                {
+                    updated && (
+                        <>
+                            , updated{" "}
+                            <time>
+                                <FormattedDate date={updated} />
+                            </time>
+                        </>
+                    )
+                }
 
-    <!-- post meta info div-->
-    <div class="text-gray-600 text-base">
-        posted <time><FormattedDate date={pubDate} /></time>{/*, updated <time><FormattedDate date={updatedDate} /></time> */}<br>
-        
-		<!-- tags -->
-		tagged:
-		{tags.map((tag) => (
-			<a href={`/tags/${tag}`} class="text-pink-500 bg-transparent hover:bg-pink-500 hover:text-white active:bg-pink-600 font-bold rounded outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150">{tag}</a>
-		  ))}
+                <!-- tags -->
+                tagged:
+                {
+                    tags.map((tag) => (
+                        <a
+                            href={`/tags/${tag}`}
+                            class="text-pink-500 bg-transparent hover:bg-pink-500 hover:text-white active:bg-pink-600 font-bold rounded outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                        >
+                            {tag}
+                        </a>
+                    ))
+                }
+                <slot />
+            </div>
+        </article>
+
+        <!-- TOC sidebar -->
+        <div class="lg:w-1/4">
+            <div class="hidden lg:block sticky top-4">
+                <TOC pageHeadings={headings} />
+            </div>
+
+            <!-- Mobile TOC button -->
+            <button
+                id="toc-mobile-button"
+                class="lg:hidden fixed bottom-4 right-4 z-50 bg-pink-500 text-white p-3 rounded-full shadow-lg"
+                aria-label="Show Table of Contents"
+            >
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="h-6 w-6"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                >
+                    <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M4 6h16M4 12h16M4 18h16"></path>
+                </svg>
+            </button>
+
+            <!-- Mobile TOC drawer -->
+            <div
+                id="toc-mobile-drawer"
+                class="lg:hidden fixed inset-y-0 right-0 w-64 bg-white shadow-lg transform translate-x-full transition-transform duration-300 ease-in-out z-40"
+            >
+                <TOC pageHeadings={headings} />
+            </div>
+        </div>
     </div>
-
-</article>
-
-
 </BaseLayout>
+
+<script>
+    const tocButton = document.getElementById("toc-mobile-button");
+    const tocDrawer = document.getElementById("toc-mobile-drawer");
+
+    tocButton?.addEventListener("click", () => {
+        tocDrawer?.classList.toggle("translate-x-full");
+    });
+
+    // Close drawer when clicking a link
+    tocDrawer?.addEventListener("click", (e) => {
+        if (e.target instanceof HTMLAnchorElement) {
+            tocDrawer.classList.add("translate-x-full");
+        }
+    });
+
+    // Close drawer when clicking outside
+    document.addEventListener("click", (e) => {
+        if (
+            !tocDrawer?.contains(e.target as Node) &&
+            !tocButton?.contains(e.target as Node)
+        ) {
+            tocDrawer?.classList.add("translate-x-full");
+        }
+    });
+</script>

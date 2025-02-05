@@ -1,14 +1,12 @@
 ---
 title: "Udacity ND101: Deep Learning Nanodegree"
 image: /images/udacity-nd101-cert.png
-pubDate: 2017-08-15
-description: "notes from the course"
-tags: 
-    - courses
+date: 2017-08-15
+summary: "notes from the course"
+tags:
+  - courses
 toc: true
 ---
-
-# Udacity ND101: Deep Learning Nanodegree
 
 My notes & files for [Udacity's Deep Learning intro course](https://www.udacity.com/course/deep-learning-nanodegree-foundation--nd101).
 

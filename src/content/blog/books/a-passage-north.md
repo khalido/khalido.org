@@ -1,15 +1,13 @@
 ---
 title: A Passage North
-description: ...
-pubDate: 2022-01-19
+summary: A beautifully written at places book - takes us into the heartbreak of the Sri Lankan civil war.
+date: 2022-01-19
 rating: 4
 author: Anuk Arudpragasam
 tags:
   - books
   - sri-lanka
 ---
-
-# A Passage North
 
 A beautifully written at places book - takes us into the heartbreak of the Sri Lankan civil war.
 

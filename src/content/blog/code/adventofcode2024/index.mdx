@@ -1,0 +1,138 @@
+---
+title: Advent of Code 2024
+date: 2024-12-1
+updated: 2024-12-02
+tags:
+  - python
+summary: "Notes and learnings from doing Advent of Code 2024"
+---
+import AocLink from './AocLink.svelte';
+
+[Advent of Code 2024](https://adventofcode.com/2024)
+
+I thought of doing this years AOC in javascript, as this here blog is using a tiny bit of js, so I've already learnt some! But after setting out to solve day 1, which is very trivial, I realized I first need to learn and setup a js AOC pipeline, which is typically:
+
+1. Parse input, which is straightforward but often involves a some kind of twist
+2. Solve and debug! This is really easy in a jupyter notebook as the output is right there. 
+3. There is no three, though sometimes plotting what is going on is nice.
+
+So mostly sticking with python for now, though since now this blog is using Astrojs + Svelte, I will attempt some js code too.
+
+## Day 1: Historian Hysteria
+
+<AocLink day={1} />
+
+For this years AOC, I've updated the `solve` function to return a dict. Sometimes I want to have the intermediate lists etc to plot or troubleshoot the solve function, the dict makes it possible to do so without having to break up the function or duplicate it in the plotting one.
+
+## Day 2: Red-Nosed Reports
+
+<AocLink day={2} />
+
+A lot of regex to extract numbers, the key line being
+
+```py
+for i, line in enumerate(input_str.splitlines()):
+  numbers = [int(x) for x in re.findall(r"\d+", line)]
+```
+
+One way to check if a list is sorted:
+
+```py
+if not (nums == sorted(nums) or nums == sorted(nums, reverse=True)):
+  return False
+```
+
+We needed to get number pairs from a list, and there is a builtin [itertools.pairwise](https://docs.python.org/3/library/itertools.html#itertools.pairwise) which was new to me, and would have done the job here, but to be safe I manually grabbed the number pairs:
+
+```py
+for i in range(len(nums) - 1):
+  x, y = nums[i : i + 2]
+```
+
+## Day 3: Mull It Over
+
+<AocLink day={3} />
+
+This was a simple regex problem, which is always a huge pain despite [regex101](https://regex101.com/r/mGx1lb/1) being a thing. This is where LLM's are really handy - I was able to write the regex, but used chatGPT to understand why I was getting `""` strings in the matched output.
+
+```py
+pattern = r"(mul)\((\d+),(\d+)\)|(do)\(\)|(don't)\(\)"
+for match in re.findall(pattern, input_str):
+  # process each match
+```
+
+Was giving this output:
+
+```sh
+[('mul', '2', '4', '', ''),
+ ('', '', '', '', "don't"),
+ ('mul', '5', '5', '', ''),
+ ('mul', '11', '8', '', ''),
+ ('', '', '', 'do', ''),
+ ('mul', '8', '5', '', '')]
+ ```
+
+There are five matching groups in the regex, so there are always 5 returned strings for any match, with the blanks being the unmatched groups. which I cleaned up by
+ 
+ ```py
+ match = tuple(x for x in match if x != "")
+ ```
+
+ ## Day 4: Ceres Search
+
+ <AocLink day={4} />
+
+The puzzles are def getting harder today. This one is finding a pattern of words on a 2d grid. Pasting the main code here as I always get stuck finding all the directions on a grid:
+
+```py
+def make_grid(input_str=sample_input):
+    """returns 2d grid"""
+    return [[char for char in row] for row in input_str.strip().splitlines()]
+
+def check_x(pos: tuple[int, int], grid=grid):
+    """returns count of XMAS for a position"""
+    X, Y = len(grid[0]), len(grid)
+    x, y = pos
+    count = 0
+
+    if not grid[y][x] == "X":
+        return 0
+
+    directions = [
+        (0, 1),  # Right →
+        (0, -1),  # Left ←
+        (1, 0),  # Down ↓
+        (-1, 0),  # Up ↑
+        (1, 1),  # Diagonal Down-Right ↘
+        (-1, -1),  # Diagonal Up-Left ↖
+        (1, -1),  # Diagonal Down-Left ↙
+        (-1, 1),  # Diagonal Up-Right ↗
+    ]
+
+    for dx, dy in directions:
+        if 0 <= (x + dx * 3) < X and 0 <= (y + dy * 3) < Y:  # check on grid
+            if (
+                (grid[y + dy][x + dx] == "M")
+                and (grid[y + dy * 2][x + dx * 2] == "A")
+                and (grid[y + dy * 3][x + dx * 3] == "S")
+            ):
+                count += 1
+
+    return count
+```
+
+Some cleanup notes:
+
+Removed all my input files from my [aoc github repo](https://github.com/khalido/adventofcode) by adding `inputs/` to `.gitignore` and running:
+
+```sh
+git rm -r --cached inputs/
+git commit -m "Stop tracking inputs directories"
+git push
+```
+
+The `cached` flag only removed the inputs from the git repo, and not my local one. 
+
+ ## Day 5
+
+ trying out an [aoc python lib](https://github.com/wimglenn/advent-of-code-data) today.

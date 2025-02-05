@@ -1,12 +1,10 @@
 ---
-title: The Key Man
-pubDate: 2018-05-13
+title: The Fifth Risk
+date: 2018-05-13
 tags:
   - books
   - nonfiction
 ---
-
-# The Fifth Risk
 
 This is a awesome read. In many countries, many people have long stopped wondering or caring about how their country actually functions, and this book takes us through a bunch of really useful government functions, from providing food and shelter to the needy to... just about everything you can imagine.
 

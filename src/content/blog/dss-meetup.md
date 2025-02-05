@@ -1,12 +1,10 @@
 ---
 title: "DSS-2018-07: Michael Allwright and Inna Kolyshkina"
-pubDate: 2018-07-12
-description: "notes taken during/after this meetup"
+date: 2018-07-12
+summary: "notes taken during/after this meetup"
 tags:
   - meetup
 ---
-
-# DSS-2018-07: Michael Allwright and Inna Kolyshkina
 
 Data Science Sydney's [2018-07 meetup](https://www.meetup.com/Data-Science-Sydney/events/252700977).
 

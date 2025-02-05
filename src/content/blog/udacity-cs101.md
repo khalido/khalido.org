@@ -1,14 +1,11 @@
 ---
 title: "Udacity CS101: Intro to CS"
-image: /images/udacity-cs101-cert.png
-description: "course review"
 tags:
-    - courses
-    - python
-pubDate: 2013-07-10
+  - courses
+  - python
+date: 2013-07-10
 ---
 
-# Udacity CS101: Intro to CS
 
 This was one of Udacity's first computer science MOOC's, and I really liked it. Its a great fast intro to computer science concepts and python.
 

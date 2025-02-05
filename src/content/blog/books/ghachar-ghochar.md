@@ -1,14 +1,12 @@
 ---
 title: Ghachar Ghochar
-description: to follow 
-pubDate: 2022-02-28
+summary: to follow
+date: 2022-02-28
 rating: 4
 tags:
   - books
   - india
 ---
-
-# Ghachar Ghochar
 
 A family goes from poverty to money - and it tears them apart. A hard look inside one family's financial journey.
 

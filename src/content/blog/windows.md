@@ -1,11 +1,9 @@
 ---
 title: Windows 10
-pubDate: 2020-10-28
+date: 2020-10-28
 tags:
   - windows
 ---
-
-# Windows 10
 
 ## Factory reset
 

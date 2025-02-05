@@ -1,13 +1,11 @@
 ---
 title: Advent of Code 2016
-description: Notes on some of the AOC16 puzzles
-pubDate: 2019-02-02
+summary: Notes on some of the AOC16 puzzles
+date: 2019-02-02
 toc: true
 tags:
   - python
 ---
-
-# Advent of Code 2016
 
 todo: convert this into a jupyter notebook and repost.
 

@@ -1,7 +1,7 @@
 ---
 title: Python setup
-description: to follow 
-pubDate: 2022-01-02
+summary: to follow
+date: 2022-01-02
 tags:
   - python
 toc: true

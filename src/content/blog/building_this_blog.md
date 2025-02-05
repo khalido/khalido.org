@@ -1,12 +1,10 @@
 ---
 title: "how the blog was built, python edition"
-pubDate: 2020-11-11
+date: 2020-11-11
 tags:
   - python
 toc: true
 ---
-
-# blogging in python
 
 There are many excellent blog engines out there, but to customise any of them takes so much understanding of how they work, the template and theme engines they use, that its easier to just use them exactly as is with an existing theme.
 

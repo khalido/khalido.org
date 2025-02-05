@@ -1,11 +1,9 @@
 ---
-title: TailwindCss
-pubDate: 2021-08-07
+title: TailwindCSS
+date: 2021-08-07
 tags:
   - webdev
 ---
-
-# TailwindCSS
 
 CSS makes sense, I mean, who doesn't want to seperate styling from code? Semantic html has been the web's dream for a long time, but over time as web browsers became operating systems css has grown into a hugely complex kludge of a tool.
 

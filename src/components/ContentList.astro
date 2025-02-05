@@ -1,0 +1,111 @@
+---
+// ContentList.astro
+import FormattedDate from "./FormattedDate.astro";
+
+interface Props {
+    contents: any[];
+}
+
+const { contents } = Astro.props;
+//import remarkParse from "remark-parse";
+---
+
+<div>
+    <input
+        class="px-4 py-3 w-80 text-xl border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400"
+        type="text"
+        id="postSearch"
+        placeholder="Search posts..."
+    />
+
+    <ul id="searchresults" class="list-none text-lg pt-4 pb-2 px-2">
+        {
+            contents.map((content) => {
+                const isPost = content.data.type === "post";
+                const searchData = [
+                    content.data.title || "",
+                    content.data.tags?.join(" ") || "",
+                    content.data.summary || "",
+                ]
+                    .join(" ")
+                    .toLowerCase();
+
+                return (
+                    <li
+                        class:list={[
+                            "py-2",
+                            { "border-l-4 border-gray-200 pl-4": !isPost },
+                        ]}
+                        data-search={searchData}
+                    >
+                        {isPost && (
+                            <a
+                                class="no-underline hover:underline text-gray-800 font-medium block mb-1"
+                                href={`/blog/${content.id}`}
+                            >
+                                {content.data.title}
+                            </a>
+                        )}
+
+                        <div
+                            class="prose prose-sm text-gray-600"
+                            set:html={content.data.preview}
+                        />
+
+                        <div class="mt-2 text-sm text-gray-500">
+                            <a
+                                href={`/blog/${content.id}`}
+                                class="text-gray-500 hover:text-purple-600 no-underline hover:underline"
+                            >
+                                #
+                            </a>{" "}
+                            <FormattedDate
+                                date={content.data.updated || content.data.date}
+                            />
+                            {" / "}
+                            {content.data.tags.map((tag, i) => (
+                                <>
+                                    <a
+                                        class="text-purple-400 opacity-50 hover:underline hover:bg-yellow-200"
+                                        href={`/tags/${tag}`}
+                                    >
+                                        {tag}
+                                    </a>
+                                    {i < content.data.tags.length - 1 && ", "}
+                                </>
+                            ))}
+                        </div>
+                    </li>
+                );
+            })
+        }
+    </ul>
+</div>
+
+<script>
+    function debounce(func: Function, wait: number) {
+        let timeout: ReturnType<typeof setTimeout>;
+        return function (...args: any[]) {
+            clearTimeout(timeout);
+            timeout = setTimeout(() => func(...args), wait);
+        };
+    }
+
+    const searchInput = document.getElementById(
+        "postSearch",
+    ) as HTMLInputElement;
+    const listItems = document.querySelectorAll("#searchresults li");
+
+    const filterItems = debounce((searchTerm: string) => {
+        searchTerm = (searchTerm || "").toLowerCase().trim();
+
+        listItems.forEach((item) => {
+            const searchText = item.getAttribute("data-search") || "";
+            item.style.display = searchText.includes(searchTerm) ? "" : "none";
+        });
+    }, 200);
+
+    searchInput?.addEventListener("input", (e) => {
+        filterItems((e.target as HTMLInputElement).value);
+    });
+</script>

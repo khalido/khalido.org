@@ -1,12 +1,14 @@
 ---
 title: Lilygo ttgo t5
-pubDate: 2021-01-18
+date: 2021-01-18
 toc: true
 tags:
   - iot
 ---
 
-# Lilygo ttgo t5
+Notes on a lilygo eink board, which didn't get very far, but interesting nonetheless.
+
+Some takeways: a small eink board isn't that useful, no wonder supermarkets are using them for pricing tags. For home use, its better to go big, something like the [pimoroni eink display](https://shop.pimoroni.com/search?q=e-ink) which have built in micropython drivers.
 
 ## the board
 

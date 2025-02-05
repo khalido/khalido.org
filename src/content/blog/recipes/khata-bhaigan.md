@@ -1,11 +1,9 @@
 ---
 title: Khata Bhaigan
-pubDate: 2021-12-02
+date: 2021-12-02
 tags:
   - recipes
 ---
-
-# Khata Bhaigan
 
 Recipe from Lahore.
 

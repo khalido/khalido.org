@@ -1,6 +1,6 @@
 ---
 title: The Uninhabitable Earth
-pubDate: 2021-07-08
+date: 2021-07-08
 isbn: 9780141988870
 rating: 4.5
 author: David Wallace-Wells
@@ -9,8 +9,6 @@ tags:
   - nonfiction
   - climate change
 ---
-
-# The Uninhabitable Earth
 
 It's a awesome political, economical and yes, climate overview of the planet and where its headed. Too much of future looking literature really holds its tongue. This is a no holds barred overview.
 

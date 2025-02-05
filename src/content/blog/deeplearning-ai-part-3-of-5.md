@@ -1,12 +1,10 @@
 ---
 title: "deeplearning.ai: Structuring Machine Learning Projects"
-pubDate: 2018-01-01
-description: notes for part 3 of the deeplearning.ai course
+date: 2018-01-01
+summary: notes for part 3 of the deeplearning.ai course
 tags:
   - courses
 ---
-
-# deeplearning.ai: Structuring Machine Learning Projects
 
 This course covers how to think about and improve machine learning systems.
 

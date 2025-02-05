@@ -1,13 +1,11 @@
 ---
 title: They Key Man
-pubDate: 2021-09-14
+date: 2021-09-14
 rating: 3
 tags:
   - books
   - nonfiction
 ---
-
-# The Key Man
 
 The rise and fall of Arif Naqvi is fascinating, but I found this book a bit wanting.
 

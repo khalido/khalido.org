@@ -1,12 +1,10 @@
 ---
 title: "Sveltekit with Tailwindcss"
-description: "building an interactive website"
-pubDate: 2021-08-24
+summary: "building an interactive website"
+date: 2021-08-24
 tags:
   - webdev
 ---
-
-# Sveltekit with TailwindCSS
 
 I wanted to learn how to setup a simple interactive website, and [react](https://reactjs.org/) is so 2019 and verbose, so I [looked around](https://news.ycombinator.com/item?id=26693959) and svelte looked awesome, especially the [tutorial](https://svelte.dev/tutorial/basics) which is a work of art.
 

@@ -1,11 +1,11 @@
 ---
 title: Omelette
-pubDate: 2019-08-04
+date: 2019-08-04
 tags:
   - recipes
 ---
 
-# Omelette
+Omelette, Pakistani style. If made properly, this is the best omelette.
 
 ## Ingredients
 
@@ -17,9 +17,9 @@ tags:
 
 ## Spice
 
-- 1/4 tsp desi chilli (or thai if no desi)
+- 1/4 tsp desi chilli (or thai chillis if no desi)
 - 1/4 tsp salt
-- pinch of tumeric/haldi
+- optional, a pinch of tumeric/haldi 
 
 ## Directions
 
@@ -27,7 +27,7 @@ tags:
 - add spices
 - whisk a bit
 - optional: add a small splash of milk and a bit of cheese
-- fry half the mixture on a flat pan, flip and don't fold over
+- fry on a preheated flat pan, flip and don't fold over
 
 Serve with toast or paratha.
 

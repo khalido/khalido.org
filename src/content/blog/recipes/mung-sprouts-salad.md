@@ -1,11 +1,9 @@
 ---
 title: Mung Beans Salad
-pubDate: 2021-08-02
+date: 2021-08-02
 tags:
   - recipes
 ---
-
-# Mung Beans Salad
 
 A very tasty salad, suitable for a side dish or an easy lunch.
 

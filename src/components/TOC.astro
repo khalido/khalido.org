@@ -1,16 +1,192 @@
 ---
 export type Props = {
-    pageHeadings : Array<{depth:number,text: string; slug: string }>
-}
+  pageHeadings: Array<{ depth: number; text: string; slug: string }>;
+};
 
 const { pageHeadings } = Astro.props;
----
-<aside id="#toc" class=" bg-slate-50 opacity-80 p-2">
-    <details>
-        <summary>Table of contents</summary>
 
-    {pageHeadings.map(h => {
-        return <li> <a href={`#${h.slug}`}>{h.text}</a></li>
-    })}
+// Don't render anything if we don't have enough headings
+if (pageHeadings.length <= 1) return null;
+---
+
+<>
+  {/* Desktop TOC */}
+  <aside
+    class="hidden md:block bg-slate-50 opacity-80 p-4 rounded-lg sticky top-24"
+  >
+    <nav id="toc-nav">
+      <p class="font-semibold mb-2">Table of contents</p>
+      <ul class="space-y-1 max-h-[70vh] overflow-y-auto">
+        {
+          pageHeadings.map((heading) => (
+            <li style={`margin-left: ${(heading.depth - 1) * 0.95}rem`}>
+              <a
+                href={`#${heading.slug}`}
+                class="text-gray-600 hover:text-pink-500 text-sm block py-1 transition-colors duration-200"
+                data-heading-link={heading.slug}
+              >
+                {heading.text}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+  </aside>
+
+  {/* Mobile TOC */}
+  <div
+    class="md:hidden fixed z-50 bottom-0 left-0 right-0 bg-white border-t border-gray-200"
+  >
+    <details id="mobile-toc" class="group">
+      <summary class="flex items-center justify-between p-3 cursor-pointer">
+        <span class="font-semibold">On this page</span>
+        <span class="current-heading text-sm text-gray-500 truncate flex-1 mx-4"
+        ></span>
+        <svg
+          class="w-4 h-4 transition-transform duration-200 group-open:rotate-180"
+          viewBox="0 0 24 24"
+        >
+          <path
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            d="M6 9l6 6 6-6"></path>
+        </svg>
+      </summary>
+      <nav
+        class="absolute bottom-full left-0 right-0 max-h-[60vh] overflow-y-auto bg-white border-t border-gray-200 shadow-lg"
+      >
+        <ul class="p-3 space-y-1">
+          {
+            pageHeadings.map((heading) => (
+              <li style={`margin-left: ${(heading.depth - 1) * 0.95}rem`}>
+                <a
+                  href={`#${heading.slug}`}
+                  class="text-gray-600 hover:text-pink-500 text-sm block py-2 transition-colors duration-200"
+                  data-heading-link={heading.slug}
+                >
+                  {heading.text}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </nav>
     </details>
-</aside>
+  </div>
+</>
+
+<script>
+  class TableOfContents {
+    private header: HTMLElement | null;
+    private currentDisplay: HTMLElement | null;
+    private mobileToc: HTMLElement | null;
+    private activeClass = "text-pink-500 font-medium";
+    private observer: IntersectionObserver | null = null;
+
+    constructor() {
+      this.header = document.querySelector("header");
+      this.currentDisplay = document.querySelector(".current-heading");
+      this.mobileToc = document.getElementById("mobile-toc");
+
+      this.init();
+    }
+
+    init() {
+      this.setupIntersectionObserver();
+      this.setupMobileToc();
+      this.setupClickHandlers();
+    }
+
+    setupIntersectionObserver() {
+      const headerHeight = this.header?.getBoundingClientRect().height ?? 0;
+
+      this.observer = new IntersectionObserver(
+        (entries) => {
+          const visible = entries
+            .filter((entry) => entry.isIntersecting)
+            .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+
+          if (visible?.target.id) {
+            this.updateActiveLink(visible.target.id);
+          }
+        },
+        {
+          rootMargin: `-${headerHeight + 20}px 0px -40% 0px`,
+          threshold: [0, 0.25, 0.5, 0.75, 1],
+        }
+      );
+
+      document
+        .querySelectorAll("h1[id], h2[id], h3[id], h4[id], h5[id], h6[id]")
+        .forEach((heading) => this.observer?.observe(heading));
+    }
+
+    setupMobileToc() {
+      if (!this.mobileToc) return;
+
+      document.addEventListener("click", (e) => {
+        if (!this.mobileToc?.contains(e.target as Node)) {
+          this.mobileToc.removeAttribute("open");
+        }
+      });
+
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape" && this.mobileToc?.hasAttribute("open")) {
+          this.mobileToc.removeAttribute("open");
+        }
+      });
+    }
+
+    setupClickHandlers() {
+      document.querySelectorAll("[data-heading-link]").forEach((link) => {
+        link.addEventListener("click", (e) => {
+          e.preventDefault();
+          const href = (e.currentTarget as HTMLAnchorElement).getAttribute(
+            "href"
+          );
+          if (!href) return;
+
+          const target = document.querySelector(href);
+          if (!target) return;
+
+          const headerHeight = this.header?.getBoundingClientRect().height ?? 0;
+          const top =
+            target.getBoundingClientRect().top +
+            window.scrollY -
+            headerHeight -
+            20;
+
+          window.scrollTo({ top, behavior: "smooth" });
+          this.mobileToc?.removeAttribute("open");
+        });
+      });
+    }
+
+    updateActiveLink(headingId: string) {
+      document.querySelectorAll("[data-heading-link]").forEach((link) => {
+        link.classList.remove(...this.activeClass.split(" "));
+      });
+
+      const activeLink = document.querySelector(
+        `[data-heading-link="${headingId}"]`
+      );
+      activeLink?.classList.add(...this.activeClass.split(" "));
+
+      if (this.currentDisplay) {
+        this.currentDisplay.textContent = activeLink?.textContent || "";
+      }
+    }
+
+    disconnect() {
+      this.observer?.disconnect();
+    }
+  }
+
+  // Initialize
+  const toc = new TableOfContents();
+
+  // Cleanup
+  window.addEventListener("unload", () => toc.disconnect());
+</script>

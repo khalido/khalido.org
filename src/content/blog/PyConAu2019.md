@@ -1,12 +1,10 @@
 ---
 title: "PyCon Australia 2019"
-description: Notes for PyconAU 2019.
-pubDate: 2019-09-20
+summary: Notes for PyconAU 2019.
+date: 2019-09-20
 tags:
   - python
 ---
-
-# PyCon Australia 2019
 
 _update this post to fix youtube video links_
 

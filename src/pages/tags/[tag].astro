@@ -1,111 +1,188 @@
 ---
-import BaseLayout from "../../layouts/BaseLayout.astro";
-import FormattedDate from "../../components/FormattedDate.astro";
-import { CollectionEntry, getCollection } from "astro:content";
-
-const { tag } = Astro.params;
-//console.log("const tag: ", tag)
+import BaseLayout from "@layouts/BaseLayout.astro";
+import { getCollection } from "astro:content";
+import ContentList from "@components/ContentList.astro";
+import { getPreview, sortByDate } from "@scripts/content";
+import { getRelatedTags } from "@scripts/tagUtils";
 
 export async function getStaticPaths() {
-  const allPosts = await getCollection("blog");
-  const allAsides = await getCollection("asides");
+    const posts = await getCollection("blog", ({ data }) => {
+        return import.meta.env.PROD ? data.draft !== true : true;
+    });
 
-  // using .toLowerCase() here to get rid of case sensitivity
-  const posttags = [...new Set(allPosts.map((post) => post.data.tags).flat())]
-    .sort()
-    .map((tag) => tag.toLowerCase());
-  //console.log(tags);
+    // Get all unique tags
+    const tags = [...new Set(posts.map((post) => post.data.tags).flat())];
 
-  // tags for asides
-  const asidetags = [...new Set(allAsides.map((post) => post.data.tags).flat())]
-    .sort()
-    .map((tag) => tag.toLowerCase());
-    console.log("aside tags", asidetags);
+    // Generate paths for single tags
+    const singleTagPaths = tags.map((tag) => ({
+        params: { tag },
+        props: { tags: [tag] },
+    }));
 
-  // now to combine the two into one big tags thing
-  const tags = new Set([...posttags, ...asidetags]);
-  console.log("combined tags", tags);
+    // Generate paths for tag combinations (both orders)
+    const combinationPaths = tags.flatMap((tag1) =>
+        tags
+            .filter((tag2) => tag2 !== tag1)
+            .map((tag2) => ({
+                params: { tag: `${tag1}+${tag2}` },
+                props: { tags: [tag1, tag2].sort() }, // Sort tags for consistency
+            })),
+    );
 
-    // update this to deal with two tags in the future
-  let filtered_posts = Array.from(tags).map((tag) => {
-    return {
-      params: { tag },
-      // only keep the blogposts that contain the tag itself
-      props: {
-        blogposts: allPosts.concat(allAsides).filter((post) =>
-          post.data.tags.map((tag) => tag.toLowerCase()).includes(tag)
-        ),
-      },
-    };
-  });
-
-  return filtered_posts;
+    return [...singleTagPaths, ...combinationPaths];
 }
 
-// what is this doing?, if I remove it seems to do nothing
-interface Props {
-  tag: string;
-  blogposts: CollectionEntry<"blog">[];
-}
+const { tags } = Astro.props;
+const currentTag = Astro.params.tag;
 
-const { blogposts } = Astro.props;
+// If it's a combination of tags, sort them for consistent display
+const displayTags = currentTag.includes("+")
+    ? currentTag.split("+").sort().join(" + ")
+    : currentTag;
 
-{
-  /* Posts are in chronological order, do I want them in alphabetical order? */
-}
-blogposts
-  .sort((a, b) => a.data.pubDate.valueOf() - b.data.pubDate.valueOf())
-  .reverse();
+// Get all blog posts
+const allPosts = await getCollection("blog", ({ data }) => {
+    return import.meta.env.PROD ? data.draft !== true : true;
+});
 
-//console.log("this should be the filtered posts: ", blogposts.length);
+// Filter posts by all specified tags
+const taggedPosts = allPosts.filter((post) =>
+    tags.every((tag) => post.data.tags?.includes(tag)),
+);
 
-{/* figure out later how to build pages for two tags i.e books+nonfiction
-if (tag.includes("+")) {
-  console.log("handle the tag", tag);
-} else {
-  console.log("no + found in tag", tag);
-}
- */}
+// Get related tags (from the first tag if it's a combination)
+const relatedTags = getRelatedTags(taggedPosts, tags[0]);
+
+// Prepare content with preview and sort by date
+const tagContent = sortByDate(
+    await Promise.all(
+        taggedPosts.map(async (post) => ({
+            id: post.id,
+            slug: post.slug,
+            data: {
+                ...post.data,
+                preview: await getPreview(post),
+            },
+        })),
+    ),
+);
+
+// Create page title
+const pageTitle = `khalido.org: ${displayTags}`;
 ---
 
-<BaseLayout>
-  <h2 class="font-bold p-2">
-    posts tagged
-    <span class="text-yellow-700">{tag}</span>
-  </h2>
+<BaseLayout title={pageTitle}>
+    <div class="lg:flex lg:gap-8">
+        <div class="lg:w-3/4">
+            <div class="mb-8">
+                {
+                    tags.length === 1 ? (
+                        <h1 class="text-3xl">
+                            {tagContent.length} posts about "{currentTag}"
+                        </h1>
+                    ) : (
+                        <h1 class="text-2xl">
+                            <a
+                                href={`/tags/${tags[0]}`}
+                                class="text-pink-500 hover:text-pink-600"
+                            >
+                                "{tags[0]}"
+                            </a>
+                            {" + "}
+                            <a
+                                href={`/tags/${tags[1]}`}
+                                class="text-pink-500 hover:text-pink-600"
+                            >
+                                "{tags[1]}"
+                            </a>
+                            {" ("}
+                            {tagContent.length}
+                            {")"}
+                        </h1>
+                    )
+                }
+            </div>
 
-  <!-- search box -->
-  <input
-    class="px-4 py-3 w-80 text-xl"
-    type="text"
-    id="postSearch"
-    placeholder="Search"
-  />
+            <ContentList contents={tagContent} />
+        </div>
 
-  <ul id="searchresults" class="list-none text-lg pt-4 pb-2 px-2">
-    {
-      blogposts.map((post) => (
-        <li class="py-0.5">
-          <a
-            class="no-underline hover:underline text-gray-800"
-            href={`/blog/${post.slug}`}
-          >
-            {post.data.title} {post.data.tags}
-          </a>
+        <aside class="lg:w-1/4">
+            <div class="sticky top-4 space-y-4">
+                {
+                    tags.length > 1 && (
+                        <div class="bg-gray-50 p-4 rounded-lg">
+                            <h2 class="text-lg font-semibold mb-2">
+                                All Posts
+                            </h2>
+                            <div class="space-y-1">
+                                <a
+                                    href={`/tags/${tags[0]}`}
+                                    class="block text-pink-500 hover:text-pink-600"
+                                >
+                                    {
+                                        allPosts.filter((p) =>
+                                            p.data.tags.includes(tags[0]),
+                                        ).length
+                                    }{" "}
+                                    "{tags[0]}" posts
+                                </a>
+                                <a
+                                    href={`/tags/${tags[1]}`}
+                                    class="block text-pink-500 hover:text-pink-600"
+                                >
+                                    {
+                                        allPosts.filter((p) =>
+                                            p.data.tags.includes(tags[1]),
+                                        ).length
+                                    }{" "}
+                                    "{tags[1]}" posts
+                                </a>
+                            </div>
+                        </div>
+                    )
+                }
 
-          <span class="align-middle pl-4 py-0.5">
-            {post.data.tags.map((tag) => (
-              <a
-                class="pr-2 0.75rem; no-underline opacity-50 text-purple-400 text-sm hover:underline hover:bg-yellow-200"
-                href={`/tags/${tag}`}
-              >
-                {tag}
-              </a>
-            ))}
-          </span>
-          {/* <span class="text-right text-sm"><FormattedDate date={post.data.pubDate} /></span> */}
-        </li>
-      ))
-    }
-  </ul>
+                {
+                    relatedTags.length > 0 && (
+                        <div class="bg-gray-50 p-4 rounded-lg">
+                            <h2 class="text-lg font-semibold mb-2">
+                                Related Tags
+                            </h2>
+                            <div class="flex flex-col gap-2">
+                                {relatedTags.map((relatedTag) => {
+                                    const combinedTags = [
+                                        tags[0],
+                                        relatedTag,
+                                    ].sort();
+                                    return (
+                                        <a
+                                            href={`/tags/${combinedTags.join("+")}`}
+                                            class="text-pink-500 hover:text-pink-700"
+                                        >
+                                            {relatedTag}
+                                            <span class="text-gray-500 text-sm">
+                                                (
+                                                {
+                                                    allPosts.filter(
+                                                        (post) =>
+                                                            post.data.tags.includes(
+                                                                tags[0],
+                                                            ) &&
+                                                            post.data.tags.includes(
+                                                                relatedTag,
+                                                            ),
+                                                    ).length
+                                                }
+                                                )
+                                            </span>
+                                        </a>
+                                    );
+                                })}
+                            </div>
+                        </div>
+                    )
+                }
+            </div>
+        </aside>
+    </div>
 </BaseLayout>

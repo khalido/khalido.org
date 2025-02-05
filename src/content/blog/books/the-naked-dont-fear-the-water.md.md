@@ -1,14 +1,12 @@
 ---
 title: The Naked Don't Fear the Water
-pubDate: 2022-04-21
+date: 2022-04-21
 rating: 5
 author:
 tags:
   - books
   - nonfiction
 ---
-
-# The Naked Don't Fear the Water
 
 [Matthieu Aikins](https://maikins.com/) follows a brown refugee from Afghanistan through to Europe. It gives you an inside view of a refugees journey, starting from the why, to the how.
 

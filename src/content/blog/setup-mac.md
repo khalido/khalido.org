@@ -1,12 +1,10 @@
 ---
 title: "MacOS"
-description: "setup notes for osx"
-pubDate: 2021-07-26
+summary: "setup notes for osx"
+date: 2021-07-26
 tags:
   - mac
 ---
-
-# MacOS
 
 If a new mac, just copy paste the script below and go, otherwise consider a re-install if on a crusty handmedown.
 

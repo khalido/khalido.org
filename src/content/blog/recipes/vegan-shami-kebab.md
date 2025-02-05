@@ -1,11 +1,9 @@
 ---
 title: Vegan Shami kebab
-pubDate: 2020-08-04
+date: 2020-08-04
 tags:
   - recipes
 ---
-
-# Vegan shami kebab
 
 Makes kebabs for frying or grilling. Goes well in burgers.
 

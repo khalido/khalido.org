@@ -1,11 +1,9 @@
 ---
 title: Zucchini Pasta
-pubDate: 2022-03-01
+date: 2022-03-01
 tags:
-- recipes
+  - recipes
 ---
-
-# Zucchini pasta
 
 My one and only pasta receipe.
 

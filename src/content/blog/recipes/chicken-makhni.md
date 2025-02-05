@@ -1,11 +1,9 @@
 ---
-title: Chicken Makhni
-pubDate: 2023-07-27
+title: Chicken Makhni (Veg)
+date: 2023-07-27
 tags:
   - recipes
 ---
-
-# Veg Chicken Makhni
 
 I don't like butter chicken, or the many spices or sugar which goes into it. So this is basically a karhai recipe with a bit of added ghee and cream.
 

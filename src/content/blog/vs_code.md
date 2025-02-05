@@ -1,13 +1,11 @@
 ---
 title: "Visual Studio Code"
-pubDate: 2019-10-10
+date: 2019-10-10
 lastmod: 2019-10-10
 tags:
   - apps
 draft: true
 ---
-
-# Visual Studio Code
 
 VS Code has so many extensions and stuff, that this is an evoloving list of useful things I've found for it.
 

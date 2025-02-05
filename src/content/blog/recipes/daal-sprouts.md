@@ -1,12 +1,9 @@
 ---
 title: Sprouted Daal (lentils)
-pubDate: 2020-08-04
+date: 2020-08-04
 tags:
   - recipes
 ---
-
-# Spouted Dhal (lentils)
-
 A faster daal recipe. 30 min, good for 3 ppl, 4 with a small side dish.
 
 ## Ingredients
