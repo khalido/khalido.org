@@ -1,0 +1,10 @@
+---
+import BaseLayout from "@layouts/BaseLayout.astro";
+import WordCounter from "./WordCounter.svelte";
+---
+
+<BaseLayout title="Word Counter" description="A simple tool to count words and characters in a text.">
+  <h1 class="text-2xl font-bold mb-4">Word Counter</h1>
+  <p class="mb-4">Paste your text in the box below to see the word and character count.</p>
+  <WordCounter client:load />
+</BaseLayout>

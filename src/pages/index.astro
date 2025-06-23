@@ -8,21 +8,21 @@ import { getPreview, sortByDate, getAllTags } from "@scripts/content";
 // Get all content from blog collection, filter out draft only in prod
 //const allPosts = await getCollection("blog");
 const allPosts = await getCollection("blog", ({ data }) => {
-    return import.meta.env.PROD ? data.draft !== true : true;
+  return import.meta.env.PROD ? data.draft !== true : true;
 });
 
 // Prepare content with summary and sort by date
 const allContent = sortByDate(
-    await Promise.all(
-        allPosts.map(async (post) => ({
-            id: post.id,
-            slug: post.slug,
-            data: {
-                ...post.data,
-                preview: await getPreview(post),
-            },
-        })),
-    ),
+  await Promise.all(
+    allPosts.map(async (post) => ({
+      id: post.id,
+      slug: post.slug,
+      data: {
+        ...post.data,
+        preview: await getPreview(post),
+      },
+    }))
+  )
 );
 
 // Get unique tags from all content
@@ -30,7 +30,7 @@ const allTags = getAllTags(allPosts);
 ---
 
 <BaseLayout>
-    <TagCloud tags={allTags} />
+  <TagCloud tags={allTags} />
 
-    <ContentList contents={allContent} />
+  <ContentList contents={allContent} />
 </BaseLayout>
