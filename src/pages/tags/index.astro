@@ -2,19 +2,19 @@
 import BaseLayout from "@layouts/BaseLayout.astro";
 import { getCollection } from "astro:content";
 import TagCloud from "@components/TagCloud.astro";
-import ContentList from "@components/ContentList.astro";
-import { getPreview, sortByDate, getAllTags } from "@scripts/content";
+import { filterDrafts, getAllTagsWithCounts } from "@scripts/content";
 
-// Get all content from blog collection, filter out draft only in prod
-const allPosts = await getCollection("blog", ({ data }) => {
-    return import.meta.env.PROD ? data.draft !== true : true;
-});
+const [allPosts, allDataStories] = await Promise.all([
+    getCollection("blog", filterDrafts),
+    getCollection("data", filterDrafts),
+]);
 
-// Get unique tags from all content
-const allTags = getAllTags(allPosts);
+const allTags = getAllTagsWithCounts(allPosts, allDataStories);
+const totalPosts = allPosts.length + allDataStories.length;
 ---
 
 <BaseLayout title="khalido.org: Tags">
-    <h1 class="text-3xl mb-8">All Tags</h1>
+    <h1 class="text-3xl mb-2">Tags</h1>
+    <p class="text-sm text-gray-400 mb-6">{totalPosts} posts across {allTags.length} tags</p>
     <TagCloud tags={allTags} />
 </BaseLayout>

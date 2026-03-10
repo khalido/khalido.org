@@ -1,0 +1,49 @@
+---
+import BaseLayout from "@layouts/BaseLayout.astro";
+import { getCollection } from "astro:content";
+import ContentList from "@components/ContentList.astro";
+import { filterDrafts, getPreview, sortByDate } from "@scripts/content";
+
+export async function getStaticPaths() {
+    const posts = await getCollection("blog", filterDrafts);
+
+    // Find all subfolders that contain posts
+    const categories = new Set<string>();
+    for (const post of posts) {
+        const slash = post.id.indexOf("/");
+        if (slash !== -1) {
+            categories.add(post.id.slice(0, slash));
+        }
+    }
+
+    return [...categories].map((category) => ({
+        params: { category },
+        props: { category },
+    }));
+}
+
+const { category } = Astro.props;
+
+const allPosts = await getCollection("blog", filterDrafts);
+const categoryPosts = allPosts.filter((post) => post.id.startsWith(category + "/"));
+
+const contents = sortByDate(
+    await Promise.all(
+        categoryPosts.map(async (post) => ({
+            id: post.id,
+            collection: "blog" as const,
+            data: {
+                ...post.data,
+                preview: await getPreview(post),
+            },
+        })),
+    ),
+);
+---
+
+<BaseLayout title={`khalido.org: ${category}`}>
+    <h1 class="text-3xl mb-4 capitalize">{category}</h1>
+    <p class="text-sm text-gray-400 mb-6">{contents.length} posts</p>
+
+    <ContentList contents={contents} />
+</BaseLayout>

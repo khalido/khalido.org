@@ -2,187 +2,97 @@
 import BaseLayout from "@layouts/BaseLayout.astro";
 import { getCollection } from "astro:content";
 import ContentList from "@components/ContentList.astro";
-import { getPreview, sortByDate } from "@scripts/content";
-import { getRelatedTags } from "@scripts/tagUtils";
+import { filterDrafts, getPreview, sortByDate } from "@scripts/content";
 
 export async function getStaticPaths() {
-    const posts = await getCollection("blog", ({ data }) => {
-        return import.meta.env.PROD ? data.draft !== true : true;
-    });
+    const [posts, dataStories] = await Promise.all([
+        getCollection("blog", filterDrafts),
+        getCollection("data", filterDrafts),
+    ]);
+    const allEntries = [...posts, ...dataStories];
+    const tags = [...new Set(allEntries.flatMap((post) => post.data.tags))];
 
-    // Get all unique tags
-    const tags = [...new Set(posts.map((post) => post.data.tags).flat())];
-
-    // Generate paths for single tags
-    const singleTagPaths = tags.map((tag) => ({
+    return tags.map((tag) => ({
         params: { tag },
-        props: { tags: [tag] },
+        props: { tag },
     }));
-
-    // Generate paths for tag combinations (both orders)
-    const combinationPaths = tags.flatMap((tag1) =>
-        tags
-            .filter((tag2) => tag2 !== tag1)
-            .map((tag2) => ({
-                params: { tag: `${tag1}+${tag2}` },
-                props: { tags: [tag1, tag2].sort() }, // Sort tags for consistency
-            })),
-    );
-
-    return [...singleTagPaths, ...combinationPaths];
 }
 
-const { tags } = Astro.props;
-const currentTag = Astro.params.tag;
+const { tag } = Astro.props;
 
-// If it's a combination of tags, sort them for consistent display
-const displayTags = currentTag.includes("+")
-    ? currentTag.split("+").sort().join(" + ")
-    : currentTag;
+const [allPosts, allDataStories] = await Promise.all([
+    getCollection("blog", filterDrafts),
+    getCollection("data", filterDrafts),
+]);
 
-// Get all blog posts
-const allPosts = await getCollection("blog", ({ data }) => {
-    return import.meta.env.PROD ? data.draft !== true : true;
-});
+// Posts with this tag
+const taggedPosts = allPosts.filter((post) => post.data.tags?.includes(tag));
+const taggedStories = allDataStories.filter((story) => story.data.tags?.includes(tag));
+const allTagged = [...taggedPosts, ...taggedStories];
 
-// Filter posts by all specified tags
-const taggedPosts = allPosts.filter((post) =>
-    tags.every((tag) => post.data.tags?.includes(tag)),
+// Related tags: other tags on these posts, sorted by frequency
+const tagCounts = new Map<string, number>();
+for (const entry of allTagged) {
+    for (const t of entry.data.tags) {
+        if (t !== tag) tagCounts.set(t, (tagCounts.get(t) || 0) + 1);
+    }
+}
+const relatedTags = [...tagCounts.entries()]
+    .sort((a, b) => b[1] - a[1])
+    .map(([t, count]) => ({ tag: t, count }));
+
+// Prepare content feed
+const blogContent = await Promise.all(
+    taggedPosts.map(async (post) => ({
+        id: post.id,
+        collection: "blog" as const,
+        data: {
+            ...post.data,
+            preview: await getPreview(post),
+        },
+    })),
 );
-
-// Get related tags (from the first tag if it's a combination)
-const relatedTags = getRelatedTags(taggedPosts, tags[0]);
-
-// Prepare content with preview and sort by date
-const tagContent = sortByDate(
-    await Promise.all(
-        taggedPosts.map(async (post) => ({
-            id: post.id,
-            slug: post.slug,
-            data: {
-                ...post.data,
-                preview: await getPreview(post),
-            },
-        })),
-    ),
-);
-
-// Create page title
-const pageTitle = `khalido.org: ${displayTags}`;
+const dataContent = taggedStories.map((story) => ({
+    id: story.id,
+    collection: "data" as const,
+    data: {
+        ...story.data,
+        preview: story.data.summary || "",
+    },
+}));
+const tagContent = sortByDate([...blogContent, ...dataContent]);
 ---
 
-<BaseLayout title={pageTitle}>
-    <div class="lg:flex lg:gap-8">
-        <div class="lg:w-3/4">
-            <div class="mb-8">
-                {
-                    tags.length === 1 ? (
-                        <h1 class="text-3xl">
-                            {tagContent.length} posts about "{currentTag}"
-                        </h1>
-                    ) : (
-                        <h1 class="text-2xl">
-                            <a
-                                href={`/tags/${tags[0]}`}
-                                class="text-pink-500 hover:text-pink-600"
-                            >
-                                "{tags[0]}"
-                            </a>
-                            {" + "}
-                            <a
-                                href={`/tags/${tags[1]}`}
-                                class="text-pink-500 hover:text-pink-600"
-                            >
-                                "{tags[1]}"
-                            </a>
-                            {" ("}
-                            {tagContent.length}
-                            {")"}
-                        </h1>
-                    )
-                }
-            </div>
+<BaseLayout title={`khalido.org: ${tag}`}>
+    <h1 class="text-3xl mb-4">
+        {tagContent.length} posts about "{tag}"
+    </h1>
 
-            <ContentList contents={tagContent} />
+    {relatedTags.length > 0 && (
+        <div class="mb-6 flex flex-wrap gap-2 items-center">
+            <span class="text-sm text-gray-400 mr-1">also tagged:</span>
+            {relatedTags.map(({ tag: t, count }) => (
+                <button
+                    class="tag-filter px-2 py-0.5 text-sm rounded-full border border-gray-300 text-gray-600 hover:border-purple-400 hover:text-purple-600 transition-colors"
+                    data-tag={t}
+                >
+                    {t} <span class="text-gray-400">({count})</span>
+                </button>
+            ))}
         </div>
+    )}
 
-        <aside class="lg:w-1/4">
-            <div class="sticky top-4 space-y-4">
-                {
-                    tags.length > 1 && (
-                        <div class="bg-gray-50 p-4 rounded-lg">
-                            <h2 class="text-lg font-semibold mb-2">
-                                All Posts
-                            </h2>
-                            <div class="space-y-1">
-                                <a
-                                    href={`/tags/${tags[0]}`}
-                                    class="block text-pink-500 hover:text-pink-600"
-                                >
-                                    {
-                                        allPosts.filter((p) =>
-                                            p.data.tags.includes(tags[0]),
-                                        ).length
-                                    }{" "}
-                                    "{tags[0]}" posts
-                                </a>
-                                <a
-                                    href={`/tags/${tags[1]}`}
-                                    class="block text-pink-500 hover:text-pink-600"
-                                >
-                                    {
-                                        allPosts.filter((p) =>
-                                            p.data.tags.includes(tags[1]),
-                                        ).length
-                                    }{" "}
-                                    "{tags[1]}" posts
-                                </a>
-                            </div>
-                        </div>
-                    )
-                }
-
-                {
-                    relatedTags.length > 0 && (
-                        <div class="bg-gray-50 p-4 rounded-lg">
-                            <h2 class="text-lg font-semibold mb-2">
-                                Related Tags
-                            </h2>
-                            <div class="flex flex-col gap-2">
-                                {relatedTags.map((relatedTag) => {
-                                    const combinedTags = [
-                                        tags[0],
-                                        relatedTag,
-                                    ].sort();
-                                    return (
-                                        <a
-                                            href={`/tags/${combinedTags.join("+")}`}
-                                            class="text-pink-500 hover:text-pink-700"
-                                        >
-                                            {relatedTag}
-                                            <span class="text-gray-500 text-sm">
-                                                (
-                                                {
-                                                    allPosts.filter(
-                                                        (post) =>
-                                                            post.data.tags.includes(
-                                                                tags[0],
-                                                            ) &&
-                                                            post.data.tags.includes(
-                                                                relatedTag,
-                                                            ),
-                                                    ).length
-                                                }
-                                                )
-                                            </span>
-                                        </a>
-                                    );
-                                })}
-                            </div>
-                        </div>
-                    )
-                }
-            </div>
-        </aside>
-    </div>
+    <ContentList contents={tagContent} />
 </BaseLayout>
+
+<script>
+    document.querySelectorAll(".tag-filter").forEach((btn) => {
+        btn.addEventListener("click", () => {
+            const tag = (btn as HTMLElement).dataset.tag!;
+            btn.classList.toggle("bg-purple-100");
+            btn.classList.toggle("border-purple-400");
+            btn.classList.toggle("text-purple-700");
+            document.dispatchEvent(new CustomEvent("toggle-tag-filter", { detail: { tag } }));
+        });
+    });
+</script>

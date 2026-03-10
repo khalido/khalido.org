@@ -1,103 +1,153 @@
-# Overview
+# khalido.org
 
-khalido.org is a personal website with a mix of blog posts, recipes, javascript utilities, notes and anything else i might want to refer back to.
+Personal website — blog posts, links, TILs, data stories, and interactive tools. Built with Astro 6 (beta), Svelte 5, Tailwind CSS v4, MDX. Hosted on GitHub Pages.
 
-The primary goal is to have a easy to understand code base which works well and serves my content fast.
+## Writing Policy
 
-## Tech Stack
+**The human writes all published prose.** LLMs assist with code, scripts, charts, data analysis, proofreading, and research — but never generate narrative content published under the author's name. Use `TODO: write this` as placeholder for content sections. When asked to help with a blog post, research the topic, suggest structure, provide data — but leave the writing to the human.
 
-* Framework: [Astro](https://docs.astro.build/en/getting-started/)
-* Styling: [Tailwind CSS](https://tailwindcss.com/)
-* Interactivity: [@astrojs/svelte](https://docs.astro.build/en/guides/integrations-guide/svelte/)
-* UI Components: [shadcn-svelte](https://www.shadcn-svelte.com/)
-* Content is in markdown `.md` or MDX `.mdx` files.
-* Package Manager: npm
+LLM-generated explanatory text (e.g. describing how a component works) should use ` ```llm ` blocks so it renders with distinct styling.
 
-## 🚀 Project Structure
+## How to Help with Content
 
-You'll see the following folders and files:
+### Writing a blog post or TIL
+- Use `.mdx` for posts that need components (CodeRunner, charts), `.md` otherwise
+- Blog posts go in `src/content/blog/`, TILs in `src/content/blog/til/`
+- Set `draft: true` until the human is ready to publish
+- Research the topic, suggest an outline, provide code examples — don't write the prose
 
+### Adding a live code block
+Use CodeRunner in any `.mdx` file:
+```mdx
+import CodeRunner from '@components/CodeRunner.svelte';
+
+<CodeRunner client:load code={`const data = [1, 2, 3];
+console.log(data.reduce((a, b) => a + b));
+`} />
 ```
-├── public/ - static assets, like images, can be placed in the `public/` directory.
-├── src/
-│   ├── components/ - Astro or Svelte components for sitewide use
-│   ├── content/ - collections of related Markdown and MDX documents.
-│   ├── layouts/
-│   └── pages/ -  `.astro` or `.md` or `.mdx` files are exposed as a route based on the file name
-├── astro.config.mjs
-├── README.md - Human friendly README
-├── package.json
-└── tsconfig.json
-└── AGENTS.md - overview and instructions for AI agents
+- Built-in globals (no imports needed): `Plot`, `csvParse`, `tsvParse`, `autoType`
+- Return a DOM element for charts: `return Plot.plot({...})`
+- `console.log()` output appears in a dark panel below
+- Props: `collapsed` (hide code, show output), `title`, `caption`
+- Code auto-runs on page load, is editable, has Run/Reset/Copy buttons
+
+### Adding a chart in a data story
+Data stories use colocated Svelte components:
+```
+src/content/data/<topic>/
+├── index.mdx           # narrative + imports
+└── _ChartName.svelte   # chart component (prefix with _)
+```
+- Charts use `client:only="svelte"` and dynamically import Plot in `onMount`
+- Data JSON goes in `public/data/<topic>/` — must be in public/ for client-side fetch
+- Fetch scripts go in `scripts/`
+
+### Adding a link post
+```yaml
+---
+date: 2026-03-10
+link: https://example.com
+tags: [topic]
+type: link
+draft: true
+---
+Commentary goes here.
+```
+Files go in `src/content/blog/links/`. Title is optional. See `docs/obsidian-link-clipper.md` for the capture workflow.
+
+## Commands
+
+| Command | Action |
+| :--- | :--- |
+| `npm run dev` | Dev server at `localhost:4321` |
+| `npm run build` | Build to `./dist/` |
+| `FRED_API_KEY=xxx npx tsx scripts/fetch-fred.ts` | Fetch oil/gas/CPI data |
+
+## Quick Queries
+
+Use these grep patterns to answer common questions about content:
+
+```bash
+# List all draft posts
+grep -rl 'draft: true' src/content/
+
+# List all published posts (non-draft)
+grep -rL 'draft: true' src/content/ --include='*.md' --include='*.mdx'
+
+# Count posts by type
+grep -rl 'type: link' src/content/blog/ | wc -l    # link posts
+find src/content/blog/til -name '*.md' -o -name '*.mdx' | wc -l  # TILs
+
+# Find posts by tag
+grep -rl 'tags:' src/content/ -A5 | grep '  - python'
+
+# List all tags used across the site
+grep -rh '  - ' src/content/ --include='*.md' --include='*.mdx' | sort | uniq -c | sort -rn
+
+# Find posts mentioning a topic (in body text)
+grep -rl 'keema\|kebab' src/content/blog/
+
+# List data stories
+ls src/content/data/*/index.mdx
 ```
 
-### Personal web tools
+## Guidelines
 
-I have a `pages/tools` page which contains a list of simple html+svelte+javascript tools (with optional ui [shadcn-svelte ui components](https://shadcn-svelte.com/docs/components), inspired a bit by [tools.simonwillison.net](https://tools.simonwillison.net/).
+- **Don't install packages** without asking
+- **Don't upgrade packages** without asking — we're on Astro 6 beta, upgrades can break things
+- **Don't write prose** for the human (see Writing Policy above)
+- Use context7 MCP to fetch current docs when needed
+- Prefer editing existing files over creating new ones
+- Svelte components in `src/pages/` must be prefixed with `_`
+- `client:only="svelte"` components can't receive server-side props — use client-side fetch
+- For architecture details, see `docs/architecture.md`
 
-Folder with the tool name e.g: /tools/word-counter and a `index.astro` file inside it. All tool specific files like `.js` or `.svelte` components should be inside the tool folder.  Use shadcn-svelte UI components in where possible instead of building your own.
+## Key Learnings
 
-The tool should start with
-`import BaseLayout from "@layouts/BaseLayout.astro";`
+### When to use CodeRunner vs a dedicated Svelte component
 
-the index.astro file is currently a manual listing of all the tools.
+| Use case | Approach |
+| :--- | :--- |
+| Quick chart in a blog post or TIL | **CodeRunner** (`collapsed`) — write Plot code inline in MDX, no component needed |
+| Teaching code / data exploration | **CodeRunner** (visible) — readers can edit the code and re-run |
+| Polished chart with annotations, multiple panels, resize handling | **Dedicated `_Chart.svelte`** with `client:only="svelte"` |
+| Chart needing complex state, event handlers, or multiple data sources | **Dedicated component** — full Svelte reactivity |
+| One-off chart you might not maintain | **CodeRunner** — self-contained, no component to update |
+| Core chart for a data story page | **Dedicated component** — better control, ResizeObserver, loading states |
 
-## 🧞 Commands
+Both render client-side — Observable Plot needs browser DOM APIs, so Astro cannot pre-render either approach. The difference is developer ergonomics: CodeRunner is faster to write (just JS in MDX), dedicated components give more control (Svelte reactivity, lifecycle, resize, error handling).
 
-All commands are run from the root of the project, from a terminal:
+### Where data goes
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:3000`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
+- **JSON for charts**: Always `public/data/<topic>/` — served as static files, fetchable via `fetch("/data/...")`
+- **Colocated JSON in post folders does NOT work** — content collection files aren't served as static assets
+- **External URLs work fine** — CodeRunner can fetch from any URL (GitHub raw, APIs, etc.)
+- **Fetch scripts** go in `scripts/` and write to `public/data/`. Run manually, not on every build.
 
-## AI Agent Guidelines
-- Follow exisiting file structure
-- Update this file as needed
-- Use context7 MCP server to fetch current documentation for Astro, Tailwind, Svelte, shadcn-svelte, or any other technologies when needed.
-- add `export const prerender = false` at the top of the individual page or endpoint you want to render on demand. 
+### Content file types
 
-### Logging Requirements
-- **Always add comprehensive logging** to new features and complex operations
-- In development/debug mode, log important data to stdout/console (emails, API responses, user flows)
-- Log key user actions and system state changes to help with debugging
-- Include timestamps and context in log messages
-- For authentication flows, log verification links and tokens to console in dev mode
-- Logging counts as a tool - use it to help the AI agent understand application flow and debug issues
-- Example: `console.log('[Auth] Verification email sent:', { email, verificationLink })`
+- `.md` — plain markdown, no components. Use for regular blog posts, links, quotes.
+- `.mdx` — markdown + JSX. Required when importing Svelte components (CodeRunner, charts). Use for TILs with code blocks, data stories.
+- Files prefixed with `_` are ignored by Astro's glob loader — use for colocated components and examples.
 
-### Constraints and Guardrails
-- Don't install new packages without asking
-- For major architectural changes, summarize and ask for approval
-- For new features: create implementation plan and get approval
+### Observable Plot + Astro
 
-# Task
+- `Plot.plot()` returns a DOM element — cannot SSR, always runs client-side
+- Chart components must use `client:only="svelte"` (skip SSR) or `client:load` (SSR the wrapper, hydrate the chart)
+- Dynamic `import("@observablehq/plot")` in `onMount` keeps Plot out of the server bundle
+- CodeRunner loads Plot from the npm bundle (already installed); dedicated components do the same via dynamic import
 
-## Active task and steps
+### Shiki / syntax highlighting
 
-Help the user move the blog from github pages to Cloudflare Workers
-- [wrangler](https://developers.cloudflare.com/workers/wrangler/install-and-update/) 
-- Deploy to cloudflare Workers via CI/CD - use github actions or [Workers Builds](https://developers.cloudflare.com/workers/ci-cd/#workers-builds). 
+- Astro uses Shiki by default — all ` ```lang ` blocks get syntax highlighting
+- Custom languages via `langAlias` in `astro.config.mjs` (e.g. `llm → plaintext`)
+- Shiki uses inline styles, not CSS classes — target with `pre.astro-code[data-language="..."]`
+- Both `py` and `python` work for Python
 
-Resources
-- [Deploy your Astro Site to Cloudflare](https://docs.astro.build/en/guides/deploy/cloudflare/)
-- https://docs.astro.build/en/guides/integrations-guide/cloudflare/
-- https://developers.cloudflare.com/pages/framework-guides/deploy-an-astro-site/ and 
+## Future Work
 
-## Future tasks
-- lightweight auth
-- store per user API key:value pairs
-- llm chat tool - stores openai api key in browser storage, possbibly using a lib like [LLM.js](https://llmjs.themaximalist.com/) which runs in the browser, or using vercels AI lib [with svelte](https://github.com/vercel/ai-chatbot-svelte) or [cloudflare agents](https://developers.cloudflare.com/agents/).
-  - Evaluate options, keep it simple. A number of tools might use an llm lib to process a user input or image.
-
-# AI notes
-
-Short notes and learnings about the code base which the AI agent will find helpful.
-
-# Changelog
-
-Put a short summary of completed tasks. 
+- Fuzzy search (MiniSearch or Fuse.js) for title/tag/summary matching — or Pagefind for full-content search
+- astro-embed integration for YouTube/Twitter embeds from URLs in MDX
+- Migrate to Cloudflare Workers (reference: `~/code/pakairquality`)
+- PyRunner component (Pyodide WASM for Python code blocks)
+- Callout/admonition components (reference: Astro Starlight)

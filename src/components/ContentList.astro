@@ -2,48 +2,78 @@
 // ContentList.astro
 import FormattedDate from "./FormattedDate.astro";
 
+interface ContentItem {
+    id: string;
+    collection?: "blog" | "data";
+    data: {
+        title?: string;
+        date: Date;
+        updated?: Date;
+        tags: string[];
+        link?: string;
+        preview?: string;
+        summary?: string;
+    };
+}
+
 interface Props {
-    contents: any[];
+    contents: ContentItem[];
 }
 
 const { contents } = Astro.props;
-//import remarkParse from "remark-parse";
 ---
 
 <div>
-    <input
-        class="px-4 py-3 w-80 text-xl border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400"
-        type="text"
-        id="postSearch"
-        placeholder="Search posts..."
-    />
+    <div class="flex items-center gap-3">
+        <input
+            class="px-4 py-3 w-80 text-xl border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400"
+            type="text"
+            id="postSearch"
+            placeholder="Filter posts..."
+        />
+        <span id="filterCount" class="text-sm text-gray-400"></span>
+    </div>
 
     <ul id="searchresults" class="list-none text-lg pt-4 pb-2 px-2">
         {
             contents.map((content) => {
-                const isPost = content.data.type === "post";
+                const isDataStory = content.collection === "data";
+                const isLink = !!content.data.link;
+                const permalink = isDataStory
+                    ? `/data/${content.id}`
+                    : `/blog/${content.id}`;
                 const searchData = [
                     content.data.title || "",
                     content.data.tags?.join(" ") || "",
                     content.data.summary || "",
+                    content.data.preview || "",
                 ]
                     .join(" ")
                     .toLowerCase();
 
                 return (
                     <li
-                        class:list={[
-                            "py-2",
-                            { "border-l-4 border-gray-200 pl-4": !isPost },
-                        ]}
+                        class="py-2"
                         data-search={searchData}
+                        data-tags={content.data.tags.join(",")}
                     >
-                        {isPost && (
+                        {/* Title row — links to external URL for link posts, internal page for others */}
+                        {content.data.title && (
                             <a
                                 class="no-underline hover:underline text-gray-800 font-medium block mb-1"
-                                href={`/blog/${content.id}`}
+                                href={isLink && content.data.link ? content.data.link : permalink}
                             >
                                 {content.data.title}
+                            </a>
+                        )}
+
+                        {/* For link posts without a title, show the link domain */}
+                        {isLink && !content.data.title && content.data.link && (
+                            <a
+                                class="no-underline hover:underline text-gray-800 font-medium block mb-1"
+                                href={content.data.link}
+                            >
+                                {new URL(content.data.link).hostname.replace("www.", "")}
                             </a>
                         )}
 
@@ -54,7 +84,7 @@ const { contents } = Astro.props;
 
                         <div class="mt-2 text-sm text-gray-500">
                             <a
-                                href={`/blog/${content.id}`}
+                                href={permalink}
                                 class="text-gray-500 hover:text-purple-600 no-underline hover:underline"
                             >
                                 #
@@ -83,29 +113,46 @@ const { contents } = Astro.props;
 </div>
 
 <script>
-    function debounce(func: Function, wait: number) {
-        let timeout: ReturnType<typeof setTimeout>;
-        return function (...args: any[]) {
-            clearTimeout(timeout);
-            timeout = setTimeout(() => func(...args), wait);
-        };
+    const searchInput = document.getElementById("postSearch") as HTMLInputElement;
+    const list = document.getElementById("searchresults")!;
+    const items = [...list.querySelectorAll("li")];
+    const counter = document.getElementById("filterCount");
+
+    // Cache per-item data once
+    const searchData = items.map((li) => li.getAttribute("data-search") || "");
+    const tagData = items.map((li) => (li.getAttribute("data-tags") || "").split(",").filter(Boolean));
+
+    // Active tag filters (set by tag page buttons)
+    let activeTags: Set<string> = new Set();
+
+    function filter() {
+        const terms = searchInput.value.toLowerCase().trim().split(/\s+/).filter(Boolean);
+        let visible = 0;
+
+        items.forEach((li, i) => {
+            const textMatch = terms.length === 0 || terms.every((t) => searchData[i].includes(t));
+            const tagMatch = activeTags.size === 0 || [...activeTags].every((t) => tagData[i].includes(t));
+            const match = textMatch && tagMatch;
+            li.classList.toggle("hidden", !match);
+            if (match) visible++;
+        });
+
+        const filtering = terms.length > 0 || activeTags.size > 0;
+        if (counter) {
+            counter.textContent = filtering ? `${visible} of ${items.length}` : "";
+        }
     }
 
-    const searchInput = document.getElementById(
-        "postSearch",
-    ) as HTMLInputElement;
-    const listItems = document.querySelectorAll("#searchresults li");
+    searchInput?.addEventListener("input", filter);
 
-    const filterItems = debounce((searchTerm: string) => {
-        searchTerm = (searchTerm || "").toLowerCase().trim();
-
-        listItems.forEach((item) => {
-            const searchText = item.getAttribute("data-search") || "";
-            item.style.display = searchText.includes(searchTerm) ? "" : "none";
-        });
-    }, 200);
-
-    searchInput?.addEventListener("input", (e) => {
-        filterItems((e.target as HTMLInputElement).value);
-    });
+    // Listen for tag filter toggles from tag page buttons
+    document.addEventListener("toggle-tag-filter", ((e: CustomEvent) => {
+        const tag = e.detail.tag;
+        if (activeTags.has(tag)) {
+            activeTags.delete(tag);
+        } else {
+            activeTags.add(tag);
+        }
+        filter();
+    }) as EventListener);
 </script>

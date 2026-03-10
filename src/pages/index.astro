@@ -3,34 +3,47 @@ import BaseLayout from "@layouts/BaseLayout.astro";
 import { getCollection } from "astro:content";
 import TagCloud from "@components/TagCloud.astro";
 import ContentList from "@components/ContentList.astro";
-import { getPreview, sortByDate, getAllTags } from "@scripts/content";
+import { filterDrafts, getPreview, sortByDate, getAllTagsWithCounts } from "@scripts/content";
 
-// Get all content from blog collection, filter out draft only in prod
-//const allPosts = await getCollection("blog");
-const allPosts = await getCollection("blog", ({ data }) => {
-  return import.meta.env.PROD ? data.draft !== true : true;
-});
+const [allPosts, allDataStories] = await Promise.all([
+  getCollection("blog", filterDrafts),
+  getCollection("data", filterDrafts),
+]);
 
-// Prepare content with summary and sort by date
-const allContent = sortByDate(
-  await Promise.all(
-    allPosts.map(async (post) => ({
-      id: post.id,
-      slug: post.slug,
-      data: {
-        ...post.data,
-        preview: await getPreview(post),
-      },
-    }))
-  )
+const blogContent = await Promise.all(
+  allPosts.map(async (post) => ({
+    id: post.id,
+    collection: "blog" as const,
+    data: {
+      ...post.data,
+      preview: await getPreview(post),
+    },
+  }))
 );
 
-// Get unique tags from all content
-const allTags = getAllTags(allPosts);
+const dataContent = allDataStories.map((story) => ({
+  id: story.id,
+  collection: "data" as const,
+  data: {
+    ...story.data,
+    preview: story.data.summary || "",
+  },
+}));
+
+const allContent = sortByDate([...blogContent, ...dataContent]);
+const allTags = getAllTagsWithCounts(allPosts, allDataStories);
 ---
 
 <BaseLayout>
-  <TagCloud tags={allTags} />
-
-  <ContentList contents={allContent} />
+  <div class="lg:flex lg:gap-8">
+    <div class="lg:w-3/4">
+      <ContentList contents={allContent} />
+    </div>
+    <aside class="hidden lg:block lg:w-1/4">
+      <div class="sticky top-4">
+        <h2 class="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-2">Tags</h2>
+        <TagCloud tags={allTags} />
+      </div>
+    </aside>
+  </div>
 </BaseLayout>

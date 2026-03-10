@@ -8,18 +8,21 @@ type Props = CollectionEntry<"blog">["data"] & {
     headings: { depth: number; slug: string; text: string }[];
 };
 
-const { title, description, date, updated, tags, headings } = Astro.props;
+const { title, description, date, updated, tags, headings, link, type } = Astro.props;
 
 // Create site title in "khalido.org: Post Title" format
-const siteTitle = `khalido.org: ${title}`;
+const siteTitle = title ? `khalido.org: ${title}` : "khalido.org";
 ---
 
 <BaseLayout title={siteTitle} description={description}>
     <div class="lg:flex lg:justify-between lg:gap-8">
         <!-- Main content -->
         <article class="prose md:prose-base lg:w-3/4">
-            <!-- Add custom styles to override default prose h1 -->
-            <h1 class="!text-2xl !mt-4 !mb-2">{title}</h1>
+            {title && (
+                <h1 class="!text-2xl !mt-4 !mb-2">
+                    {link ? <a href={link}>{title}</a> : title}
+                </h1>
+            )}
 
             <!-- post meta info div-->
             <div class="text-gray-600 text-base">

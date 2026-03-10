@@ -1,0 +1,98 @@
+---
+title: "Observable Plot in the browser"
+date: 2026-03-09
+tags:
+  - til
+  - javascript
+  - dataviz
+draft: true
+---
+
+import CodeRunner from '@components/CodeRunner.svelte';
+
+[Observable Plot](https://observablehq.com/plot/) is a concise charting library from the D3 team. The code blocks below are live — `Plot`, `csvParse`, and `autoType` are available by default.
+
+```llm
+These examples use the CodeRunner component, which runs JavaScript directly in the browser. Each code block auto-executes on page load and is fully editable — change the code and hit ▶ to re-run. When code returns a DOM element (like a Plot chart), it renders below the editor. Console output appears in a dark panel. Built-in globals: Plot (Observable Plot), csvParse, tsvParse, autoType (d3-dsv).
+```
+
+## A simple line chart
+
+<CodeRunner client:load code={`const data = Array.from({ length: 50 }, (_, i) => ({
+  x: i,
+  y: Math.sin(i / 5) * 10 + Math.random() * 3,
+}));
+
+return Plot.plot({
+  width: 600, height: 200,
+  style: { background: "transparent" },
+  y: { grid: true },
+  marks: [
+    Plot.lineY(data, { x: "x", y: "y", stroke: "#1e40af", strokeWidth: 1.5 }),
+  ],
+});
+`} />
+
+## Area chart — oil prices
+
+`csvParse` and `autoType` are built in — fetch a CSV and plot it directly:
+
+<CodeRunner client:load code={`const res = await fetch("https://raw.githubusercontent.com/datasets/oil-prices/refs/heads/main/data/brent-daily.csv");
+const oil = csvParse(await res.text(), autoType);
+
+return Plot.plot({
+  width: 600, height: 250,
+  style: { background: "transparent" },
+  x: { label: null },
+  y: { grid: true, label: "$/barrel" },
+  marks: [
+    Plot.areaY(oil, { x: "Date", y: "Price", fill: "#6366f1", fillOpacity: 0.2 }),
+    Plot.lineY(oil, { x: "Date", y: "Price", stroke: "#6366f1", strokeWidth: 1, tip: true }),
+    Plot.ruleY([0]),
+  ],
+});
+`} />
+
+## Scatter plot — Iris dataset
+
+Pass `tip: true` for built-in hover tooltips:
+
+<CodeRunner client:load code={`const res = await fetch("https://raw.githubusercontent.com/mwaskom/seaborn-data/master/iris.csv");
+const iris = csvParse(await res.text(), autoType);
+
+return Plot.plot({
+  width: 600, height: 300,
+  style: { background: "transparent" },
+  grid: true,
+  x: { label: "sepal length (cm)" },
+  y: { label: "sepal width (cm)" },
+  color: { legend: true },
+  marks: [
+    Plot.dot(iris, { x: "sepal_length", y: "sepal_width", fill: "species", r: 4, tip: true }),
+  ],
+});
+`} />
+
+## Fetching live data
+
+Fetch JSON and plot it — here's 30 days of Phoenix weather from Open-Meteo:
+
+<CodeRunner client:load code={`const res = await fetch("https://api.open-meteo.com/v1/forecast?latitude=33.44&longitude=-112.07&daily=temperature_2m_max&timezone=America/Phoenix&past_days=30");
+const weather = await res.json();
+
+const data = weather.daily.time.map((date, i) => ({
+  date: new Date(date),
+  temp: weather.daily.temperature_2m_max[i],
+}));
+
+return Plot.plot({
+  width: 600, height: 200,
+  style: { background: "transparent" },
+  x: { label: null },
+  y: { grid: true, label: "°C" },
+  marks: [
+    Plot.lineY(data, { x: "date", y: "temp", stroke: "#dc2626", strokeWidth: 1.5, tip: true }),
+    Plot.dot(data, { x: "date", y: "temp", fill: "#dc2626", r: 2.5 }),
+  ],
+});
+`} />

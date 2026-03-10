@@ -1,0 +1,12 @@
+[
+  {"date": "1986-03-01", "y": 40, "anchor": "top", "label": "Saudi Arabia floods market, prices crash"},
+  {"date": "1990-08-02", "y": 75, "anchor": "bottom", "label": "Iraq invades Kuwait"},
+  {"date": "1998-12-01", "y": 25, "anchor": "top", "label": "Asian financial crisis, oil hits $10"},
+  {"date": "2003-03-20", "y": 55, "anchor": "bottom", "label": "US invades Iraq"},
+  {"date": "2008-07-01", "y": 190, "anchor": "bottom", "label": "Oil peaks at $147 (nominal)"},
+  {"date": "2008-12-01", "y": 60, "anchor": "top", "label": "Financial crisis, oil crashes to $34"},
+  {"date": "2014-11-27", "y": 100, "anchor": "bottom", "label": "OPEC refuses to cut, US shale glut"},
+  {"date": "2016-01-20", "y": 35, "anchor": "top", "label": "Oil hits $26, lowest since 2003"},
+  {"date": "2020-04-20", "y": 30, "anchor": "top", "label": "COVID crash, WTI goes negative"},
+  {"date": "2022-03-08", "y": 140, "anchor": "bottom", "label": "Russia-Ukraine war, Brent hits $128"}
+]

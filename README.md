@@ -1,45 +1,51 @@
 # khalido.org
 
-a personal blog, a mix of blog posts, tils, notes and anything else i might want to refer back to.
+Personal website — blog posts, data stories, interactive tools, and TILs.
 
+## Stack
 
-# Astro stuff
+Astro 6 (beta), Svelte 5, Tailwind CSS v4, MDX. Static site deployed to GitHub Pages.
 
-This blog is powered by Astro - see [Astro documentation](https://docs.astro.build) and [Discord server](https://astro.build/chat).
+## Content
 
-## 🚀 Project Structure
+Three content types in a unified feed:
 
-Inside of your Astro project, you'll see the following folders and files:
+- **Blog posts** (`src/content/blog/`) — long-form writing, recipes, notes
+- **Links** (`src/content/blog/links/`) — short commentary on interesting URLs (`type: link`)
+- **Data stories** (`src/content/data/`) — interactive charts and narratives using Observable Plot
+- **Tools** (`src/pages/tools/`) — standalone interactive utilities
+
+TILs are blog posts tagged `til`, often using the CodeRunner component for live JavaScript.
+
+## Key components
+
+- **CodeRunner** (`src/components/CodeRunner.svelte`) — editable, runnable JS blocks with syntax highlighting. Built-in globals: `Plot`, `csvParse`, `tsvParse`, `autoType`. Auto-runs on page load. Use `collapsed` prop to show just the output.
+- **Observable Plot charts** — used in data stories via Svelte `client:only` components
+- **LLM content blocks** — use ` ```llm ` in markdown for AI-generated text, styled distinctly from human writing
+
+## Commands
+
+| Command | Action |
+| :--- | :--- |
+| `npm run dev` | Dev server at `localhost:4321` |
+| `npm run build` | Build to `./dist/` |
+| `FRED_API_KEY=xxx npx tsx scripts/fetch-fred.ts` | Fetch oil/gas/CPI data |
+
+## Structure
 
 ```
-├── public/
-├── src/
-│   ├── components/
-│   ├── content/
-│   ├── layouts/
-│   └── pages/
-├── astro.config.mjs
-├── README.md
-├── package.json
-└── tsconfig.json
+src/
+├── components/        # Astro + Svelte components (CodeRunner, ContentList, etc.)
+├── content/
+│   ├── blog/          # Posts, links, TILs (content collection)
+│   │   ├── links/     # Link posts (clipped via Obsidian)
+│   │   └── til/       # TILs with live code
+│   └── data/          # Data stories (MDX + colocated _*.svelte charts)
+├── layouts/           # BaseLayout, BlogPost
+├── pages/             # Routes (blog/, data/, tags/, tools/)
+├── scripts/           # Content utilities
+└── styles/            # Tailwind v4 global CSS
+public/data/           # Static JSON for charts (fetched client-side)
+scripts/               # Data-fetching scripts (FRED API, Yahoo Finance)
+docs/                  # Setup guides (Obsidian clipper, etc.)
 ```
-
-Astro looks for `.astro` or `.md` or `.mdx` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
-
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
-
-The `src/content/` directory contains "collections" of related Markdown and MDX documents.
-Any static assets, like images, can be placed in the `public/` directory.
-
-## 🧞 Commands
-
-All commands are run from the root of the project, from a terminal:
-
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:3000`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |

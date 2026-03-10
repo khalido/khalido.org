@@ -1,4 +1,5 @@
-import { defineCollection, z } from "astro:content";
+import { defineCollection } from "astro:content";
+import { z } from "astro/zod";
 import { glob } from "astro/loaders";
 
 // Shared schemas to keep things DRY
@@ -41,11 +42,26 @@ const blogCollection = defineCollection({
     link: z.string().url().optional(),
     via: z.string().url().optional(),
     viaTitle: z.string().optional(),
+  }),
+});
 
-    type: z.enum(["post", "aside", "quote", "video"]).default("post"),
+// data stories - interactive data-driven pages
+const dataCollection = defineCollection({
+  loader: glob({
+    base: "./src/content/data",
+    pattern: "**/index.mdx",
+  }),
+  schema: z.object({
+    title: z.string(),
+    date: dateSchema,
+    tags: tagsSchema,
+    draft: z.boolean().default(false),
+    summary: z.string().optional(),
+    updated: dateSchema.optional(),
   }),
 });
 
 export const collections = {
   blog: blogCollection,
+  data: dataCollection,
 };

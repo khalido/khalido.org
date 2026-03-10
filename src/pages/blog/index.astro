@@ -1,21 +1,16 @@
 ---
 import BaseLayout from "@layouts/BaseLayout.astro";
 import { getCollection } from "astro:content";
-import TagCloud from "@components/TagCloud.astro";
 import ContentList from "@components/ContentList.astro";
-import { getPreview, sortByDate, getAllTags } from "@scripts/content";
+import { filterDrafts, getPreview, sortByDate } from "@scripts/content";
 
-// Get all content from blog collection, filter out draft only in prod
-const allPosts = await getCollection("blog", ({ data }) => {
-    return import.meta.env.PROD ? data.draft !== true : true;
-});
+const allPosts = await getCollection("blog", filterDrafts);
 
-// Prepare content with summary and sort by date
 const allContent = sortByDate(
     await Promise.all(
         allPosts.map(async (post) => ({
             id: post.id,
-            slug: post.slug,
+            collection: "blog" as const,
             data: {
                 ...post.data,
                 preview: await getPreview(post),
@@ -24,12 +19,30 @@ const allContent = sortByDate(
     ),
 );
 
-// Get unique tags from all content
-const allTags = getAllTags(allPosts);
+// Get categories (subfolders) with post counts
+const categories = new Map<string, number>();
+for (const post of allPosts) {
+    const slash = post.id.indexOf("/");
+    if (slash !== -1) {
+        const cat = post.id.slice(0, slash);
+        categories.set(cat, (categories.get(cat) || 0) + 1);
+    }
+}
+const sortedCategories = [...categories.entries()].sort((a, b) => a[0].localeCompare(b[0]));
 ---
 
 <BaseLayout title="khalido.org: Blog">
-    <h1 class="text-3xl mb-8">Blog Posts</h1>
-    <TagCloud tags={allTags} />
+    <h1 class="text-3xl mb-4">All Posts</h1>
+
+    {sortedCategories.length > 0 && (
+        <div class="flex flex-wrap gap-3 mb-6 text-sm">
+            {sortedCategories.map(([cat, count]) => (
+                <a href={`/blog/${cat}`} class="text-purple-500 hover:underline hover:bg-yellow-200">
+                    {cat} <span class="text-gray-400">({count})</span>
+                </a>
+            ))}
+        </div>
+    )}
+
     <ContentList contents={allContent} />
 </BaseLayout>
