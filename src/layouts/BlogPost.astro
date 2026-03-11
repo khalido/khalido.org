@@ -20,7 +20,12 @@ const siteTitle = title ? `khalido.org: ${title}` : "khalido.org";
         <article class="prose md:prose-base lg:w-3/4">
             {title && (
                 <h1 class="!text-2xl !mt-4 !mb-2">
-                    {link ? <a href={link}>{title}</a> : title}
+                    {link ? <a href={link}>{title} ↗</a> : title}
+                </h1>
+            )}
+            {!title && link && (
+                <h1 class="!text-2xl !mt-4 !mb-2">
+                    <a href={link}>{new URL(link).hostname.replace("www.", "")} ↗</a>
                 </h1>
             )}
 

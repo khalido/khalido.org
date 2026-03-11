@@ -1,12 +1,12 @@
 # khalido.org
 
-Personal website — blog posts, links, TILs, data stories, and interactive tools. Built with Astro 6 (beta), Svelte 5, Tailwind CSS v4, MDX. Hosted on GitHub Pages.
+Personal website — blog posts, links, TILs, data stories, and interactive tools. Built with Astro 6, Svelte 5, Tailwind CSS v4, MDX. Hosted on GitHub Pages.
 
 ## Writing Policy
 
 **The human writes all published prose.** LLMs assist with code, scripts, charts, data analysis, proofreading, and research — but never generate narrative content published under the author's name. Use `TODO: write this` as placeholder for content sections. When asked to help with a blog post, research the topic, suggest structure, provide data — but leave the writing to the human.
 
-LLM-generated explanatory text (e.g. describing how a component works) should use ` ```llm ` blocks so it renders with distinct styling.
+AI-generated explanatory text (e.g. describing how a component works) should use ` ```ai ` blocks so it renders with distinct styling.
 
 ## How to Help with Content
 
@@ -25,9 +25,10 @@ import CodeRunner from '@components/CodeRunner.svelte';
 console.log(data.reduce((a, b) => a + b));
 `} />
 ```
-- Built-in globals (no imports needed): `Plot`, `csvParse`, `tsvParse`, `autoType`
+- Built-in globals (no imports needed): `Plot`, `csvParse`, `tsvParse`, `autoType`, `Inputs`
 - Return a DOM element for charts: `return Plot.plot({...})`
 - `console.log()` output appears in a dark panel below
+- `Inputs.slider(min, max, {value, label, step})`, `Inputs.select(options, {label})`, `Inputs.checkbox({label, value})`, `Inputs.text({label, placeholder})` — interactive controls that re-run the code block on change; values persist across re-renders
 - Props: `collapsed` (hide code, show output), `title`, `caption`
 - Code auto-runs on page load, is editable, has Run/Reset/Copy buttons
 
@@ -140,7 +141,7 @@ Both render client-side — Observable Plot needs browser DOM APIs, so Astro can
 ### Shiki / syntax highlighting
 
 - Astro uses Shiki by default — all ` ```lang ` blocks get syntax highlighting
-- Custom languages via `langAlias` in `astro.config.mjs` (e.g. `llm → plaintext`)
+- Custom languages via `langAlias` in `astro.config.mjs` (e.g. `ai → plaintext`)
 - Shiki uses inline styles, not CSS classes — target with `pre.astro-code[data-language="..."]`
 - Both `py` and `python` work for Python
 

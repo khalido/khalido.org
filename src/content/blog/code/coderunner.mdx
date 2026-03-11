@@ -1,0 +1,116 @@
+---
+title: "Live code blocks with CodeRunner"
+date: 2026-03-09
+tags:
+  - javascript
+  - dataviz
+  - astro
+  - blogging
+---
+
+import CodeRunner from '@components/CodeRunner.svelte';
+
+I always wanted a simple way to run some code examples in my blog posts and see output in the browser - like [jupyter](https://jupyter.org/) / [marimo](https://marimo.io/) / [observable](https://observablehq.com/documentation/notebooks/) notebooks.
+
+I had the right idea - use [Astro](https://astro.build/) and [Svelte](https://svelte.dev) to have a simple coderunner component - and [Claude Code](https://code.claude.com/docs/en/overview) magicked it into being. 
+
+```ai
+Code blocks below use the CodeRunner component — JavaScript runs directly in the browser. Each block auto-executes on page load and is fully editable (change the code, hit ▶ to re-run). Returning a DOM element renders it below; console.log output appears in a dark panel.
+
+Built-in globals (no imports needed):
+- Plot — Observable Plot, concise chart library from the D3 team
+- csvParse, tsvParse — parse CSV/TSV strings into arrays of objects (d3-dsv)
+- autoType — automatically coerce CSV string values to numbers, dates, etc.
+- Inputs — interactive controls (slider, select, checkbox, text) that re-run the code on change
+```
+
+## Fibonacci sequence
+
+<CodeRunner client:load collapsed={false} code={`function fib(n) {
+  const seq = [0, 1];
+  for (let i = 2; i < n; i++) seq.push(seq[i - 1] + seq[i - 2]);
+  return seq;
+}
+
+const nums = fib(20);
+console.log(nums.join(", "));
+`} />
+
+## Interactive chart with Inputs
+
+Inputs and interactive controls example.
+
+```ai
+Inputs add interactive controls that re-run the code block when changed. Each returns an object with .value (current value) and .element (auto-rendered above the output). Values persist across re-runs so a slider stays where you dragged it.
+
+Available inputs:
+- Inputs.slider(min, max, {value, label, step}) — range slider with live numeric display
+- Inputs.select(options, {value, label}) — dropdown from an array of choices
+- Inputs.checkbox({value, label}) — boolean toggle, defaults to false
+- Inputs.text({value, label, placeholder}) — free text input
+```
+
+<CodeRunner client:load collapsed={false} code={`const n = Inputs.slider(10, 200, { value: 50, label: "Points", step: 1 });
+const color = Inputs.select(["#1e40af", "#dc2626", "#059669", "#7c3aed"], { label: "Color" });
+const showDots = Inputs.checkbox({ label: "Show dots", value: true });
+
+const data = Array.from({length: n.value}, (_, i) => ({
+  x: i,
+  y: Math.sin(i / 5) * 10 + Math.random() * 3,
+}));
+
+return Plot.plot({
+  width: 600, height: 200,
+  y: { grid: true },
+  marks: [
+    Plot.lineY(data, { x: "x", y: "y", stroke: color.value, strokeWidth: 1.5 }),
+    showDots.value ? Plot.dot(data, { x: "x", y: "y", fill: color.value, r: 2 }) : null,
+  ].filter(Boolean),
+});
+`} />
+
+## Fetching and plotting live data
+
+Fetch JSON from an API and plot it — 30 days of Phoenix weather from [Open-Meteo](https://open-meteo.com/):
+
+<CodeRunner client:load collapsed={false} code={`const res = await fetch("https://api.open-meteo.com/v1/forecast?latitude=33.44&longitude=-112.07&daily=temperature_2m_max&timezone=America/Phoenix&past_days=30");
+const weather = await res.json();
+
+const data = weather.daily.time.map((date, i) => ({
+  date: new Date(date),
+  temp: weather.daily.temperature_2m_max[i],
+}));
+
+return Plot.plot({
+  width: 600, height: 200,
+  style: { background: "transparent" },
+  x: { label: null },
+  y: { grid: true, label: "°C" },
+  marks: [
+    Plot.lineY(data, { x: "date", y: "temp", stroke: "#dc2626", strokeWidth: 1.5, tip: true }),
+    Plot.dot(data, { x: "date", y: "temp", fill: "#dc2626", r: 2.5 }),
+  ],
+});
+`} />
+
+## CSV data
+
+```ai
+csvParse(text, autoType) parses a CSV string into an array of objects, one per row. autoType coerces numeric/date strings to native types. tsvParse works the same for tab-separated data. Fetch any URL — GitHub raw files, APIs, etc.
+```
+
+<CodeRunner client:load collapsed={false} code={`const res = await fetch("https://raw.githubusercontent.com/datasets/oil-prices/refs/heads/main/data/brent-daily.csv");
+const oil = csvParse(await res.text(), autoType);
+
+return Plot.plot({
+  width: 600, height: 250,
+  style: { background: "transparent" },
+  x: { label: null },
+  y: { grid: true, label: "$/barrel" },
+  marks: [
+    Plot.areaY(oil, { x: "Date", y: "Price", fill: "#6366f1", fillOpacity: 0.05 }),
+    Plot.lineY(oil, { x: "Date", y: "Price", stroke: "#018CD4", strokeWidth: 1, tip: true }),
+    Plot.ruleY([0]),
+  ],
+});
+`} />

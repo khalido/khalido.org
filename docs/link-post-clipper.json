@@ -1,0 +1,10 @@
+{
+	"schemaVersion": "0.1.0",
+	"name": "Link Post",
+	"behavior": "create",
+	"noteContentFormat": "---\ndate: {{date|date:YYYY-MM-DD}}\nlink: {{url}}\ntags: []\n---\n\n[{{title}}]({{url}}).\n\n{{selection|blockquote}}",
+	"properties": [],
+	"triggers": [],
+	"noteNameFormat": "{{title | lower | replace:\" \":\"-\" | replace:\"/\":\"-\" | replace:\"&\":\"and\" | replace:\"--\":\"-\" |   replace:\"?\":\"\" | replace:\"!\":\"\" | replace:\":\":\"\" | replace:\"\\\"\":\"\" | replace:\"'\":\"\" |   replace:\"#\":\"\" | replace:\".\":\"\"}}",
+	"path": "links"
+}

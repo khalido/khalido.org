@@ -71,12 +71,12 @@ Fetching scripts in `scripts/` run manually or via CI (not on every build).
 ### CodeRunner (`src/components/CodeRunner.svelte`)
 Live editable JavaScript blocks. Uses `client:load`.
 - Syntax highlighting via highlight.js (loaded from CDN, JS grammar only)
-- Built-in globals: `Plot` (Observable Plot, from npm), `csvParse`/`tsvParse`/`autoType` (d3-dsv, from CDN)
+- Built-in globals: `Plot` (Observable Plot, from npm), `csvParse`/`tsvParse`/`autoType` (d3-dsv, from CDN), `Inputs` (interactive controls: slider, select, checkbox, text)
 - Auto-runs on mount, captures console output, renders DOM elements (charts)
 - Props: `code`, `lang`, `collapsed`, `title`, `caption`
 
 ### LLM Content Blocks
-Use ` ```llm ` in markdown. Shiki renders with `data-language="llm"` (configured via `langAlias` in astro.config.mjs). Styled in `global.css` with faint background and "AI" badge.
+Use ` ```ai ` in markdown. Shiki renders with `data-language="ai"` (configured via `langAlias` in astro.config.mjs). Styled in `global.css` with faint background and "AI" badge.
 
 ## Known Issues
 

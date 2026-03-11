@@ -13,7 +13,7 @@ export default defineConfig({
   markdown: {
     shikiConfig: {
       langAlias: {
-        llm: "plaintext",
+        ai: "plaintext",
       },
     },
   },

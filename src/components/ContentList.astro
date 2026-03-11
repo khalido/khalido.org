@@ -67,16 +67,6 @@ const { contents } = Astro.props;
                             </a>
                         )}
 
-                        {/* For link posts without a title, show the link domain */}
-                        {isLink && !content.data.title && content.data.link && (
-                            <a
-                                class="no-underline hover:underline text-gray-800 font-medium block mb-1"
-                                href={content.data.link}
-                            >
-                                {new URL(content.data.link).hostname.replace("www.", "")}
-                            </a>
-                        )}
-
                         <div
                             class="prose prose-sm text-gray-600"
                             set:html={content.data.preview}

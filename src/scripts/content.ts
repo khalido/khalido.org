@@ -27,7 +27,7 @@ export function getAllTagsWithCounts(...collections: { data: { tags: string[] } 
 }
 
 export async function getPreview(post: BlogPost): Promise<string> {
-  if (post.data.summary) {
+  if (post.data.summary && post.data.summary.trim() !== "...") {
     return post.data.summary;
   }
 

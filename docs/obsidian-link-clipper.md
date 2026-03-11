@@ -28,39 +28,37 @@ src/content/blog/links
 date: {{date:YYYY-MM-DD}}
 link: {{url}}
 tags: []
-type: link
-draft: true
 ---
 
-{{selection|blockquote}}
+[{{title}}]({{url}}). {{selection|blockquote}}
 ```
 
 ## Workflow
 
 1. **Clip**: Browse to an interesting page, select relevant text (optional), click the clipper icon, choose "Link Post"
-2. **Edit**: Open in Obsidian later, add your commentary above the quote, add tags, review
-3. **Publish**: Remove `draft: true` (or set to `false`), then `git commit && git push`
+2. **Edit**: Open the file later, add your commentary, add tags
+3. **Publish**: `git commit && git push` — posts without `draft: true` are published by default
 
 ## Tips
 
 - Selected text becomes a blockquote automatically via `{{selection|blockquote}}`
-- `title` in frontmatter is optional — if omitted, the feed shows the link's domain name
-- Add a `title` field manually if you want a custom heading
+- `link:` in frontmatter is the primary URL (machine-readable for scripts/analysis)
+- The body repeats the link inline as markdown — this is intentional (frontmatter for machines, body for readers)
+- Title is optional — add one manually if you want a heading on the post
 - Tags are empty by default — add them during the edit step
-- All link posts live in `src/content/blog/links/` for organization but render at `/blog/links/...`
-- `draft: true` is the default so nothing publishes until you explicitly remove it
+- Add `draft: true` only if you want to hold it back from publishing
+- All link posts live in `src/content/blog/links/`
 
 ## Frontmatter Reference
 
 ```yaml
 ---
 date: 2026-03-09          # required
-link: https://example.com  # the external URL
+link: https://example.com  # the external URL (machine-readable)
 title: "Optional title"    # omit for untitled link posts
 tags: [ai, tools]          # add during editing
-type: link                 # required — marks this as a link post
 via: https://...           # optional — where you found the link
 viaTitle: "Hacker News"    # optional — name of the source
-draft: true                # remove to publish
+draft: true                # optional — only add to hold back from publishing
 ---
 ```

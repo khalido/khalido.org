@@ -4,14 +4,14 @@ Personal website — blog posts, data stories, interactive tools, and TILs.
 
 ## Stack
 
-Astro 6 (beta), Svelte 5, Tailwind CSS v4, MDX. Static site deployed to GitHub Pages.
+Astro 6, Svelte 5, Tailwind CSS v4, MDX. Static site deployed to GitHub Pages.
 
 ## Content
 
 Three content types in a unified feed:
 
 - **Blog posts** (`src/content/blog/`) — long-form writing, recipes, notes
-- **Links** (`src/content/blog/links/`) — short commentary on interesting URLs (`type: link`)
+- **Links** (`src/content/blog/links/`) — short commentary on interesting URLs
 - **Data stories** (`src/content/data/`) — interactive charts and narratives using Observable Plot
 - **Tools** (`src/pages/tools/`) — standalone interactive utilities
 
@@ -19,9 +19,19 @@ TILs are blog posts tagged `til`, often using the CodeRunner component for live 
 
 ## Key components
 
-- **CodeRunner** (`src/components/CodeRunner.svelte`) — editable, runnable JS blocks with syntax highlighting. Built-in globals: `Plot`, `csvParse`, `tsvParse`, `autoType`. Auto-runs on page load. Use `collapsed` prop to show just the output.
+- **CodeRunner** (`src/components/CodeRunner.svelte`) — editable, runnable JS blocks with syntax highlighting. Built-in globals: `Plot`, `csvParse`, `tsvParse`, `autoType`, `Inputs`. Auto-runs on page load. Use `collapsed` prop to show just the output.
 - **Observable Plot charts** — used in data stories via Svelte `client:only` components
-- **LLM content blocks** — use ` ```llm ` in markdown for AI-generated text, styled distinctly from human writing
+- **AI content blocks** — use ` ```ai ` in markdown for AI-generated text, styled distinctly from human writing
+
+## Link clipping
+
+Capture links via [Obsidian Web Clipper](https://help.obsidian.md/web-clipper). On a new machine:
+
+1. Install Obsidian + Web Clipper extension
+2. Open this repo folder as an Obsidian vault
+3. In Web Clipper settings, import `docs/link-post-clipper.json`
+
+See `docs/obsidian-link-clipper.md` for full workflow details.
 
 ## Commands
 
@@ -47,5 +57,5 @@ src/
 └── styles/            # Tailwind v4 global CSS
 public/data/           # Static JSON for charts (fetched client-side)
 scripts/               # Data-fetching scripts (FRED API, Yahoo Finance)
-docs/                  # Setup guides (Obsidian clipper, etc.)
+docs/                  # Setup guides, clipper template export
 ```

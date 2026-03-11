@@ -1,10 +1,8 @@
 ---
 title: Chai Time at Cinnamon Gardens
-summary: ...
 date: 2023-07-29
 rating: 4.5
-author: Shankari Chandran
-draft: true
+bookAuthor: Shankari Chandran
 tags:
   - books
   - australia

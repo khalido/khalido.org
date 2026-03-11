@@ -121,6 +121,22 @@
     }
 }
 
+/* Tighten prose typography — default line-height (1.75) and paragraph spacing are too airy */
+.prose {
+    --tw-prose-body: #374151;
+    line-height: 1.6;
+}
+
+.prose p {
+    margin-top: 0.75em;
+    margin-bottom: 0.75em;
+}
+
+.prose li {
+    margin-top: 0.25em;
+    margin-bottom: 0.25em;
+}
+
 /* Custom footnote styling */
 .prose section[data-footnotes] {
     @apply mt-12 pt-8 border-t border-gray-200;
@@ -159,8 +175,8 @@
     @apply underline;
 }
 
-/* LLM-generated content blocks — use ```llm in markdown */
-pre.astro-code[data-language="llm"] {
+/* AI-generated content blocks — use ```ai in markdown */
+pre.astro-code[data-language="ai"] {
     background: rgba(250, 250, 249, 0.5) !important;
     color: #57534e !important;
     border: 1px solid #f0eeec;
@@ -174,7 +190,7 @@ pre.astro-code[data-language="llm"] {
     position: relative;
 }
 
-pre.astro-code[data-language="llm"]::before {
+pre.astro-code[data-language="ai"]::before {
     content: "AI";
     position: absolute;
     top: 0;
@@ -189,6 +205,6 @@ pre.astro-code[data-language="llm"]::before {
     pointer-events: none;
 }
 
-pre.astro-code[data-language="llm"] span {
+pre.astro-code[data-language="ai"] span {
     color: inherit !important;
 }
