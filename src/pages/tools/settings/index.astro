@@ -1,0 +1,10 @@
+---
+import BaseLayout from "@layouts/BaseLayout.astro";
+import Settings from "./_Settings.svelte";
+---
+
+<BaseLayout title="Tool Settings - khalido.org" description="Manage API keys for tools.">
+  <h1 class="text-2xl font-bold mb-2">Settings</h1>
+  <p class="text-gray-600 mb-4 text-sm">API keys for tools. Stored locally in your browser.</p>
+  <Settings client:only="svelte" />
+</BaseLayout>

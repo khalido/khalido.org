@@ -1,40 +1,45 @@
 ---
-import BaseLayout from "../../layouts/BaseLayout.astro";
+import BaseLayout from "@layouts/BaseLayout.astro";
 
-// You could automate this list by reading the directory,
-// but for now let's keep it simple with manual entries
 const tools = [
     {
+        name: "Unwall",
+        description: "Try to bypass article paywalls via archive and cache services",
+        url: "/tools/unwall",
+    },
+    {
         name: "Timezone Converter",
-        description:
-            "Compare two timezones and see their time differences over 48 hours",
+        description: "Compare two timezones side by side with day/night overlap",
         url: "/tools/timezone-converter",
     },
     {
         name: "Word Counter",
-        description: "A simple tool to count words and characters in a text.",
+        description: "Count words and characters in text",
         url: "/tools/word-counter",
     },
-    // Add more tools here as you create them
 ];
 ---
 
 <BaseLayout title="Tools - khalido.org" description="Useful web tools">
     <div class="max-w-4xl mx-auto">
-        <h1 class="text-3xl font-bold mb-8">Tools</h1>
+        <h1 class="text-3xl font-bold mb-6">Tools</h1>
 
-        <div class="grid gap-6 md:grid-cols-2">
+        <div class="grid gap-4 md:grid-cols-2">
             {
                 tools.map((tool) => (
                     <a
                         href={tool.url}
-                        class="block p-6 bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow"
+                        class="block p-5 border border-gray-200 rounded-lg hover:border-gray-400 transition-colors"
                     >
-                        <h2 class="text-xl font-semibold mb-2">{tool.name}</h2>
-                        <p class="text-gray-600">{tool.description}</p>
+                        <h2 class="text-lg font-semibold mb-1">{tool.name}</h2>
+                        <p class="text-gray-600 text-sm">{tool.description}</p>
                     </a>
                 ))
             }
         </div>
+
+        <p class="mt-6 text-sm text-gray-400">
+            <a href="/tools/settings" class="hover:text-gray-600">⚙ Settings</a> — manage API keys for tools
+        </p>
     </div>
 </BaseLayout>

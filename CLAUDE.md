@@ -149,6 +149,18 @@ Both render client-side — Observable Plot needs browser DOM APIs, so Astro can
 
 - Fuzzy search (MiniSearch or Fuse.js) for title/tag/summary matching — or Pagefind for full-content search
 - astro-embed integration for YouTube/Twitter embeds from URLs in MDX
-- Migrate to Cloudflare Workers (reference: `~/code/pakairquality`)
 - PyRunner component (Pyodide WASM for Python code blocks)
 - Callout/admonition components (reference: Astro Starlight)
+- Bits UI for headless accessible components in tools (Combobox, Select, Switch, etc.)
+
+### Cloudflare Workers migration
+
+Migrate from GitHub Pages to Cloudflare Workers to enable server-side features:
+- **Why**: Server-side API keys (no client exposure), cron jobs for agents, Better Auth for users, spending limits
+- **Architecture**: `api.khalido.org` worker backend, static site stays Astro
+- **Auth**: Better Auth with per-user API key storage + global project key for shared tools
+- **LLM tools**: Use OpenRouter or Gemini for cheap models, opinionated agentic tools (not generic chat)
+- **Budget gating**: Allow ~$1/day per user on shared tools, then gate
+- **Libraries**: [pi-ai](https://github.com/badlogic/pi-mono/tree/main/packages/ai) (lightweight multi-provider AI, works in browser + server, tool calling, streaming) + [pi-agent](https://github.com/badlogic/pi-mono/tree/main/packages/agent) (agent framework with conversation management, persistent storage)
+- **Cron agents**: Auto-fetch RSS feeds and draft link posts, refresh data stories
+- **Reference**: `~/code/pakairquality` for Cloudflare Workers setup

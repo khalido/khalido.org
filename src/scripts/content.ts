@@ -31,18 +31,26 @@ export async function getPreview(post: BlogPost): Promise<string> {
     return post.data.summary;
   }
 
-  // Get first paragraph of prose — skip headings, import lines, blank lines
+  // Get first two paragraphs of prose — skip headings, import lines
   const lines = (post.body ?? "").split("\n");
-  const proseLines: string[] = [];
+  const paragraphs: string[][] = [];
+  let current: string[] = [];
   for (const line of lines) {
-    if (line.startsWith("#") || line.startsWith("import ") || line.trim() === "") {
-      if (proseLines.length > 0) break; // stop at first break after prose
-      continue; // skip leading non-prose
+    if (line.startsWith("#") || line.startsWith("import ")) {
+      if (current.length > 0) { paragraphs.push(current); current = []; }
+      if (paragraphs.length >= 2) break;
+      continue;
     }
-    proseLines.push(line);
+    if (line.trim() === "") {
+      if (current.length > 0) { paragraphs.push(current); current = []; }
+      if (paragraphs.length >= 2) break;
+      continue;
+    }
+    current.push(line);
   }
+  if (current.length > 0 && paragraphs.length < 2) paragraphs.push(current);
 
-  const preview = proseLines.join("\n");
+  const preview = paragraphs.map(p => p.join("\n")).join("\n\n");
   if (!preview) return "";
 
   const processedContent = await unified()
