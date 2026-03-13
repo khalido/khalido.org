@@ -137,6 +137,17 @@
     margin-bottom: 0.25em;
 }
 
+/* Blockquotes: normal weight and style, just the left border */
+.prose blockquote {
+    font-style: normal;
+    font-weight: normal;
+}
+
+.prose blockquote p {
+    font-style: normal;
+    font-weight: normal;
+}
+
 /* Custom footnote styling */
 .prose section[data-footnotes] {
     @apply mt-12 pt-8 border-t border-gray-200;
@@ -173,6 +184,16 @@
 
 .prose a[data-footnote-ref]:hover {
     @apply underline;
+}
+
+/* Previews: cap heading sizes so they don't dominate excerpts */
+.prose.prose-sm h1,
+.prose.prose-sm h2,
+.prose.prose-sm h3,
+.prose.prose-sm h4 {
+    font-size: inherit;
+    font-weight: 600;
+    margin: 0.5em 0;
 }
 
 /* AI-generated content blocks — use ```ai in markdown */

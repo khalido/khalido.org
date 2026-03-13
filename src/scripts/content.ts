@@ -36,7 +36,8 @@ export async function getPreview(post: BlogPost): Promise<string> {
   const paragraphs: string[][] = [];
   let current: string[] = [];
   for (const line of lines) {
-    if (line.startsWith("#") || line.startsWith("import ")) {
+    const stripped = line.replace(/^>\s*/g, "");
+    if (stripped.startsWith("#") || line.startsWith("import ")) {
       if (current.length > 0) { paragraphs.push(current); current = []; }
       if (paragraphs.length >= 2) break;
       continue;
