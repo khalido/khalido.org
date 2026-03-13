@@ -1,0 +1,20 @@
+---
+import BaseLayout from "@layouts/BaseLayout.astro";
+import AgentTest from "./_AgentTest.svelte";
+
+// Get approximate data freshness from the news JSON mod time
+const dataDate = new Date().toISOString().split("T")[0];
+---
+
+<BaseLayout title="Oil Price Agent - khalido.org" description="An agent that answers questions about oil prices, trends, and energy news.">
+  <h1 class="text-2xl font-bold mb-2">Oil Price Agent <span class="text-sm font-normal text-gray-400">test</span></h1>
+  <p class="text-gray-600 mb-4 text-sm">
+    A test of <a href="https://github.com/badlogic/pi-mono" class="underline">pi-agent</a> + <a href="https://github.com/badlogic/pi-mono/tree/main/packages/ai" class="underline">pi-ai</a> running entirely browser-side — no backend, just your API key and OpenRouter.
+    Oil prices are the demo topic. Requires an <a href="/tools/settings" class="underline">OpenRouter API key</a>.
+  </p>
+  <AgentTest client:only="svelte" />
+  <footer class="mt-8 pt-4 border-t border-gray-200 text-xs text-gray-400 space-y-1">
+    <p>Price data and news are baked at deploy time — not live. Last refreshed ~{dataDate}.</p>
+    <p>Sources: <a href="https://fred.stlouisfed.org/" class="underline">FRED</a> (monthly prices), <a href="https://finance.yahoo.com/" class="underline">Yahoo Finance</a> (daily OHLC), <a href="https://www.eia.gov/" class="underline">EIA</a>, <a href="https://oilprice.com/" class="underline">OilPrice.com</a>, <a href="https://www.ogj.com/" class="underline">OGJ</a> (news).</p>
+  </footer>
+</BaseLayout>

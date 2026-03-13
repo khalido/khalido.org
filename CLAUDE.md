@@ -95,7 +95,7 @@ ls src/content/data/*/index.mdx
 ## Guidelines
 
 - **Don't install packages** without asking
-- **Don't upgrade packages** without asking — we're on Astro 6 beta, upgrades can break things
+- **Don't upgrade packages** without asking — we're on Astro 6, upgrades can break things
 - **Don't write prose** for the human (see Writing Policy above)
 - Use context7 MCP to fetch current docs when needed
 - Prefer editing existing files over creating new ones
@@ -145,22 +145,81 @@ Both render client-side — Observable Plot needs browser DOM APIs, so Astro can
 - Shiki uses inline styles, not CSS classes — target with `pre.astro-code[data-language="..."]`
 - Both `py` and `python` work for Python
 
+## Tools (`src/pages/tools/`)
+
+Tools are standalone interactive pages, not content collections. Each tool lives in its own folder under `src/pages/tools/` with an `index.astro` wrapper and `_Component.svelte` for the interactive parts.
+
+### Adding a new tool
+
+1. Create `src/pages/tools/<name>/index.astro` (Astro wrapper with BaseLayout)
+2. Create `src/pages/tools/<name>/_ToolName.svelte` (prefixed with `_`, uses `client:only="svelte"`)
+3. Add entry to `src/pages/tools/_ToolsList.svelte` — set `test: true` for experiments
+4. If the tool needs an API key, use `getKey("provider")` from `@scripts/keystore`
+
+### Available UI libraries
+
+- **[Bits UI](https://bits-ui.com)** (`bits-ui`) — headless accessible Svelte 5 components. Already installed and used across tools. Key components in use:
+  - `Command` — searchable command palette (model picker)
+  - `Toggle` — on/off button (free filter, test filter)
+  - `ToggleGroup` — segmented control for single/multi select (page/terminal mode)
+  - `Combobox` — searchable single-select dropdown
+  - Other available: Accordion, Dialog, Popover, Select, Slider, Tabs, Tooltip, etc.
+  - **Important**: Bits UI components can't SSR — always use `client:only="svelte"`, not `client:load`
+- **[svelte-streamdown](https://github.com/nicholascostadev/svelte-streamdown)** — markdown rendering for streamed LLM output. Props: `content`, `controls` (`{ table: false, code: false }` to hide buttons), `theme` for custom styling.
+
+### Agent tools pattern (example: Oil Price Agent)
+
+Browser-side agent chat using pi-agent + pi-ai + OpenRouter:
+
+```
+src/pages/tools/agent-test/
+├── index.astro                    # page shell
+└── _AgentTest.svelte              # wires agent + tools + UI
+
+src/components/
+├── AgentChat.svelte               # reusable chat UI (page + terminal modes)
+└── ModelPicker.svelte             # model search with Command palette
+
+src/lib/agent/tools/               # tool definitions
+├── oil-prices.ts
+├── oil-events.ts
+└── oil-news.ts
+
+public/data/oil/                   # static data fetched by tools
+scripts/fetch-oil-news.ts          # data refresh script
+```
+
+- **pi-ai** (`@mariozechner/pi-ai`): LLM provider abstraction. `getModels("openrouter")` returns 237+ tool-calling models from an in-memory registry (no API call, no caching needed). `getModel(provider, id)` returns a model instance for the agent.
+- **pi-agent-core** (`@mariozechner/pi-agent-core`): Agent runtime with conversation loop, tool execution, event system. `agent.subscribe()` for streaming events, `agent.prompt()` to send messages.
+- **AgentChat.svelte**: Two modes — `"page"` (grows with content) and `"terminal"` (fixed dark box). Uses svelte-streamdown for markdown. Activity accordion groups thinking + tool calls between messages.
+- **ModelPicker.svelte**: Bits UI Command palette with search. Shows model name, reasoning badge, cost. Free filter toggle built in.
+- Tools fetch from `public/data/` (static JSON baked at deploy time, not live APIs).
+
 ## Future Work
 
 - Fuzzy search (MiniSearch or Fuse.js) for title/tag/summary matching — or Pagefind for full-content search
 - astro-embed integration for YouTube/Twitter embeds from URLs in MDX
 - PyRunner component (Pyodide WASM for Python code blocks)
 - Callout/admonition components (reference: Astro Starlight)
-- Bits UI for headless accessible components in tools (Combobox, Select, Switch, etc.)
 
 ### Cloudflare Workers migration
 
 Migrate from GitHub Pages to Cloudflare Workers to enable server-side features:
 - **Why**: Server-side API keys (no client exposure), cron jobs for agents, Better Auth for users, spending limits
-- **Architecture**: `api.khalido.org` worker backend, static site stays Astro
+- **Architecture**: Astro on Cloudflare Workers with `/api/*` routes for auth/proxies
 - **Auth**: Better Auth with per-user API key storage + global project key for shared tools
 - **LLM tools**: Use OpenRouter or Gemini for cheap models, opinionated agentic tools (not generic chat)
 - **Budget gating**: Allow ~$1/day per user on shared tools, then gate
 - **Libraries**: [pi-ai](https://github.com/badlogic/pi-mono/tree/main/packages/ai) (lightweight multi-provider AI, works in browser + server, tool calling, streaming) + [pi-agent](https://github.com/badlogic/pi-mono/tree/main/packages/agent) (agent framework with conversation management, persistent storage)
 - **Cron agents**: Auto-fetch RSS feeds and draft link posts, refresh data stories
-- **Reference**: `~/code/pakairquality` for Cloudflare Workers setup
+- **Reference**: `~/code/pakairquality` for Cloudflare Workers setup, `docs/cloudflare.md` for full migration plan
+
+### Context-aware page agents
+
+Add a conversational agent layer to blog content using pi-agent + Cloudflare Workers:
+- **Recipe pages**: "Cook mode" — agent knows the recipe, answers substitution/scaling/timing questions hands-free
+- **TIL pages**: Agent has the current TIL as context + tools to search other TILs by tag/keyword + web search (Exa) for related content. "Didn't I write something about functools?" → finds and links your post
+- **Data stories**: Ask questions about the charts — "what caused that spike in 2023?"
+- **Code posts**: "Explain line 5" or "how would I modify this for CSV input?"
+- **Pattern**: Page content = system prompt, agent tools = search your posts + search web. Blog becomes a personal knowledge graph with conversational interface.
+- **Start with**: One recipe page + Cloudflare Worker + pi-agent as prototype

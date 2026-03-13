@@ -1,45 +1,17 @@
 ---
 import BaseLayout from "@layouts/BaseLayout.astro";
-
-const tools = [
-    {
-        name: "Unwall",
-        description: "Try to bypass article paywalls via archive and cache services",
-        url: "/tools/unwall",
-    },
-    {
-        name: "Timezone Converter",
-        description: "Compare two timezones side by side with day/night overlap",
-        url: "/tools/timezone-converter",
-    },
-    {
-        name: "Word Counter",
-        description: "Count words and characters in text",
-        url: "/tools/word-counter",
-    },
-];
+import ToolsList from "./_ToolsList.svelte";
 ---
 
 <BaseLayout title="Tools - khalido.org" description="Useful web tools">
-    <div class="max-w-4xl mx-auto">
-        <h1 class="text-3xl font-bold mb-6">Tools</h1>
-
-        <div class="grid gap-4 md:grid-cols-2">
-            {
-                tools.map((tool) => (
-                    <a
-                        href={tool.url}
-                        class="block p-5 border border-gray-200 rounded-lg hover:border-gray-400 transition-colors"
-                    >
-                        <h2 class="text-lg font-semibold mb-1">{tool.name}</h2>
-                        <p class="text-gray-600 text-sm">{tool.description}</p>
-                    </a>
-                ))
-            }
-        </div>
-
-        <p class="mt-6 text-sm text-gray-400">
-            <a href="/tools/settings" class="hover:text-gray-600">⚙ Settings</a> — manage API keys for tools
-        </p>
+  <div class="relative">
+    <div class="max-w-2xl">
+      <h1 class="text-3xl font-bold mb-2">Tools</h1>
+      <p class="text-gray-500 text-sm mb-6">
+        Miscellaneous HTML+JavaScript tools built mostly with the help of LLMs. A mix of experiments and useful things I actually use.
+      </p>
     </div>
+
+    <ToolsList client:only="svelte" />
+  </div>
 </BaseLayout>

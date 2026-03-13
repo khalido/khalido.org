@@ -3795,9 +3795,13 @@
     {
       "date": "2026-01-01",
       "value": 326.588
+    },
+    {
+      "date": "2026-02-01",
+      "value": 327.46
     }
   ],
-  "latestCpiDate": "2026-01-01",
-  "latestCpiValue": 326.588,
-  "fetchedAt": "2026-03-09T10:56:17.603Z"
+  "latestCpiDate": "2026-02-01",
+  "latestCpiValue": 327.46,
+  "fetchedAt": "2026-03-12T22:05:41.828Z"
 }
