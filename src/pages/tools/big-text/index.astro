@@ -1,0 +1,8 @@
+---
+import BaseLayout from "@layouts/BaseLayout.astro";
+import BigText from "./_BigText.svelte";
+---
+
+<BaseLayout title="Big Text - khalido.org" description="Display text in a very large font. Shareable via URL, rendered locally." fullWidth>
+  <BigText client:only="svelte" />
+</BaseLayout>

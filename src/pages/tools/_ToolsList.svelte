@@ -29,6 +29,8 @@
     {
       name: "Utilities",
       tools: [
+        { name: "Big Text", url: "/tools/big-text", desc: "Display text as large as possible — shareable via URL, rendered locally" },
+        { name: "Sydney Clock Change", url: "/tools/sydney-clock", desc: "When do Sydney clocks change? Sunrise/sunset chart with DST" },
         { name: "Timezone Converter", url: "/tools/timezone-converter", desc: "Compare two timezones side by side with day/night overlap" },
         { name: "Word Counter", url: "/tools/word-counter", desc: "Count words and characters in text" },
       ],

@@ -1,7 +1,7 @@
 ---
 title: Outlive
-date: 2024-01-01
-rating: 4
+date: 2024-01-10
+rating: 3.5
 author: Peter Attia
 draft: true
 tags:
@@ -10,11 +10,11 @@ tags:
   - health
 ---
 
-The book is a glimpse into the future of all our fitness lives. Peter is obsessed with health and aging gracefully, and runs a practice making rich ppl healthier and fitter.
+The book is a glimpse into the future of all our fitness lives. Peter is obsessed with health and aging gracefully, and runs a practice making rich ppl (like Epstein!) healthier and fitter.
 
 Peter makes the excellent and obvious point that current medicine, or medicine 2.0 as he calls it, is only concerned about treating disease, but most issues we face arose from health choices we made over a long period, e.g getting diabetes because of over eating sugar for 10+ years.
 
-He argues for medicine 3.0, which takes a longer term view of what ails us, where it starts, and argues we should be working to fix them ages before the problem gets big.
+He argues for medicine 3.0, which takes a longer term view of what ails us, where it starts, and argues we should be working to fix them ages before the problem gets big. This makes obvious sense and is essentially what the ancients said all along until too much abundance upended all of that.
 
 I found this book useful as it provides a context of how to think about health and evaluate all the health news/studies as they come out.
 
@@ -26,3 +26,7 @@ My personal takeaways:
 - Muscle is a very important organ - grow it while you can, and work your whole life to keep it.
 - Strength and cardio are very different, and you need to do both, one isn't enough.
   - The older you get, the more you have to do. Retirees should be out there walking, walking, doing a lot. Its sort of the opposite of the image of a retiree.
+
+## 2026 update
+
+In hindsight, I think if you are sensible enough to ignore the all the over optimization bullshit in the book and Peter's salesmanship like buy magical supplements, you'll be fine. 

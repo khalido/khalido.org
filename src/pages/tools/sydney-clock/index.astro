@@ -1,0 +1,8 @@
+---
+import BaseLayout from "@layouts/BaseLayout.astro";
+import SydneyClock from "./_SydneyClock.svelte";
+---
+
+<BaseLayout title="Sydney Clock Change - khalido.org" description="When do the clocks change in Sydney? Sunrise and sunset times across the year with DST transitions." fullWidth>
+  <SydneyClock client:only="svelte" />
+</BaseLayout>
