@@ -165,7 +165,7 @@
     const { fallBack, springForward } = getTransitions(year);
 
     const width = plotEl.clientWidth;
-    const height = Math.min(plotEl.clientHeight, window.innerHeight - 200);
+    const height = Math.max(300, Math.min(plotEl.clientHeight, window.innerHeight - 200));
 
     const plot = Plot.plot({
       width,
@@ -367,7 +367,7 @@
   }
 </script>
 
-<div class="flex flex-col" style="height: calc(100dvh - 4rem);">
+<div class="flex flex-col min-h-[500px]" style="height: calc(100dvh - 4rem);">
   <!-- Hero -->
   <div class="shrink-0 px-4 py-6 sm:px-6 sm:py-8 bg-white border-b border-gray-200">
     <div class="flex flex-wrap items-start justify-between gap-6">
