@@ -2,31 +2,33 @@
   import { onMount } from "svelte";
   import { Agent } from "@earendil-works/pi-agent-core";
   import { getOpenRouterModel, type ORModel } from "@lib/agent/openrouter-models";
-  import { ToggleGroup } from "bits-ui";
   import { getKey } from "@scripts/keystore";
   import AgentChat from "@components/AgentChat.svelte";
   import ORModelPicker from "@components/ORModelPicker.svelte";
-  import { oilPriceTool } from "@lib/agent/tools/oil-prices";
-  import { oilEventsTool } from "@lib/agent/tools/oil-events";
-  import { oilNewsTool } from "@lib/agent/tools/oil-news";
-  import { marketQuotesTool } from "@lib/agent/tools/market-quotes";
+  import { searchPapersTool, getPaperTool, papersCitingTool } from "@lib/agent/tools/papers";
+  import { hnFrontPageTool, hnSearchTool, hnStoryTool } from "@lib/agent/tools/hackernews";
+  import { hfDailyPapersTool } from "@lib/agent/tools/hf-papers";
+  import { fetchPageTool } from "@lib/agent/tools/fetch-page";
 
   const DEFAULT_MODEL_ID = "google/gemini-3.1-flash-lite-preview";
-  const SYSTEM_PROMPT = `You are a concise assistant that answers questions about oil prices and energy markets.
-You have tools for: live market quotes (WTI + Brent, refreshed hourly, with headlines), historical price data (monthly back to 1987, daily recent), major historical events, and recent news.
-For "current price" questions use get_market_quotes; for trends use get_oil_prices.
-Use your tools to fetch data before answering. Keep responses short and factual.
-When discussing trends, mention specific prices and dates.
-When asked about current events, check the news tool for recent context.
-Format responses using markdown — use **bold** for key numbers, bullet lists for comparisons, and headers for longer answers.`;
+  const SYSTEM_PROMPT = `You are a research assistant that digs through papers, Hacker News, and the web.
+
+Your sources:
+- search_papers / get_paper / papers_citing — academic literature via OpenAlex (all publishers). Snowball: find a seed paper, then papers_citing to go forward.
+- hn_front_page — the CURRENT HN front page in one call. Use for "what's hot/latest on HN".
+- hn_search / hn_story — practitioner discussion on Hacker News. Search supports days + sort='date' for recency; search a URL or exact title to find discussion of a specific paper/article. The comments often have the real-world caveats papers skip.
+- hf_daily_papers — what's trending in ML right now.
+- fetch_page — read any URL as text. Use selectively (rate-limited) on the most promising 1-3 sources.
+
+Method: search first, read the best hits, then answer. Cross-check papers against HN discussion when the topic is practical.
+Always cite: paper titles with DOI links (https://doi.org/...), HN stories as https://news.ycombinator.com/item?id=..., pages by URL.
+Format in markdown. Be concise — findings first, then evidence.`;
 
   const SUGGESTIONS = [
-    "What's the current oil price?",
-    "How did COVID affect oil prices?",
-    "What's happening in oil markets right now?",
-    "Show me the price trend for the last year",
-    "What were the biggest oil price crashes in history?",
-    "How does OPEC affect oil prices?",
+    "What's trending in ML today?",
+    "State of the art on speculative decoding?",
+    "What does HN think about local-first software?",
+    "Find the RAG survey papers with the most citations",
   ];
 
   let selectedModelId = $state(DEFAULT_MODEL_ID);
@@ -34,7 +36,6 @@ Format responses using markdown — use **bold** for key numbers, bullet lists f
   let agent: Agent | null = $state(null);
   let error = $state("");
   let ready = $state(false);
-  let chatMode = $state<"page" | "terminal">("page");
 
   onMount(async () => {
     try {
@@ -52,9 +53,17 @@ Format responses using markdown — use **bold** for key numbers, bullet lists f
         initialState: {
           systemPrompt: SYSTEM_PROMPT,
           model: selectedModel,
-          // Without this, reasoning-capable models get effort "none" and never think
           thinkingLevel: selectedModel.reasoning ? "medium" : "off",
-          tools: [marketQuotesTool, oilPriceTool, oilEventsTool, oilNewsTool],
+          tools: [
+            searchPapersTool,
+            getPaperTool,
+            papersCitingTool,
+            hnFrontPageTool,
+            hnSearchTool,
+            hnStoryTool,
+            hfDailyPapersTool,
+            fetchPageTool,
+          ],
         },
         getApiKey: () => getKey("openrouter"),
       });
@@ -69,8 +78,6 @@ Format responses using markdown — use **bold** for key numbers, bullet lists f
   function onModelChange(model: ORModel) {
     selectedModel = model;
     if (!agent) return;
-    // Switching models mid-response: abort the current run first so the
-    // next prompt cleanly uses the new model
     if (agent.state.isStreaming) agent.abort();
     agent.state.model = model as any;
     agent.state.thinkingLevel = model.reasoning ? "medium" : "off";
@@ -94,22 +101,9 @@ Format responses using markdown — use **bold** for key numbers, bullet lists f
         <span>${selectedModel.cost.input.toFixed(2)}/${selectedModel.cost.output.toFixed(2)}</span>
         {#if selectedModel.reasoning}<span class="text-purple-400">reasoning</span>{/if}
       {/if}
-      <ToggleGroup.Root
-        type="single"
-        value={chatMode}
-        onValueChange={(v) => { if (v) chatMode = v as "page" | "terminal"; }}
-        class="ml-auto flex items-center border rounded overflow-hidden"
-      >
-        <ToggleGroup.Item
-          value="page"
-          class="px-2 py-1 text-xs text-gray-400 data-[state=on]:bg-gray-200 data-[state=on]:text-gray-700 hover:bg-gray-50 transition-colors"
-        >page</ToggleGroup.Item>
-        <ToggleGroup.Item
-          value="terminal"
-          class="px-2 py-1 text-xs text-gray-400 data-[state=on]:bg-gray-200 data-[state=on]:text-gray-700 hover:bg-gray-50 transition-colors"
-        >terminal</ToggleGroup.Item>
-      </ToggleGroup.Root>
     </div>
-    <AgentChat {agent} suggestions={SUGGESTIONS} placeholder="Ask about oil prices..." mode={chatMode} />
+    <AgentChat {agent} suggestions={SUGGESTIONS} placeholder="Research anything — papers, HN, the web..." />
   </div>
+{:else if error}
+  <div class="p-3 bg-red-50 rounded text-sm text-red-700">{error}</div>
 {/if}

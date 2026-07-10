@@ -3,6 +3,8 @@
   let results = $state([]);
   let checking = $state(false);
 
+  // 12ft.io (dead, shut down) and Google Cache (feature removed) used to be
+  // here — only list services that actually resolve
   const services = [
     {
       name: "Archive.today",
@@ -10,37 +12,16 @@
       icon: "📦",
     },
     {
-      name: "12ft.io",
-      getUrl: (u) => `https://12ft.io/${u}`,
-      icon: "🪜",
-    },
-    {
-      name: "Google Cache",
-      getUrl: (u) => `https://webcache.googleusercontent.com/search?q=cache:${encodeURIComponent(u)}`,
-      icon: "🔍",
-    },
-    {
       name: "Wayback Machine",
-      getUrl: (u) => `https://web.archive.org/web/${u}`,
+      getUrl: (u) => `https://web.archive.org/web/2/${u}`,
       icon: "🕰️",
     },
     {
-      name: "Archive.org (latest)",
-      getUrl: (u) => `https://web.archive.org/web/2/${u}`,
+      name: "Wayback Machine (all snapshots)",
+      getUrl: (u) => `https://web.archive.org/web/*/${u}`,
       icon: "📚",
     },
   ];
-
-  async function checkUrl(service) {
-    const target = service.getUrl(url);
-    try {
-      // We can't actually check if these work due to CORS,
-      // so we just generate the links and let the user try them
-      return { ...service, url: target, status: "link" };
-    } catch {
-      return { ...service, url: target, status: "error" };
-    }
-  }
 
   async function check() {
     if (!url.trim()) return;

@@ -1,4 +1,4 @@
-import { Type } from "@sinclair/typebox";
+import { Type } from "@earendil-works/pi-ai";
 
 /**
  * Oil news tool — reads pre-fetched news from /data/oil/news.json.

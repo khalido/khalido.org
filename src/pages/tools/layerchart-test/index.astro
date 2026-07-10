@@ -1,0 +1,8 @@
+---
+import BaseLayout from "@layouts/BaseLayout.astro";
+import LayerChartTest from "./_LayerChartTest.svelte";
+---
+
+<BaseLayout title="LayerChart test - khalido.org" description="Trying LayerChart 2.0 with the oil price dataset.">
+  <LayerChartTest client:only="svelte" />
+</BaseLayout>

@@ -4,7 +4,7 @@ Personal website — blog posts, data stories, interactive tools, and TILs.
 
 ## Stack
 
-Astro 6, Svelte 5, Tailwind CSS v4, MDX. Static site deployed to GitHub Pages.
+Astro 7, Svelte 5, Tailwind CSS v4, MDX. Static site deployed to GitHub Pages.
 
 ## Content
 

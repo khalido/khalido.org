@@ -26,10 +26,10 @@ const { contents } = Astro.props;
 <div>
     <div class="flex items-center gap-3">
         <input
-            class="px-4 py-3 w-80 text-xl border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400"
-            type="text"
+            class="px-4 py-3 w-full max-w-md text-xl border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400"
+            type="search"
             id="postSearch"
-            placeholder="Filter posts..."
+            placeholder="Filter posts... (press /)"
         />
         <span id="filterCount" class="text-sm text-gray-400"></span>
     </div>
@@ -131,9 +131,38 @@ const { contents } = Astro.props;
         if (counter) {
             counter.textContent = filtering ? `${visible} of ${items.length}` : "";
         }
+
+        // Keep the filter in the URL so it's shareable and survives reload
+        const url = new URL(location.href);
+        if (searchInput.value.trim()) {
+            url.searchParams.set("q", searchInput.value.trim());
+        } else {
+            url.searchParams.delete("q");
+        }
+        history.replaceState(null, "", url);
     }
 
     searchInput?.addEventListener("input", filter);
+
+    // Restore filter from URL on load
+    const initialQuery = new URLSearchParams(location.search).get("q");
+    if (initialQuery) {
+        searchInput.value = initialQuery;
+        filter();
+    }
+
+    // "/" focuses search, Escape clears it
+    document.addEventListener("keydown", (e) => {
+        const typing = document.activeElement?.matches("input, textarea, [contenteditable]");
+        if (e.key === "/" && !typing) {
+            e.preventDefault();
+            searchInput.focus();
+        } else if (e.key === "Escape" && document.activeElement === searchInput) {
+            searchInput.value = "";
+            filter();
+            searchInput.blur();
+        }
+    });
 
     // Listen for tag filter toggles from tag page buttons
     document.addEventListener("toggle-tag-filter", ((e: CustomEvent) => {

@@ -1,12 +1,16 @@
 # khalido.org
 
-Personal website — blog posts, links, TILs, data stories, and interactive tools. Built with Astro 6, Svelte 5, Tailwind CSS v4, MDX. Hosted on GitHub Pages.
+Personal website — blog posts, links, TILs, data stories, and interactive tools. Built with Astro 7, Svelte 5, Tailwind CSS v4, MDX. Hosted on GitHub Pages.
 
 ## Writing Policy
 
 **The human writes all published prose.** LLMs assist with code, scripts, charts, data analysis, proofreading, and research — but never generate narrative content published under the author's name. Use `TODO: write this` as placeholder for content sections. When asked to help with a blog post, research the topic, suggest structure, provide data — but leave the writing to the human.
 
-AI-generated explanatory text (e.g. describing how a component works) should use ` ```ai ` blocks so it renders with distinct styling.
+AI-generated explanatory text (e.g. describing how a component works) must be visibly marked:
+- ` ```ai ` code fence — plain text only, renders with faint background + "AI" badge
+- `:::ai` … `:::` container directive — same styling but full markdown inside (links, lists, bold). Prefer this for anything longer than a sentence.
+
+Markdown renders single newlines as `<br>` (Obsidian/GitHub style, via a Sätteri mdast plugin in astro.config.mjs) — no need for trailing double-spaces.
 
 ## How to Help with Content
 
@@ -56,6 +60,25 @@ Commentary goes here.
 ```
 Files go in `src/content/blog/links/`. Title is optional. See `docs/obsidian-link-clipper.md` for the capture workflow.
 
+### Reviewing a blog post
+
+Use `/review-post path/to/post.mdx` when the human has finished a draft and wants feedback. The skill spawns parallel sonnet subagents for speed:
+
+1. **Proofread** — typos, grammar, repeated phrases, broken links/markdown
+2. **Research check** — verify claims against expert consensus, find contradicting evidence, flag unsourced assertions
+3. **Simulated reactions** — 20-30 realistic HN/Reddit comments covering genuine engagement, criticism, skepticism, and expert perspectives
+4. **Steel-man the opposite** — argue against the post's thesis as convincingly as possible, independently (no shared context with other steps)
+5. **Synthesize** — structured summary of all findings, organized by severity
+
+**Never rewrite prose or suggest alternative phrasing.** Flag problems, present counter-arguments, surface what the author missed — then let the human decide what to act on.
+
+## Releases
+
+`CHANGELOG.md` (Keep a Changelog format, CalVer `vYYYY.MM.DD`) tracks changes to the
+site itself — not blog content (RSS covers that). When making notable site changes,
+add a line under `## [Unreleased]`. Use `/release` to cut a release: it rolls
+Unreleased into a dated section, tags, and publishes a GitHub release with approval.
+
 ## Commands
 
 | Command | Action |
@@ -95,7 +118,7 @@ ls src/content/data/*/index.mdx
 ## Guidelines
 
 - **Don't install packages** without asking
-- **Don't upgrade packages** without asking — we're on Astro 6, upgrades can break things
+- **Don't upgrade packages** without asking — we're on Astro 7, upgrades can break things
 - **Don't write prose** for the human (see Writing Policy above)
 - Use context7 MCP to fetch current docs when needed
 - Prefer editing existing files over creating new ones
@@ -166,6 +189,7 @@ Tools are standalone interactive pages, not content collections. Each tool lives
   - Other available: Accordion, Dialog, Popover, Select, Slider, Tabs, Tooltip, etc.
   - **Important**: Bits UI components can't SSR — always use `client:only="svelte"`, not `client:load`
 - **[svelte-streamdown](https://github.com/nicholascostadev/svelte-streamdown)** — markdown rendering for streamed LLM output. Props: `content`, `controls` (`{ table: false, code: false }` to hide buttons), `theme` for custom styling.
+- **[LayerChart](https://next.layerchart.com)** (`layerchart` 2.0) — Svelte 5 native charts (runes/snippets), ships its own default styles, Tailwind optional. Simplified components: `<AreaChart {data} x="date" y="value" />`, also LineChart/BarChart/PieChart + composable primitives. Needs a sized container (`style="height: 320px"`). Test page: `/tools/layerchart-test`. Preferred for new dedicated chart components; Observable Plot stays for CodeRunner blocks.
 
 ### Agent tools pattern (example: Oil Price Agent)
 
@@ -177,16 +201,30 @@ src/pages/tools/agent-test/
 └── _AgentTest.svelte              # wires agent + tools + UI
 
 src/components/
-├── AgentChat.svelte               # reusable chat UI (page + terminal modes)
-└── ModelPicker.svelte             # model search with Command palette
+├── AgentChat.svelte               # reusable chat UI (page + terminal modes, Stop button, live status)
+├── ModelPicker.svelte             # presentational model search (Command palette), takes ModelInfo[]
+└── ORModelPicker.svelte           # self-contained: fetches live OpenRouter models, emits pi Model
 
-src/lib/agent/tools/               # tool definitions
-├── oil-prices.ts
-├── oil-events.ts
-└── oil-news.ts
+src/lib/agent/
+└── openrouter-models.ts           # getOpenRouterModels()/getOpenRouterModel(id) — live list,
+                                   # 1h localStorage cache, builtin-registry fallback. Use this,
+                                   # NOT getBuiltinModels() (static, frozen at pi-ai release)
+
+src/lib/agent/tools/               # SHARED tool definitions (reusable across agent pages;
+├── oil-prices.ts                  # page-specific one-offs can colocate in the page folder
+├── oil-events.ts                  # with a _ prefix instead)
+├── oil-news.ts
+├── market-quotes.ts               # live quotes + headlines from /data/market/market.json
+├── papers.ts                      # OpenAlex search/get/citations (CORS, no key)
+├── hackernews.ts                  # HN Algolia search + comment threads (CORS, no key)
+├── hf-papers.ts                   # HF Daily Papers trending (CORS, no key)
+└── fetch-page.ts                  # URL → markdown via r.jina.ai (CORS, keyless/rate-limited)
 
 public/data/oil/                   # static data fetched by tools
-scripts/fetch-oil-news.ts          # data refresh script
+public/data/market/                # market.json — quotes + headlines snapshot
+scripts/fetch-oil-news.ts          # data refresh script (manual)
+scripts/fetch-market.ts            # yahoo-finance2 quotes+news — run manually before
+                                   # deploying (browsers can't call Yahoo: no CORS)
 ```
 
 - **pi-ai** (`@mariozechner/pi-ai`): LLM provider abstraction. `getModels("openrouter")` returns 237+ tool-calling models from an in-memory registry (no API call, no caching needed). `getModel(provider, id)` returns a model instance for the agent.

@@ -99,11 +99,14 @@
     const hash = decodeURIComponent(window.location.hash.slice(1));
     if (hash) { text = hash; mode = "text"; }
 
-    document.addEventListener("fullscreenchange", () => {
+    const onFullscreenChange = () => {
       isFullscreen = !!document.fullscreenElement;
-    });
+    };
+    document.addEventListener("fullscreenchange", onFullscreenChange);
 
     if (mode === "text") inputEl?.focus();
+
+    return () => document.removeEventListener("fullscreenchange", onFullscreenChange);
   });
 
   $effect(() => { localStorage.setItem("bigtext-theme", themeId); });

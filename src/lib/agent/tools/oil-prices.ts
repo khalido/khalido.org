@@ -1,4 +1,4 @@
-import { Type } from "@sinclair/typebox";
+import { Type } from "@earendil-works/pi-ai";
 
 export const oilPriceTool = {
   name: "get_oil_prices",

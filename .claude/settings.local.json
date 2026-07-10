@@ -1,0 +1,21 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx yahoo-finance2:*)",
+      "Bash(curl:*)",
+      "Bash(npm outdated:*)",
+      "Bash(npm update:*)",
+      "Bash(npm view:*)",
+      "mcp__context7__resolve-library-id",
+      "mcp__context7__query-docs",
+      "Bash(grep:*)",
+      "Bash(gh api:*)",
+      "Bash(gh run:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "mcp__exa__web_search_exa",
+      "mcp__exa__crawling_exa",
+      "mcp__exa__web_fetch_exa"
+    ]
+  }
+}

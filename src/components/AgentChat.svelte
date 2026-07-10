@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { Agent, AgentEvent } from "@mariozechner/pi-agent-core";
+  import type { Agent, AgentEvent } from "@earendil-works/pi-agent-core";
   import { Streamdown } from "svelte-streamdown";
   import { onMount } from "svelte";
 
@@ -17,7 +17,10 @@
 
   let messages = $state<any[]>([]);
   let streamingText = $state("");
+  let streamingThinking = $state(0); // chars of thinking streamed so far
+  let toolStatus = $state(""); // "running get_oil_prices…"
   let isStreaming = $state(false);
+  let userStopped = $state(false);
   let error = $state("");
   let input = $state("");
   let inputEl: HTMLInputElement | undefined = $state();
@@ -124,24 +127,67 @@
     return blocks;
   });
 
+  let runSeconds = $state(0);
+  let runTimer: ReturnType<typeof setInterval> | undefined;
+
+  // Discreet "what am I talking to" line: model name + loaded tools
+  let modelName = $state("");
+  const toolNames = agent.state.tools.map((t: any) => t.label || t.name);
+  const toolsTitle = toolNames.join(", ");
+
   onMount(() => {
-    agent.subscribe((event: AgentEvent) => {
+    modelName = agent.state.model?.name || "";
+    const unsubscribe = agent.subscribe((event: AgentEvent) => {
       messages = [...agent.state.messages];
       isStreaming = agent.state.isStreaming;
+      modelName = agent.state.model?.name || "";
+      if (event.type === "agent_start") {
+        runSeconds = 0;
+        clearInterval(runTimer);
+        runTimer = setInterval(() => runSeconds++, 1000);
+      }
       if (
         event.type === "message_update" &&
-        agent.state.streamMessage?.role === "assistant"
+        agent.state.streamingMessage?.role === "assistant"
       ) {
-        const textContent = agent.state.streamMessage.content?.find(
-          (c: any) => c.type === "text",
-        );
-        streamingText = textContent?.text || "";
+        const content = agent.state.streamingMessage.content;
+        streamingText = content?.find((c: any) => c.type === "text")?.text || "";
+        streamingThinking =
+          content?.find((c: any) => c.type === "thinking")?.thinking?.length || 0;
+      }
+      if (event.type === "tool_execution_start") {
+        const pending = agent.state.pendingToolCalls.size;
+        toolStatus =
+          pending > 1
+            ? `running ${pending} tools…`
+            : `running ${event.toolName}(${JSON.stringify(event.args ?? {}).slice(0, 60)})…`;
+      }
+      if (event.type === "tool_execution_end") {
+        const pending = agent.state.pendingToolCalls.size;
+        toolStatus = pending > 0 ? `running ${pending} tool${pending > 1 ? "s" : ""}…` : "";
       }
       if (event.type === "message_end" || event.type === "agent_end") {
         streamingText = "";
+        streamingThinking = 0;
         const assistantMsgs = agent.state.messages.filter((m: any) => m.role === "assistant");
         totalCost = assistantMsgs.reduce((sum: number, m: any) => sum + (m.usage?.cost?.total || 0), 0);
         totalTokens = assistantMsgs.reduce((sum: number, m: any) => sum + (m.usage?.totalTokens || 0), 0);
+      }
+      if (event.type === "agent_end") {
+        // state.isStreaming stays true until agent_end listeners settle, and no
+        // event follows this one — force idle here or the UI shows "thinking" forever
+        isStreaming = false;
+        toolStatus = "";
+        clearInterval(runTimer);
+        // Any abort (Stop button here, or a model swap in the parent calling
+        // agent.abort()) isn't an error — the truncated reply is enough
+        const lastAssistant = [...agent.state.messages]
+          .reverse()
+          .find((m: any) => m.role === "assistant");
+        const wasAborted = userStopped || lastAssistant?.stopReason === "aborted";
+        if (agent.state.errorMessage && !wasAborted) {
+          error = agent.state.errorMessage;
+        }
       }
       if (mode === "terminal" && chatContainer) {
         requestAnimationFrame(() => {
@@ -150,6 +196,10 @@
       }
     });
     inputEl?.focus();
+    return () => {
+      unsubscribe();
+      clearInterval(runTimer);
+    };
   });
 
   function getMessageText(msg: any): string {
@@ -179,6 +229,7 @@
   async function send() {
     if (!input.trim() || isStreaming) return;
     error = "";
+    userStopped = false;
     const msg = input.trim();
     input = "";
     inputEl?.focus();
@@ -189,6 +240,21 @@
     }
     inputEl?.focus();
   }
+
+  /** Abort the current run — cancels the model stream, running tools, and queued messages */
+  function stop() {
+    userStopped = true;
+    agent.clearAllQueues();
+    agent.abort();
+  }
+
+  const streamStatus = $derived.by(() => {
+    const elapsed = runSeconds >= 3 ? ` · ${runSeconds}s` : "";
+    if (toolStatus) return `${toolStatus}${elapsed}`;
+    if (streamingThinking > 0)
+      return `thinking… ${streamingThinking.toLocaleString()} chars${elapsed}`;
+    return `waiting for model…${elapsed}`;
+  });
 
   function useSuggestion(suggestion: string) {
     input = suggestion;
@@ -243,10 +309,15 @@
 {#if mode === "terminal"}
 <div class="border border-gray-700 rounded-lg bg-gray-950 text-gray-300 font-mono text-sm flex flex-col" style="height: 36rem;">
   <div class="flex justify-between items-center px-3 py-1.5 border-b border-gray-800 text-xs text-gray-500">
-    <span>agent</span>
-    {#if totalCost > 0}
-      <span>{formatCost(totalCost)} · {totalTokens.toLocaleString()} tokens</span>
-    {/if}
+    <span title={toolsTitle}>agent · {modelName} · {toolNames.length} tools</span>
+    <span class="flex items-center gap-3">
+      {#if totalCost > 0}
+        <span>{formatCost(totalCost)} · {totalTokens.toLocaleString()} tokens</span>
+      {/if}
+      {#if isStreaming}
+        <button onclick={stop} class="text-red-400/70 hover:text-red-300 transition-colors">■ stop</button>
+      {/if}
+    </span>
   </div>
 
   <div class="flex-1 overflow-y-auto p-3 space-y-3" bind:this={chatContainer}>
@@ -271,7 +342,7 @@
         {#if streamingText}
           <Streamdown content={streamingText} controls={streamdownControls} theme={terminalCodeTheme} />
         {:else}
-          <span class="text-gray-600 animate-pulse">thinking...</span>
+          <span class="text-gray-600 animate-pulse">{streamStatus}</span>
         {/if}
       </div>
     {/if}
@@ -335,7 +406,7 @@
       {#if streamingText}
         <Streamdown content={streamingText} controls={streamdownControls} />
       {:else}
-        <p class="text-sm text-gray-400 animate-pulse">thinking...</p>
+        <p class="text-sm text-gray-400 animate-pulse">{streamStatus}</p>
       {/if}
     </div>
   {/if}
@@ -353,13 +424,22 @@
       class="flex-1 border rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent caret-blue-600"
       disabled={isStreaming}
     />
-    <button
-      onclick={send}
-      disabled={isStreaming || !input.trim()}
-      class="px-4 py-2 bg-blue-600 text-white rounded text-sm disabled:opacity-50 hover:bg-blue-700 transition-colors"
-    >
-      {isStreaming ? "..." : "Send"}
-    </button>
+    {#if isStreaming}
+      <button
+        onclick={stop}
+        class="px-4 py-2 bg-red-600 text-white rounded text-sm hover:bg-red-700 transition-colors"
+      >
+        Stop
+      </button>
+    {:else}
+      <button
+        onclick={send}
+        disabled={!input.trim()}
+        class="px-4 py-2 bg-blue-600 text-white rounded text-sm disabled:opacity-50 hover:bg-blue-700 transition-colors"
+      >
+        Send
+      </button>
+    {/if}
   </div>
 
   <div class="flex items-center justify-between">
@@ -375,11 +455,14 @@
     {:else}
       <div></div>
     {/if}
-    {#if totalCost > 0}
-      <span class="text-xs text-gray-400" title="{totalTokens.toLocaleString()} tokens">
-        {formatCost(totalCost)} · {totalTokens.toLocaleString()} tokens
-      </span>
-    {/if}
+    <span class="text-xs text-gray-300">
+      {#if totalCost > 0}
+        <span class="text-gray-400" title="{totalTokens.toLocaleString()} tokens">
+          {formatCost(totalCost)} · {totalTokens.toLocaleString()} tokens ·
+        </span>
+      {/if}
+      <span title={toolsTitle}>{toolNames.length} tools</span>
+    </span>
   </div>
 </div>
 {/if}

@@ -2,7 +2,7 @@
 
 ## Tech Stack
 
-- **Framework**: Astro 6 beta, Vite 7, Zod 4
+- **Framework**: Astro 7 (Rust compiler, Vite 8/Rolldown), Zod 4
 - **Interactivity**: Svelte 5 via @astrojs/svelte
 - **Styling**: Tailwind CSS v4 (CSS-based config, no tailwind.config.js)
 - **Charts**: Observable Plot via Svelte `client:only` components
@@ -80,5 +80,4 @@ Use ` ```ai ` in markdown. Shiki renders with `data-language="ai"` (configured v
 
 ## Known Issues
 
-- Astro 6 beta: occasional HMR errors on hot reload (transient, not from our code)
-- `@astrojs/rss` must stay on beta (4.0.15-beta.4) — stable release uses Zod 3 API incompatible with Astro 6's Zod 4
+- Astro 7's Rust compiler uses JSX whitespace rules (`compressHTML: 'jsx'` default) — whitespace between inline elements on separate lines collapses. Use explicit `{" "}` in `.astro` templates where a space matters (see BlogPost.astro meta line, Footer.astro).

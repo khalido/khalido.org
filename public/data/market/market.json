@@ -1,0 +1,101 @@
+{
+  "fetchedAt": "2026-07-09T05:46:24.405Z",
+  "quotes": [
+    {
+      "symbol": "CL=F",
+      "label": "WTI Crude Oil",
+      "name": "Crude Oil Aug 26",
+      "price": 73.8,
+      "change": 0.2800064,
+      "changePercent": 0.3808575,
+      "currency": "USD",
+      "marketState": "REGULAR",
+      "marketTime": "2026-07-09T05:36:16.000Z"
+    },
+    {
+      "symbol": "BZ=F",
+      "label": "Brent Crude Oil",
+      "name": "Brent Crude Oil Last Day Financ",
+      "price": 78.34,
+      "change": 0.3199997,
+      "changePercent": 0.41015086,
+      "currency": "USD",
+      "marketState": "REGULAR",
+      "marketTime": "2026-07-09T05:36:05.000Z"
+    }
+  ],
+  "news": [
+    {
+      "title": "Phillips 66 (PSX) Could Be 3% Undervalued After Oil Spiked On Middle East Tensions",
+      "link": "https://finance.yahoo.com/markets/stocks/articles/phillips-66-psx-could-3-050953098.html",
+      "publisher": "Simply Wall St.",
+      "date": "2026-07-09T05:09:53.000Z"
+    },
+    {
+      "title": "Warren Buffett sends 7-word instruction to stock market investors",
+      "link": "https://finance.yahoo.com/m/2bcd4b3e-0472-3e88-981f-d8dca032090b/warren-buffett-sends-7-word.html",
+      "publisher": "TheStreet",
+      "date": "2026-07-09T03:17:00.000Z"
+    },
+    {
+      "title": "Inside Trump’s Oval Office Decision to Ditch the Iran Ceasefire",
+      "link": "https://finance.yahoo.com/m/877de150-d4c3-3a85-888a-c429390efdee/inside-trump%E2%80%99s-oval-office.html",
+      "publisher": "The Wall Street Journal",
+      "date": "2026-07-09T01:00:00.000Z"
+    },
+    {
+      "title": "Analyst Report: Quanta Services, Inc.",
+      "link": "https://finance.yahoo.com/m/ce1567e2-805c-338b-b9dd-aba5440e7c15/analyst-report%3A-quanta.html",
+      "publisher": "Morningstar Research",
+      "date": "2026-07-08T23:27:28.000Z"
+    },
+    {
+      "title": "American Airlines (AAL) Stock Faces Fresh Pressure As Oil Spike Tests Its Balance Sheet",
+      "link": "https://finance.yahoo.com/markets/stocks/articles/american-airlines-aal-stock-faces-221633450.html",
+      "publisher": "Simply Wall St.",
+      "date": "2026-07-08T22:16:33.000Z"
+    },
+    {
+      "title": "If diplomacy fails, energy markets face another reckoning",
+      "link": "https://finance.yahoo.com/energy/articles/diplomacy-fails-energy-markets-face-203054481.html",
+      "publisher": "Oil and Gas 360",
+      "date": "2026-07-08T20:30:54.000Z"
+    },
+    {
+      "title": "Donald Young of Race Rock Named EY US Entrepreneur Of The Year 2026 Gulf South Award Winner",
+      "link": "https://finance.yahoo.com/small-business/articles/donald-young-race-rock-named-193300286.html",
+      "publisher": "Business Wire",
+      "date": "2026-07-08T19:33:00.000Z"
+    },
+    {
+      "title": "Crude Oil Prices Surge as Geopolitical Risks Intensify",
+      "link": "https://finance.yahoo.com/m/50ef8a5d-100e-3891-a956-2eb71710bc2b/crude-oil-prices-surge-as.html",
+      "publisher": "Barchart",
+      "date": "2026-07-08T19:15:05.000Z"
+    },
+    {
+      "title": "REalloys (ALOY) Plans North American Rare Earth Magnet Tie Up With JS Link",
+      "link": "https://finance.yahoo.com/markets/stocks/articles/realloys-aloy-plans-north-american-181933633.html",
+      "publisher": "Simply Wall St.",
+      "date": "2026-07-08T18:19:33.000Z"
+    },
+    {
+      "title": "Crude Oil Prices Soar on Escalation of US-Iran Hostilities",
+      "link": "https://finance.yahoo.com/m/42408005-1e9c-3d80-8818-8b382b84fe26/crude-oil-prices-soar-on.html",
+      "publisher": "Barchart",
+      "date": "2026-07-08T15:45:08.000Z"
+    },
+    {
+      "title": "US Total Crude Oil Stocks Decline in Week Ended July 3",
+      "link": "https://finance.yahoo.com/energy/articles/us-total-crude-oil-stocks-144112338.html",
+      "publisher": "MT Newswires",
+      "date": "2026-07-08T14:41:12.000Z"
+    },
+    {
+      "title": "EIA: Crude Oil Inventories in US See Rare Build",
+      "link": "https://finance.yahoo.com/energy/articles/eia-crude-oil-inventories-us-143700906.html",
+      "publisher": "Oilprice.com",
+      "date": "2026-07-08T14:37:00.000Z"
+    }
+  ]
+}

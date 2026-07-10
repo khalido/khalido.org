@@ -17,7 +17,9 @@
     {
       name: "AI",
       tools: [
+        { name: "Research Agent", url: "/tools/research-agent", desc: "Papers (OpenAlex), Hacker News, trending ML, and page reading — browser-side", test: true },
         { name: "Oil Price Agent", url: "/tools/agent-test", desc: "Pi-agent + pi-ai running browser-side with OpenRouter", test: true },
+        { name: "LayerChart Test", url: "/tools/layerchart-test", desc: "LayerChart 2.0 charts with the oil price dataset", test: true },
       ],
     },
     {

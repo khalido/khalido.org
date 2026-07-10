@@ -1,0 +1,15 @@
+---
+import BaseLayout from "@layouts/BaseLayout.astro";
+import ResearchAgent from "./_ResearchAgent.svelte";
+---
+
+<BaseLayout title="Research Agent - khalido.org" description="Browser-side research agent — papers via OpenAlex, Hacker News discussion, trending ML, and page reading.">
+  <div class="mb-4">
+    <h1 class="text-2xl font-semibold mb-1">Research Agent</h1>
+    <p class="text-sm text-gray-500">
+      Digs through papers (OpenAlex), Hacker News, trending ML (HF Daily Papers), and reads pages.
+      Runs entirely in your browser with your own OpenRouter key.
+    </p>
+  </div>
+  <ResearchAgent client:only="svelte" />
+</BaseLayout>
