@@ -8,7 +8,8 @@ type Props = CollectionEntry<"blog">["data"] & {
     headings: { depth: number; slug: string; text: string }[];
 };
 
-const { title, description, date, updated, tags, headings, link, type } = Astro.props;
+const { title, summary, date, updated, tags, headings, link, type } = Astro.props;
+const description = summary;
 
 // Create site title in "khalido.org: Post Title" format
 const siteTitle = title ? `khalido.org: ${title}` : "khalido.org";

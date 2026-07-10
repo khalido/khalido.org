@@ -12,11 +12,12 @@ export async function GET(context) {
     title: SITE_TITLE,
     description: SITE_DESCRIPTION,
     site: context.site,
+    trailingSlash: false,
     items: posts.map((post) => ({
       title: post.data.title,
       pubDate: post.data.date,
-      description: post.data.description,
-      link: `/blog/${post.id}/`,
+      description: post.data.summary,
+      link: `/blog/${post.id}`,
       // include tags if you want them in the feed
       categories: post.data.tags,
     })),

@@ -66,8 +66,16 @@ marks a period, not an API contract. History before this file starts lives in
   page in one call), `days` + `sort='date'` search params, date shown first in
   results, URL/title cross-reference search documented; agent pages widened.
 
+- Agent-facing site: `/llms.txt` index (llmstxt.org format) and a markdown twin
+  for every post at `/blog/<id>.md`. URLs are now slashless (`/blog/foo` not
+  `/blog/foo/`) so each page pairs with its `.md`; old trailing-slash links 404
+  by design (URL stability is a non-goal here).
+
 ### Fixed
 
+- Post pages and RSS now use the post's `summary` as description — both read a
+  nonexistent `description` field before, so every page shipped the generic
+  site tagline.
 - Unwall: removed dead services (12ft.io is shut down, Google Cache is
   discontinued — verified both); Wayback links now go to latest snapshot and
   the all-snapshots calendar. Big Text: fullscreen listener cleaned up on unmount.

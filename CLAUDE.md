@@ -115,6 +115,13 @@ grep -rl 'keema\|kebab' src/content/blog/
 ls src/content/data/*/index.mdx
 ```
 
+## Agent-facing site (llms.txt + markdown twins)
+
+- `/llms.txt` — llmstxt.org-format index of all posts (title, date, summary, tags), built by `src/pages/llms.txt.ts`. Excludes drafts.
+- Every post has a markdown twin: append `.md` to its URL (`/blog/recipes/keema.md`), served by `src/pages/blog/[...id].md.ts`. Point an agent at the .md URL for clean text ("walk me through this recipe").
+- URLs are slashless (`trailingSlash: "never"`, `build.format: "file"`) so `/blog/foo` pairs with `/blog/foo.md`.
+- **URL stability is a non-goal**: this blog is written for the author's own thinking; broken inbound links are acceptable. Don't add redirects when posts move.
+
 ## Guidelines
 
 - **Don't install packages** without asking

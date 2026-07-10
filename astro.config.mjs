@@ -45,6 +45,10 @@ const aiDirective = defineMdastPlugin({
 // https://astro.build/config
 export default defineConfig({
   site: "https://khalido.org",
+  // Slashless URLs (/blog/foo not /blog/foo/) so every post pairs with its
+  // markdown twin at /blog/foo.md. GH Pages serves the built foo.html at /blog/foo.
+  trailingSlash: "never",
+  build: { format: "file" },
   markdown: {
     processor: satteri({
       features: { directive: true },
