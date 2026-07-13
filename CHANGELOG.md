@@ -71,8 +71,22 @@ marks a period, not an API contract. History before this file starts lives in
   `/blog/foo/`) so each page pairs with its `.md`; old trailing-slash links 404
   by design (URL stability is a non-goal here).
 
+- Big Text: screen wake lock while fullscreen or showing a clock/countdown (the
+  display never sleeps mid-use), controls bar and cursor auto-hide in fullscreen
+  after 3s idle, `f` toggles fullscreen.
+- Big Text mobile: faux-fullscreen fallback for iOS Safari (no element-fullscreen
+  API there), tap-anywhere-to-type via a display-covering invisible textarea (the
+  old zero-size one couldn't summon the iOS keyboard), `100dvh` heights, and
+  safe-area padding for the home indicator.
+
+- Timezone converter: the two hand-rolled searchable dropdowns replaced with
+  bits-ui Combobox — keyboard navigation, proper aria, no blur-timing hacks.
+
 ### Fixed
 
+- Big Text: tap/click on the (invisible) input could place the caret mid-text,
+  making typed characters insert out of order ("mirrored" text) — caret now
+  snaps to end on focus/click.
 - Post pages and RSS now use the post's `summary` as description — both read a
   nonexistent `description` field before, so every page shipped the generic
   site tagline.

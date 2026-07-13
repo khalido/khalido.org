@@ -38,7 +38,7 @@ Agents are different enough to data - agents being loops with code superpowers -
 
 ## AWS Agentcore
 
-I saw a couple of AWS's [agentcore](https://aws.amazon.com/bedrock/agentcore/) talks. This hit home why modern platforms and SDK's like Vercels are really taking off - they do a lot less than AWS (e.g identity management and governance) but just looking at the dev demo it is so much easier to dev outside AWS. 
+I saw a couple of AWS's [agentcore](https://aws.amazon.com/bedrock/agentcore/) talks. This hit home why modern platforms[^1] and SDK's like Vercel are really taking off - they do a lot less than AWS (e.g identity management and governance) but just looking at the dev demo it is so much easier to dev outside AWS. 
 - Need ALL the features - use agentcore
 - Not in AWS, consider what features you actually need and pick a easier to use platform
 
@@ -48,11 +48,11 @@ This makes sense for bigCo - use AWS as a backend, but build custom platforms on
 
 **Memory** has become something of a magic add-on to agents - agents need memory, but listening to both the big picture and dev picture of using memory - it seems to me that a lot of the off the shelf memory solutions aren't great - you need to think through how to manage and use memory.
 
-## AWS keynote by Radic Stanoc CTO ANZ 
+## AWS keynote by Radic Stanoc CTO ANZ
   
 > ...learn how organisations of all sizes, and across sectors, are using agentic Al, intelligent automation, and cloud innovation to reimagine their future and drive meaningful change. ...explore how emerging technologies can be used to drive transformation. 
   
-It's weird listing to a talk at 1x. More and more I consume 
+It's weird listing to a talk at 1x. 
 
 We can sum up this talk and also this whole summit by:
 
@@ -64,13 +64,9 @@ Everything is very simple old fashioned software plumbing here. The smarts are p
 
 Choose the right model for the right model - this is just HR applied to models. Modern orchestrators can route using a cheap and fast triage model.  
 
-All the above is doable - many demos out there in the wild. Governance and security is where it's at right now. 
-
-How to trust your agentic setup?
+All the above is doable - many demos out there in the wild. Governance and security is where it's at right now. How to trust your agentic setup?
 
 Sass Ecomics is changing from pricing per seat to per outcome
-
-  
 
 Data is changing - agents are accessing tons of unstructured data. Data access now needs business logic. Agents need business context and all the unwritten rules clearly written down to properly access data. 
 
@@ -81,45 +77,42 @@ Demod old fashioned healthcare web app
 Instead of humans doing stuff - agent does stuff
 
 Reschedule patients - - forgot the check with patient part, just moved them to future slots - I expect my clinic to call and perhaps shift to another dr. Without this step this is just a simple script. A lot of demos and even real apps function like this in the may 2026 agentic ai space. 
-
   
-
 The demo also includes recording every users every interaction - they use this data to automate more and more stuff. 
 
-The agent keeps building skills based on observations - this could lead to the glorious future or a horribly mish mash of thousands of overlapping skills no one can really understand besides another,.smarter agent. A nightly prune and dreaming routine would alleviate most of the ills of allowing agents to build skills. 
-
-  
+The agent keeps building skills based on observations - this could lead to the glorious future or a horribly mish mash of thousands of overlapping skills no one can really understand besides another, smarter agent. A nightly prune and dreaming routine would alleviate most of the ills of allowing agents to build skills. 
 
 Heidi health
 
 Connects to health records, transcripts, everything. Records all consults
 
-  
-
 Everything about their clients is captured and stored on AWS. The goal is everything medical is done on the Heidi platform or it connects and manages the underlying systems. 
 
 Building hardware - Heidi remote is the start - a small wearable for medical staff u can ask questions to in real time. 
+
 ## AI in Marketing - chase trends fast
 
 [Brittany Oliver](https://www.linkedin.com/in/brittanyoliver5/), CMO [Zuro toys](https://zurutoys.com/)
 
-They use AI to analyse AI generate trends to use AI to define briefs for other AI agents to produce social content which is analysed by gatekeeping AI agents before shooting into the wild where the AI slop is then watched presumably by parents and their kids AI agents who place orders. 
+They use AI to analyse AI generate trends to use AI to define briefs for other AI agents to produce social content which is analysed by gatekeeping AI agents before shooting into the wild where the AI slop is then watched presumably by parents and their kids AI agents who place orders.
 
-Very practical, almost dystopian use of ai. I did not genuinely know that so many companies are spending so much money on ingesting and producing AI slop. This is both frightening and reaffirms my belief to keep off social media. 
+Very practical, almost dystopian use of ai. I did not genuinely know that so many companies are spending so much money on ingesting and producing AI slop. This is both frightening and reaffirms my belief to keep off social media.
 
-I also don't see the value of every company with a CMO ingesting stoktoks and reela and YouTube shorts and paying to analyse them. Why not save the planet and some money and have a third party do this once and provide a ai slop data lake? But then won't this one company know all the trends and produce the most clickable AI content?
+I don't quite see the value of every company with a CMO ingesting ticktoks and instareels and YouTube shorts and paying to analyse them. Why not save the planet and some money and have a third party do this once and provide a ai slop data lake? But then won't this one company know all the trends and produce the most clickable AI content?
 
 Trends last 48-72hrs on social while products take 12-18 months to reach shelfs. Almost half of all toys now are new every year!
 
-One line which stuck with me: **we aren't replacing marketers, we are giving them systems which don't stop watching.**  
+One line which stuck with me: **we aren't replacing marketers, we are giving them systems which don't stop watching.**
 
-In one example of AI can enable everyone to do everything - this AI content + toy company is launching AI home design. Why? They didn't say, but they can so why not. 
+In one example of AI can enable everyone to do everything - this AI content + toy company is launching AI home design. Why? They didn't say, but they can so why not.
 
 Observations which don't really fit anywhere:
 - Aws has moved to being the bedrock for IT infra to being the mass enabler for AI content slop.
+- The world of toys has moved away from whatever anyone's old fashioned ideas of toys has ever been to some newage weaponized version. I found this AI slop talk frightening in its lack of awareness of its sheer nihilistic view of kids and toys and reinforced my beleif of old school toys for kids.
+
 ## Lendi - going AI native
 
-Agents run the whole refinance workflow. CTO is claiming the entire mortgage flow is fully automated, AI from end to end
+Agents run the whole refinance workflow. CTO is claiming the entire mortgage flow is fully automated, AI from end to end.
 
 They build a superhero agent with 270 tools, it kept failing. They split it into targeted multi-agent setup and its working much better.
 
@@ -141,7 +134,7 @@ Aus logistics, 14K emps, 750 depots.
 Some of their basic AI use cases:
 - Driver takes delivery photo, AI strips PII
 - All emps get AI insights to data formerly locked in spreadsheets
-	- replaces BI dashboards - just use AI to understand stuff
+	- replaces BI dashboards, just use AI to understand stuff
 - Understand Customer sentiment and intent
 - Every POC needs an exit criteria
 - Have governance and AI framework up front
@@ -152,10 +145,19 @@ Don't just throw AI things at users, tell them whats going on behind the scene. 
 The key thing which enabled this (and more) is
 - data cleanup and remediation
 - consolidated dozens of databases into AWS
+
 ## Appendix
+
+AI is well past its initial gold rush era, at AWS it was more dreams of avarice, selling shovels to all the gold dreamers
 
 Words I heard a lot
 - Permissions boundaries
 - Governance
-- Compression of timeline
+- Compression of timelines
 - Tokenomics
+
+The things no one said, but was apparent in many places, including some of the very serious AWS tech and big bank finance talks:
+- AI slop
+- Who is the target? At what point does the AI produced consumer content is just feeding the consumers AI, not the actual human - and how to target that AI vs a human. 
+
+[^1]: [Railway](https://railway.com/) and [Vercel](https://vercel.com/) come to mind here. Both of them are so much easier to use and understand than AWS or gCloud, so while more expensive and missing many, many features bigCos need, they are much easier and faster to dev for smaller players. 

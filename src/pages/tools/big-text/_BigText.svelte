@@ -27,7 +27,11 @@
   let themeId = $state("paper");
   let sizeMode = $state<SizeMode>("uniform");
   let mode = $state<DisplayMode>("text");
-  let isFullscreen = $state(false);
+  // iOS Safari has no element-fullscreen API — fauxFullscreen fixes the
+  // container to the viewport instead, so phones get a fullscreen too
+  let nativeFullscreen = $state(false);
+  let fauxFullscreen = $state(false);
+  const isFullscreen = $derived(nativeFullscreen || fauxFullscreen);
   let containerEl: HTMLDivElement | undefined = $state();
   let displayEl: HTMLDivElement | undefined = $state();
   let inputEl: HTMLTextAreaElement | undefined = $state();
@@ -36,6 +40,44 @@
 
   // Clock tick
   let now = $state(new Date());
+
+  // Keep the screen awake while displaying — fullscreen, or a running clock/countdown.
+  // The lock auto-releases when the tab hides; visibilitychange below reacquires it.
+  let wakeLock: any = null;
+  async function acquireWakeLock() {
+    try {
+      wakeLock = (await (navigator as any).wakeLock?.request("screen")) ?? null;
+    } catch {
+      wakeLock = null; // unsupported or denied — non-fatal
+    }
+  }
+  function releaseWakeLock() {
+    wakeLock?.release().catch(() => {});
+    wakeLock = null;
+  }
+  const wantsWakeLock = $derived(isFullscreen || mode === "clock" || mode === "countdown");
+  $effect(() => {
+    if (wantsWakeLock) acquireWakeLock();
+    else releaseWakeLock();
+    return () => releaseWakeLock();
+  });
+
+  // Controls bar auto-hides in fullscreen after 3s of mouse/touch idle
+  let controlsVisible = $state(true);
+  let idleTimer: ReturnType<typeof setTimeout> | undefined;
+  function bumpActivity() {
+    controlsVisible = true;
+    clearTimeout(idleTimer);
+    if (isFullscreen) idleTimer = setTimeout(() => (controlsVisible = false), 3000);
+  }
+  $effect(() => {
+    if (isFullscreen) {
+      bumpActivity();
+    } else {
+      controlsVisible = true;
+      clearTimeout(idleTimer);
+    }
+  });
 
   // Computed display
   let uniformSize = $state(200);
@@ -100,13 +142,37 @@
     if (hash) { text = hash; mode = "text"; }
 
     const onFullscreenChange = () => {
-      isFullscreen = !!document.fullscreenElement;
+      nativeFullscreen = !!document.fullscreenElement;
     };
     document.addEventListener("fullscreenchange", onFullscreenChange);
 
+    // Reacquire the wake lock when the tab becomes visible again (it auto-releases on hide)
+    const onVisibility = () => {
+      if (document.visibilityState === "visible" && wantsWakeLock) acquireWakeLock();
+    };
+    document.addEventListener("visibilitychange", onVisibility);
+
+    // 'f' toggles fullscreen — unless typing in an input (incl. the hidden text-mode textarea)
+    const onKeydown = (e: KeyboardEvent) => {
+      const typing = (e.target as HTMLElement)?.matches?.("input, textarea, select, [contenteditable]");
+      if (e.key === "f" && !typing) {
+        e.preventDefault();
+        toggleFullscreen();
+      } else if (e.key === "Escape" && fauxFullscreen) {
+        fauxFullscreen = false; // native fullscreen handles its own Escape
+      }
+    };
+    document.addEventListener("keydown", onKeydown);
+
     if (mode === "text") inputEl?.focus();
 
-    return () => document.removeEventListener("fullscreenchange", onFullscreenChange);
+    return () => {
+      document.removeEventListener("fullscreenchange", onFullscreenChange);
+      document.removeEventListener("visibilitychange", onVisibility);
+      document.removeEventListener("keydown", onKeydown);
+      clearTimeout(idleTimer);
+      releaseWakeLock();
+    };
   });
 
   $effect(() => { localStorage.setItem("bigtext-theme", themeId); });
@@ -263,8 +329,23 @@
 
   function toggleFullscreen() {
     if (!containerEl) return;
-    if (document.fullscreenElement) document.exitFullscreen();
-    else containerEl.requestFullscreen();
+    if (document.fullscreenElement) {
+      document.exitFullscreen();
+    } else if (containerEl.requestFullscreen) {
+      containerEl.requestFullscreen();
+    } else {
+      fauxFullscreen = !fauxFullscreen; // iOS Safari fallback
+    }
+  }
+
+  // The textarea is invisible, so a click/tap would set the caret at whatever
+  // position was under the pointer — typing then inserts mid-text and comes out
+  // scrambled. End-of-text is the only sane caret (it's where the fake caret
+  // renders), so snap to it on every focus and click.
+  function snapCaretToEnd() {
+    if (!inputEl) return;
+    const end = inputEl.value.length;
+    inputEl.setSelectionRange(end, end);
   }
 
   function copyUrl() {
@@ -291,7 +372,14 @@
   const modeLabel = $derived(modeItems.find((m) => m.value === mode)?.label ?? "Text");
 </script>
 
-<div bind:this={containerEl} class="flex flex-col" style="height: {isFullscreen ? '100vh' : 'calc(100dvh - 7rem)'};">
+<div
+  bind:this={containerEl}
+  class="flex flex-col {fauxFullscreen ? 'fixed inset-0 z-50' : ''}"
+  class:cursor-none={isFullscreen && !controlsVisible}
+  style="height: {isFullscreen ? '100dvh' : 'calc(100dvh - 7rem)'}; background: {theme.bg};"
+  onmousemove={bumpActivity}
+  ontouchstart={bumpActivity}
+>
   <!-- Display area -->
   <div
     bind:this={displayEl}
@@ -302,7 +390,7 @@
   >
     {#if hasContent}
       <div
-        class="text-center font-extrabold leading-tight p-6 select-none"
+        class="relative z-10 text-center font-extrabold leading-tight p-6 select-none"
         class:cursor-pointer={mode === "text"}
         onclick={() => { if (mode === "text") copyUrl(); }}
         title={mode === "text" ? "Click to copy URL" : ""}
@@ -363,23 +451,31 @@
     {/if}
 
     {#if copied}
-      <div class="absolute top-3 right-4 text-sm animate-pulse" style="color: {theme.fg}; opacity: 0.4;">
+      <div class="absolute z-10 top-3 right-4 text-sm animate-pulse" style="color: {theme.fg}; opacity: 0.4;">
         URL copied!
       </div>
     {/if}
 
-    <!-- Hidden textarea for text mode input -->
+    <!-- Invisible textarea covering the display: a tap/click anywhere focuses it
+         natively, which is what makes the keyboard appear on mobile (programmatic
+         focus on a zero-size input doesn't). Sits under the text content so
+         clicking the text itself still copies the URL. 16px font stops iOS
+         zooming in on focus. -->
     <textarea
       bind:this={inputEl}
       bind:value={text}
-      class="absolute opacity-0 w-0 h-0 pointer-events-none"
+      class="absolute inset-0 opacity-0 resize-none text-base"
+      class:pointer-events-none={mode !== "text"}
       aria-label="Big text input"
+      onfocus={snapCaretToEnd}
+      onpointerup={() => requestAnimationFrame(snapCaretToEnd)}
     ></textarea>
   </div>
 
-  <!-- Controls bar -->
+  <!-- Controls bar — fades out in fullscreen after a few seconds idle;
+       bottom padding clears the iPhone home indicator -->
   <div
-    class="shrink-0 px-3 py-2 flex flex-wrap items-center justify-between gap-2 text-sm"
+    class="shrink-0 px-3 py-2 pb-[max(0.5rem,env(safe-area-inset-bottom))] flex flex-wrap items-center justify-between gap-2 text-sm transition-opacity duration-300 {isFullscreen && !controlsVisible ? 'opacity-0 pointer-events-none' : 'opacity-100'}"
     style="{isFullscreen
       ? `background: ${theme.bg}; border-top: 1px solid ${theme.fg}20; color: ${theme.fg}80;`
       : 'background: white; border-top: 1px solid #e5e5e5; color: #737373;'}"
@@ -509,7 +605,7 @@
       <button onclick={toggleFullscreen}
         class="px-3 py-2 rounded border transition-colors hover:opacity-80 min-h-[44px]"
         style="{isFullscreen ? `border-color: ${theme.fg}30;` : 'border-color: #e5e5e5;'}"
-        title="Fullscreen (F11)"
+        title="Fullscreen (press f)"
       >{isFullscreen ? "exit" : "fullscreen"}</button>
     </div>
   </div>

@@ -1,15 +1,16 @@
 <script>
+  import { Combobox } from "bits-ui";
+
   let tz1 = $state(Intl.DateTimeFormat().resolvedOptions().timeZone);
   let tz2 = $state("Asia/Kolkata");
   let baseHour = $state(8);
 
   const allTimezones = Intl.supportedValuesOf("timeZone");
 
-  // Filterable timezone dropdowns
+  // Search text for the two comboboxes — we filter, bits-ui handles
+  // keyboard nav / open-close / aria
   let search1 = $state("");
   let search2 = $state("");
-  let showList1 = $state(false);
-  let showList2 = $state(false);
 
   function filtered(query) {
     const q = query.toLowerCase();
@@ -84,66 +85,63 @@
     return `${String(h).padStart(2, "0")}:${String(m || 0).padStart(2, "0")}`;
   }
 
-  function selectTz(which, tz) {
-    if (which === 1) { tz1 = tz; search1 = ""; showList1 = false; }
-    else { tz2 = tz; search2 = ""; showList2 = false; }
-  }
-
-  function handleBlur(which) {
-    // Delay to allow click on list item
-    setTimeout(() => {
-      if (which === 1) showList1 = false;
-      else showList2 = false;
-    }, 200);
-  }
 </script>
+
+{#snippet tzList(search)}
+  {@const matches = filtered(search)}
+  {#each matches as tz (tz)}
+    <Combobox.Item
+      value={tz}
+      label={friendlyName(tz)}
+      class="px-2 py-1.5 text-[13px] rounded cursor-pointer data-[highlighted]:bg-gray-100"
+    >
+      {friendlyName(tz)}
+    </Combobox.Item>
+  {:else}
+    <div class="px-2 py-1.5 text-[13px] text-gray-400">No matching timezone</div>
+  {/each}
+{/snippet}
 
 <div class="tz-wrap">
   <div class="tz-pickers">
     <div class="tz-picker">
-      <label>From</label>
-      <div class="tz-search">
-        <input
-          type="text"
-          value={search1 || friendlyName(tz1)}
-          onfocus={() => { search1 = ""; showList1 = true; }}
-          oninput={(e) => { search1 = e.target.value; showList1 = true; }}
-          onblur={() => handleBlur(1)}
+      <label for="tz-from">From</label>
+      <Combobox.Root type="single" bind:value={tz1} onOpenChange={(o) => { if (o) search1 = ""; }}>
+        <Combobox.Input
+          id="tz-from"
+          class="w-[200px] px-2.5 py-1.5 border border-gray-300 rounded-md text-sm outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/15"
           placeholder="Search timezone..."
+          defaultValue={friendlyName(tz1)}
+          oninput={(e) => (search1 = e.currentTarget.value)}
         />
-        {#if showList1}
-          <ul class="tz-list">
-            {#each filtered(search1) as tz}
-              <li>
-                <button onmousedown={() => selectTz(1, tz)}>{friendlyName(tz)}</button>
-              </li>
-            {/each}
-          </ul>
-        {/if}
-      </div>
+        <Combobox.Portal>
+          <Combobox.Content class="z-50 w-[240px] max-h-[200px] overflow-y-auto bg-white border border-gray-300 rounded-md shadow-lg p-1" sideOffset={4}>
+            <Combobox.Viewport>
+              {@render tzList(search1)}
+            </Combobox.Viewport>
+          </Combobox.Content>
+        </Combobox.Portal>
+      </Combobox.Root>
     </div>
 
     <div class="tz-picker">
-      <label>To</label>
-      <div class="tz-search">
-        <input
-          type="text"
-          value={search2 || friendlyName(tz2)}
-          onfocus={() => { search2 = ""; showList2 = true; }}
-          oninput={(e) => { search2 = e.target.value; showList2 = true; }}
-          onblur={() => handleBlur(2)}
+      <label for="tz-to">To</label>
+      <Combobox.Root type="single" bind:value={tz2} onOpenChange={(o) => { if (o) search2 = ""; }}>
+        <Combobox.Input
+          id="tz-to"
+          class="w-[200px] px-2.5 py-1.5 border border-gray-300 rounded-md text-sm outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/15"
           placeholder="Search timezone..."
+          defaultValue={friendlyName(tz2)}
+          oninput={(e) => (search2 = e.currentTarget.value)}
         />
-        {#if showList2}
-          <ul class="tz-list">
-            {#each filtered(search2) as tz}
-              <li>
-                <button onmousedown={() => selectTz(2, tz)}>{friendlyName(tz)}</button>
-              </li>
-            {/each}
-          </ul>
-        {/if}
-      </div>
+        <Combobox.Portal>
+          <Combobox.Content class="z-50 w-[240px] max-h-[200px] overflow-y-auto bg-white border border-gray-300 rounded-md shadow-lg p-1" sideOffset={4}>
+            <Combobox.Viewport>
+              {@render tzList(search2)}
+            </Combobox.Viewport>
+          </Combobox.Content>
+        </Combobox.Portal>
+      </Combobox.Root>
     </div>
 
     <div class="tz-picker">
@@ -216,51 +214,6 @@
     color: #6b7280;
     text-transform: uppercase;
     letter-spacing: 0.05em;
-  }
-  .tz-search {
-    position: relative;
-  }
-  .tz-search input {
-    padding: 6px 10px;
-    border: 1px solid #d1d5db;
-    border-radius: 6px;
-    font-size: 14px;
-    width: 200px;
-    outline: none;
-  }
-  .tz-search input:focus {
-    border-color: #6366f1;
-    box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.15);
-  }
-  .tz-list {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    width: 240px;
-    max-height: 200px;
-    overflow-y: auto;
-    background: white;
-    border: 1px solid #d1d5db;
-    border-radius: 6px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    list-style: none;
-    margin: 4px 0 0;
-    padding: 4px;
-    z-index: 10;
-  }
-  .tz-list button {
-    display: block;
-    width: 100%;
-    text-align: left;
-    padding: 6px 8px;
-    border: none;
-    background: none;
-    font-size: 13px;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-  .tz-list button:hover {
-    background: #f3f4f6;
   }
   .tz-hour {
     padding: 6px 10px;
