@@ -30,7 +30,7 @@ function postLine(post: any): string {
   const title = d.title || firstLine(post.body).slice(0, 60) || post.id;
   const desc = d.summary || firstLine(post.body);
   const tags = d.tags?.length ? ` (${d.tags.join(", ")})` : "";
-  const date = d.date ? new Date(d.date).toISOString().slice(0, 10) : "";
+  const date = d.date ? new Date(d.updated || d.date).toISOString().slice(0, 10) : "";
   return `- [${title}](${SITE}/blog/${post.id}.md): ${date} — ${desc}${tags}`;
 }
 

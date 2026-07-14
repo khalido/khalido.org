@@ -19,6 +19,7 @@ export const GET: APIRoute = ({ props }) => {
   const d = post.data;
   const meta = [
     d.date ? `date: ${new Date(d.date).toISOString().slice(0, 10)}` : "",
+    d.updated ? `updated: ${new Date(d.updated).toISOString().slice(0, 10)}` : "",
     d.tags?.length ? `tags: ${d.tags.join(", ")}` : "",
     d.link ? `link: ${d.link}` : "",
   ]

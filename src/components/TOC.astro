@@ -7,6 +7,13 @@ const { pageHeadings } = Astro.props;
 
 // Don't render anything if we don't have enough headings
 if (pageHeadings.length <= 1) return null;
+
+// Number top-level sections (long posts get "12." style wayfinding)
+let sectionNum = 0;
+const headings = pageHeadings.map((h) => ({
+  ...h,
+  num: h.depth === 2 ? ++sectionNum : null,
+}));
 ---
 
 <>
@@ -18,13 +25,14 @@ if (pageHeadings.length <= 1) return null;
       <p class="font-semibold mb-2">Table of contents</p>
       <ul class="space-y-1 max-h-[70vh] overflow-y-auto">
         {
-          pageHeadings.map((heading) => (
+          headings.map((heading) => (
             <li style={`margin-left: ${(heading.depth - 1) * 0.95}rem`}>
               <a
                 href={`#${heading.slug}`}
                 class="text-gray-600 hover:text-pink-500 text-sm block py-1 transition-colors duration-200"
                 data-heading-link={heading.slug}
               >
+                {heading.num && <span class="text-gray-400 tabular-nums">{heading.num}.</span>}{" "}
                 {heading.text}
               </a>
             </li>
@@ -59,13 +67,14 @@ if (pageHeadings.length <= 1) return null;
       >
         <ul class="p-3 space-y-1">
           {
-            pageHeadings.map((heading) => (
+            headings.map((heading) => (
               <li style={`margin-left: ${(heading.depth - 1) * 0.95}rem`}>
                 <a
                   href={`#${heading.slug}`}
                   class="text-gray-600 hover:text-pink-500 text-sm block py-2 transition-colors duration-200"
                   data-heading-link={heading.slug}
                 >
+                  {heading.num && <span class="text-gray-400 tabular-nums">{heading.num}.</span>}{" "}
                   {heading.text}
                 </a>
               </li>
@@ -159,6 +168,7 @@ if (pageHeadings.length <= 1) return null;
             20;
 
           window.scrollTo({ top, behavior: "smooth" });
+          history.replaceState(null, "", href); // shareable URL for the section
           this.mobileToc?.removeAttribute("open");
         });
       });
@@ -169,13 +179,22 @@ if (pageHeadings.length <= 1) return null;
         link.classList.remove(...this.activeClass.split(" "));
       });
 
-      const activeLink = document.querySelector(
+      // Both the desktop and mobile lists have a link for this heading —
+      // highlight all of them (querySelector only ever hit the desktop one)
+      const activeLinks = document.querySelectorAll<HTMLElement>(
         `[data-heading-link="${headingId}"]`
       );
-      activeLink?.classList.add(...this.activeClass.split(" "));
+      activeLinks.forEach((link) =>
+        link.classList.add(...this.activeClass.split(" "))
+      );
+
+      // Keep the active item visible inside the TOC's own scroll box on long posts
+      const visibleLink = [...activeLinks].find((l) => l.offsetParent !== null);
+      visibleLink?.scrollIntoView({ block: "nearest" });
 
       if (this.currentDisplay) {
-        this.currentDisplay.textContent = activeLink?.textContent || "";
+        this.currentDisplay.textContent =
+          activeLinks[0]?.textContent?.replace(/\s+/g, " ").trim() || "";
       }
     }
 

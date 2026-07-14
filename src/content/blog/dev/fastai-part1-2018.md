@@ -12,3 +12,5 @@ This is a great top down introduction to deep learning. Jeremey Howard is a grea
 > This 7-week course is designed for anyone with at least a year of coding experience, and some memory of high-school math. You will start with step one—learning how to get a GPU server online suitable for deep learning—and go all the way through to creating state of the art, highly practical, models for computer vision, natural language processing, and recommendation systems.
 
 2020: The course has been greatly updated since I did it, and the libray has evolved a lot. So its even more awesome now!
+
+2026 update: I still recommend doing the fast.ai course - it helps anyone using AI get up to speed with what is actually going on. Though now I would combine it with getting a claude code subscription and actually building little tools to learn and build as you go along. 

@@ -6,9 +6,15 @@ Personal website — blog posts, links, TILs, data stories, and interactive tool
 
 **The human writes all published prose.** LLMs assist with code, scripts, charts, data analysis, proofreading, and research — but never generate narrative content published under the author's name. Use `TODO: write this` as placeholder for content sections. When asked to help with a blog post, research the topic, suggest structure, provide data — but leave the writing to the human.
 
-AI-generated explanatory text (e.g. describing how a component works) must be visibly marked:
-- ` ```ai ` code fence — plain text only, renders with faint background + "AI" badge
-- `:::ai` … `:::` container directive — same styling but full markdown inside (links, lists, bold). Prefer this for anything longer than a sentence.
+AI-generated explanatory text (e.g. describing how a component works) must be visibly marked with an `:::ai` container directive — faint background + "AI" badge, full markdown inside (links, lists, bold, tables):
+
+```
+:::ai
+The AI-written explanation, in normal markdown.
+:::
+```
+
+Rules: opening `:::ai` and closing `:::` each on their own line, blank line before the block. **In `.mdx` files, bare `{...}` in the text is a JSX expression and breaks the build** — wrap code-ish snippets like `Inputs.checkbox({value})` in backticks. The legacy ` ```ai ` fence still renders styled but shows markdown as raw text — don't use it for new content.
 
 Markdown renders single newlines as `<br>` (Obsidian/GitHub style, via a Sätteri mdast plugin in astro.config.mjs) — no need for trailing double-spaces.
 

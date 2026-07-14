@@ -14,7 +14,7 @@ I always wanted a simple way to run some code examples in my blog posts and see 
 
 I had the right idea - use [Astro](https://astro.build/) and [Svelte](https://svelte.dev) to have a simple coderunner component - and [Claude Code](https://code.claude.com/docs/en/overview) magicked it into being. 
 
-```ai
+:::ai
 Code blocks below use the CodeRunner component — JavaScript runs directly in the browser. Each block auto-executes on page load and is fully editable (change the code, hit ▶ to re-run). Returning a DOM element renders it below; console.log output appears in a dark panel.
 
 Built-in globals (no imports needed):
@@ -22,7 +22,7 @@ Built-in globals (no imports needed):
 - csvParse, tsvParse — parse CSV/TSV strings into arrays of objects (d3-dsv)
 - autoType — automatically coerce CSV string values to numbers, dates, etc.
 - Inputs — interactive controls (slider, select, checkbox, text) that re-run the code on change
-```
+:::
 
 ## Fibonacci sequence
 
@@ -40,15 +40,15 @@ console.log(nums.join(", "));
 
 Inputs and interactive controls example.
 
-```ai
+:::ai
 Inputs add interactive controls that re-run the code block when changed. Each returns an object with .value (current value) and .element (auto-rendered above the output). Values persist across re-runs so a slider stays where you dragged it.
 
 Available inputs:
-- Inputs.slider(min, max, {value, label, step}) — range slider with live numeric display
-- Inputs.select(options, {value, label}) — dropdown from an array of choices
-- Inputs.checkbox({value, label}) — boolean toggle, defaults to false
-- Inputs.text({value, label, placeholder}) — free text input
-```
+- `Inputs.slider(min, max, {value, label, step})` — range slider with live numeric display
+- `Inputs.select(options, {value, label})` — dropdown from an array of choices
+- `Inputs.checkbox({value, label})` — boolean toggle, defaults to false
+- `Inputs.text({value, label, placeholder})` — free text input
+:::
 
 <CodeRunner client:load collapsed={false} code={`const n = Inputs.slider(10, 200, { value: 50, label: "Points", step: 1 });
 const color = Inputs.select(["#1e40af", "#dc2626", "#059669", "#7c3aed"], { label: "Color" });
@@ -95,9 +95,9 @@ return Plot.plot({
 
 ## CSV data
 
-```ai
+:::ai
 csvParse(text, autoType) parses a CSV string into an array of objects, one per row. autoType coerces numeric/date strings to native types. tsvParse works the same for tab-separated data. Fetch any URL — GitHub raw files, APIs, etc.
-```
+:::
 
 <CodeRunner client:load collapsed={false} code={`const res = await fetch("https://raw.githubusercontent.com/datasets/oil-prices/refs/heads/main/data/brent-daily.csv");
 const oil = csvParse(await res.text(), autoType);

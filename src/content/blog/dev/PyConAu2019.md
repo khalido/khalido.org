@@ -5,7 +5,6 @@ date: 2019-09-20
 tags:
   - python
 ---
-
 _update this post to fix youtube video links_
 
 My notes for the [PyConAU 2019 talks](https://2019.pycon-au.org) I went to. This blog is an attempt to try and capture some useful info from the talks.
@@ -14,48 +13,12 @@ Future challenge: Make a jupyter notebook for each talk to implement some of the
 
 The [pyconAU19 videos](https://www.youtube.com/playlist?list=PLs4CJRBY5F1LKqauI3V4E_xflt6Gow611) are up on youtube.
 
-- [You dont always need NumPy](#you-dont-always-need-numpy)
-- [Flying by the seat of our pants: our journey of teaching python using drones](#flying-by-the-seat-of-our-pants-our-journey-of-teaching-python-using-drones)
-- [Using Dash by Plotly for Interactive Visualisation of Crime Data](#using-dash-by-plotly-for-interactive-visualisation-of-crime-data)
-- [Building, designing, teaching and training simulation environments for Machine Learning](#building-designing-teaching-and-training-simulation-environments-for-machine-learning)
-- [Forecasting Australias 2019 Election with PyMC3](#forecasting-australias-2019-election-with-pymc3)
-- [cuDF: RAPIDS GPU Accelerated Dataframe Library](#cudf-rapids-gpu-accelerated-dataframe-library)
-- [Understanding GPUs](#understanding-gpus)
-- [Not a long time ago, in a galaxy not very far away, an astronomer and a computer scientist walk into a bar...](#not-a-long-time-ago-in-a-galaxy-not-very-far-away-an-astronomer-and-a-computer-scientist-walk-into-a-bar)
-- [Learn to control your brain: Brain Computer Interfacing with Python](#learn-to-control-your-brain-brain-computer-interfacing-with-python)
-- [Machine Learning and Cyber Security: Detecting malicious URLs in the haystack](#machine-learning-and-cyber-security-detecting-malicious-urls-in-the-haystack)
-- [Creating Lasting Change](#creating-lasting-change)
-- [Lessons learned building Python microservices](#lessons-learned-building-python-microservices)
-- [Tunnel Snakes Rule! Bringing the many worlds of Python together to monitor Melbournes biggest infrastructure project.](#tunnel-snakes-rule-bringing-the-many-worlds-of-python-together-to-monitor-melbournes-biggest-infrastructure-project)
-- [Using python programmed microcontrollers to build comedy props](#using-python-programmed-microcontrollers-to-build-comedy-props)
-- [Python Applications in Infrastructure Planning and Civil Engineering](#python-applications-in-infrastructure-planning-and-civil-engineering)
-- [Fantastic Blocks And Where To Hide Them](#fantastic-blocks-and-where-to-hide-them)
-- [Profiling Pathogens with (micro) Python](#profiling-pathogens-with-micro-python)
-- [The Antipodes](#the-antipodes)
-- [Saturday Lightning Talks](#saturday-lightning-talks)
-  - [Sam Bishop: Computational World Building](#sam-bishop-computational-world-building)
-  - [data driven look at code comments](#data-driven-look-at-code-comments)
-  - [logging](#logging)
-- [The real costs of Open Source Sustainability](#the-real-costs-of-open-source-sustainability)
-- [Shipping your first Python package and automating future publishing](#shipping-your-first-python-package-and-automating-future-publishing)
-- [Insights into Social Media Data using Entropy Theory](#insights-into-social-media-data-using-entropy-theory)
-- [It's dark and my lights arent working (an asyncio success story)](#its-dark-and-my-lights-arent-working-an-asyncio-success-story)
-- [The universe as balls and springs: molecular dynamics in Python](#the-universe-as-balls-and-springs-molecular-dynamics-in-python)
-- [Instant feedback, instant-debugging Python coding](#instant-feedback-instant-debugging-python-coding)
-- [Orchestrating complex (not complicated) tasks using AWS serverless and Python](#orchestrating-complex-not-complicated-tasks-using-aws-serverless-and-python)
-- [Sunday Lightning Talks](#sunday-lightning-talks)
-  - [Pre european potatoes](#pre-european-potatoes)
-  - [Quantum Computing](#quantum-computing)
-  - [Batteries included but leaking](#batteries-included-but-leaking)
-- [mega takeaway](#mega-takeaway)
-- [misc notes](#misc-notes)
-
 ## You dont always need NumPy
 
 > The numerical Python ecosystem and communities are mature and powerful, but sometimes we can be too quick to reach for the numerical hammer when simpler options exist. This talk will outline some areas where the numerical stack may not be the best starting point, and survey some alternatives. [#](https://2019.pycon-au.org/talks/you-dont-always-need-numpy)
 
 - [Sam Hames](https://www.linkedin.com/in/sam-hames-946b9478/), software dev at QUT’s Digital Observatory.
-- the numerical python stack is very complicated, and its a differnt idiom to the other types of python
+- the numerical python stack is very complicated, and its a different idiom to the other types of python
 - numpy is basically arrays and vectorized expressions on these arrays - but how to translate - for example using a dict to represent a bag of words `{'the': 21, 'bag': 2}` - its clear, there is a one to one mapping b/w word and its count - but using numpy arrays breaks that, you end up with two arrays like `[21,2]` and `['the', 'bag']`
 - when writing numerical python, remember that the rest of python exists
 - pythons built in data structures- lists, sets, dicts and tuples exist and are very very good - you can use them in many applications instead of numpy!
@@ -93,7 +56,7 @@ with open('very_big_file.txt', 'r') as f:
 > A few years ago we found ourselves teaching students everything from Python to Arduino. It was our plan to replace all the other languages with Python as we streamlined our course. Learn why we introduced drones, what we learned not to do and what we were surprised about. [#](https://2019.pycon-au.org/talks/flying-by-the-seat-of-our-pants--our-journey-of-teaching-python-using-drones)
 
 - Kylie Mathers - teacher at Marymount catholic school in Qld
-- the school used a veritable kitchen sink of languages, wanted to switch to one language, preferrably open source, which was useful after students left school and worked with prototyping electronics (beeps and leds makes kids heads light up)
+- the school used a veritable kitchen sink of languages, wanted to switch to one language, preferably open source, which was useful after students left school and worked with prototyping electronics (beeps and leds makes kids heads light up)
 - some considerations:
   - block based programming is too..ugh
   - Apple swift and playgrounds need ipads, those are expensive and lock you in
@@ -101,14 +64,14 @@ with open('very_big_file.txt', 'r') as f:
 - drumroll.... they choose python!
 - the talk covered introducing students to the big picture concept of drones, their issues and applications and things to think about
 - so after ages, the students finally went hands on with python and drones
-  - used psuedo code, flowcharts to explain concepts
+  - used pseudo code, flowcharts to explain concepts
   - then real code, including functions like `make_it_rock`, `circle` etc etc
-  - seeing the drone do stuff in real life becuase of their code was very motivating
+  - seeing the drone do stuff in real life because of their code was very motivating
 - highly visible learning is great.
 
-**takeaway:** theres a lot to research and think about before even starting to code and fly a drone. I guess that applies to programing in general - so much problems in python are best approached after a literature research for best practices.
+**takeaway:** theres a lot to research and think about before even starting to code and fly a drone. I guess that applies to programming in general - so much problems in python are best approached after a literature research for best practices.
 
-Highly visibile reactions are great, so try and use that with real projects as well.
+Highly visible reactions are great, so try and use that with real projects as well.
 
 ## Using Dash by Plotly for Interactive Visualisation of Crime Data
 
@@ -149,12 +112,12 @@ Highly visibile reactions are great, so try and use that with real projects as w
 
 - Martin Burgess, [github](https://github.com/martintburgess) [buckleysandnone](https://www.buckleysandnone.com)
 - [notebook for talk, includes slides and code](https://github.com/martintburgess/buckleys-pycon2019/blob/public/notebooks/Forecasting%20Australia's%202019%20Election%20with%20PyMC3.ipynb)
-- prob forecasting tries to estimate te relative prob of all possible outcomes e.g weather forecasting
+- prob forecasting tries to estimate the relative prob of all possible outcomes e.g weather forecasting
 - the future is uncertain, and prob forecasting gives us an estimate of how likely different outcomes are
 - ppl have different starting assumptions, probabilistic forecasting defines them up front
 - [PyMC3](https://docs.pymc.io)
 
-**takeaway**: forecasts with probabilities are much more useful than just a plain number. With the last Australian elections, practically every channel had just the one number for wins - but if they had attaced a likeihood to it and shown the other likely scenarios it would have been a lot more useful.
+**takeaway**: forecasts with probabilities are much more useful than just a plain number. With the last Australian elections, practically every channel had just the one number for wins - but if they had attached a likelihood to it and shown the other likely scenarios it would have been a lot more useful.
 
 Apply probabilistic forecasting to a future issue. Read [this book](https://nostarch.com/learnbayes) and [ThinkBayes](https://greenteapress.com/wp/think-bayes/).
 
@@ -193,16 +156,16 @@ So look into getting a Nvidia powered computer suitable for using with rapids, t
 
 - Varun Nayyar, mathematician - [linkedin](https://www.linkedin.com/in/varun-nayyar-94222647/?originalSubdomain=au)
 - what are GPU's good for? graphics can be fundamentally reduced to matrix operations, DL is just matrix multiplication with a non linearity.
-- CUDA: gpu's are made up of streaming multiprocessors (SM's) each with many cuda cores, say 64-128. They run thousands of threads simultanesouly vs 10s for a cpu.
+- CUDA: gpu's are made up of streaming multiprocessors (SM's) each with many cuda cores, say 64-128. They run thousands of threads simultaneously vs 10s for a cpu.
 - real world cuda threads are divided into blocks of 32 threads called a warp, and threads in a warp run at the same time.
   - a rtx2080ti can run over 4K threads in one go
 - GPU's are generally memory bound, not compute bound.
 - Deep learning: each forward pass is just a matrix multiply, as is backprop
-- Gradient Descent is a sequential algorithim - gpu compute hasn't changed how it works, just makes it faster by 20-30x on a fully connected network.
-- Convolutions are compute bound on a gpu, easy to parralize
+- Gradient Descent is a sequential algorithm - gpu compute hasn't changed how it works, just makes it faster by 20-30x on a fully connected network.
+- Convolutions are compute bound on a gpu, easy to parallelize
 - RNN's are memory bound
 - gpu's work well with GradientBoosting
-- gpu's have variable perf depending on the algo, so its not straigtforward to put algorithms on the gpu. CPU and GPU implementations can differ.
+- gpu's have variable perf depending on the algo, so its not straightforward to put algorithms on the gpu. CPU and GPU implementations can differ.
 - gpu sync is slow - stick with single gpu's for personal use, you need a strong engineering team for multi-gpus.
 - local compute is great - pays for itself soon over paying for cloud. don't skimp - go for a rtx2080ti
 
@@ -229,18 +192,18 @@ So look into getting a Nvidia powered computer suitable for using with rapids, t
 > Neurofeedback is a brain-computer interface where a person’s own brain waves are audio/visually presented back in real-time after they’ve been recorded and filtered within a few milliseconds. We present methods to allow people to see their own brainwaves with python. [#](https://2019.pycon-au.org/talks/learn-to-control-your-brain-brain-computer-interfacing-with-python)
 
 - Johan van der Meer, neuroscientist at the QIMR Berghofer Medical Research Institute in Australia. [github](https://github.com/jnvandermeer)
-- basics: grab signals from the brainusing EEG, do real time analysis, send a feedback signal
+- basics: grab brain using EEG, do real time analysis, send a feedback signal
 - brain has many neurons, when a neuron fires a electrical field is generated which is pretty tiny - but when many neurons fire together it makes a big field which you can measure from even outside the brain
-- signal changes with action - exampls eyes open/close.
+- signal changes with action - example eyes open/close.
 - eeg resolution is quite poor/limited
-- EEG signals can have rythyms, so thus you can do frequency analysis
+- EEG signals can have rhythms, so thus you can do frequency analysis
 - [mne](https://martinos.org/mne/stable/index.html) - open source python lib for neurophysical data
 - for better signals - you have to measure from inside the brain - see neuralink.
 - eeg is non-invasive, portable and cheap
 - [labstreaminglayer](https://github.com/sccn/labstreaminglayer) is a good library to stream realtime data from a measuring device.
-- so we have devices, we have libararies to connect to them and python to glue it all up.
+- so we have devices, we have libraries to connect to them and python to glue it all up.
 - Decoding all this data: this is where the research is, figuring out what it means and using it do useful things, like control a wheelchair etc.
-- [neurofeedback](https://www.wikiwand.com/en/Neurofeedback) learning: with some mental disorders ppl have irregular brain rythyms. Idea is that regularzing them with "training" will help improve disorders.
+- [neurofeedback](https://www.wikiwand.com/en/Neurofeedback) learning: with some mental disorders ppl have irregular brain rhythms. Idea is that regularizing them with "training" will help improve disorders.
 - Encoding: how much data can we transmit?
 - [openbci](https://openbci.com) looks really cool.
 
@@ -262,7 +225,7 @@ Explore openbci further and hack my own neuro thingamajig.
 - they used fast.ai for deep learning, sklearn for randomforests and tensorflow for word embeddings
 - used F1 score to evaluate models
 
-**takeaway:** see the presentation again... it was a good explaination of a end to end process.
+**takeaway:** see the presentation again... it was a good explanation of a end to end process.
 
 ## Creating Lasting Change
 
@@ -301,7 +264,7 @@ Explore openbci further and hack my own neuro thingamajig.
 
 - Richard Jones, dev at [reecetech](http://www.reecetech.com.au), a plumbing company
 -
-- trys to make every service look similar, tools to enforce this
+- tries to make every service look similar, tools to enforce this
   - cookiecutter
   - tox
   - goal is full test coverage, pytest cause its best in class
@@ -311,8 +274,8 @@ Explore openbci further and hack my own neuro thingamajig.
   - django to deliver the services
 - inconsistencies happen, so you have to check across teams. i.e one team switched tool cause they found it too hard, so now you have inconsistencies across projects
 - resilience: microservices are prone to brief errors or tiny service interruptions. So use http retries for some errors
-- moniter services using [grafana dashboards](https://grafana.com) and [kibana](https://www.elastic.co/products/kibana) for monitering and searching logs
-- get it running right first, then use tools to investigate performance, like [silk](https://github.com/jazzband/django-silk) for dango
+- monitor services using [grafana dashboards](https://grafana.com) and [kibana](https://www.elastic.co/products/kibana) for monitoring and searching logs
+- get it running right first, then use tools to investigate performance, like [silk](https://github.com/jazzband/django-silk) for django
   - reducing number of sql queries was key to speed
 - batch interfaces is good, like allow consumer to get 100 price requests in one go, much faster than 100 different requests
 - caching really helped. `@lru_cache(maxsize=1024)` decorator built into python does the job.
@@ -325,16 +288,16 @@ Explore openbci further and hack my own neuro thingamajig.
 
 - [Evan Brumley](https://www.linkedin.com/in/evanbrumley/), engr at [WSP Digital](https://www.wspdigital.com)
 - working on 7 construction sites for Melbourne Metro
-- one construction site next to hospitals, lab etc which can't be disturbed - so they have a bunch of quantative requirements to meet and report on in real time.
+- one construction site next to hospitals, lab etc which can't be disturbed - so they have a bunch of quantitative requirements to meet and report on in real time.
 - so, how to keep track of all the requirements?
 - old school approach was to send grad engineers to site, collect readings, analyze in excel and file reports at the end of the month
-- modern approach: get sensors from a Vendor with a Saas platform, give them lots of money, download csvs, analyzie in excel and file reports at the end of the month.
+- modern approach: get sensors from a Vendor with a Saas platform, give them lots of money, download csvs, analyze in excel and file reports at the end of the month.
   - they don't respond to custom reports, don't integrate with other vendors sensors
 - solution: build a new platform which could accept data from any device
 - hint: try not to work with devices directly
 - 150-200 sensors, some sending data at a half second freq
 - validate and store telemetry
-- envirnomental requirements don't map directly to sensor data, so calculations needed to transform them - which are sometimes complex, and have to performed in real time
+- environmental requirements don't map directly to sensor data, so calculations needed to transform them - which are sometimes complex, and have to performed in real time
 - access to data - both internal as well as limited external access
 - alerts and reporting
 - they had 4 months to build this out, fully self contained team of 2-3 devs + 1PM
@@ -342,7 +305,7 @@ Explore openbci further and hack my own neuro thingamajig.
 - api pollers packaged into docker containers and deployed via elastic beanstalk
   - used [pyftpdlib](https://github.com/giampaolo/pyftpdlib)
 - web app is built on django+celery+react, powered by pandas and the scipy stack
-  - pandas allows them to transform raw telemetrym live, on request - using upto 10K points in a dataframe. Pandas was a huge timesaver.
+  - pandas allows them to transform raw telemetry live, on request - using upto 10K points in a dataframe. Pandas was a huge timesaver.
 
 **takeaway:** dang. that is a lot of stuff.
 
@@ -360,17 +323,17 @@ Explore openbci further and hack my own neuro thingamajig.
 
 > Engineers tasked with planning new infrastructure constantly face the problem of having to look through too much information. This talk is about how we wanted to be lazy and wrote a bot to do it for us instead. [#](https://2019.pycon-au.org/talks/python-applications-in-infrastructure-planning-and-civil-engineering)
 
-- Ben Chu, grad engr at [WSP](https://www.wsp.com/en-AU), a large engnr firm
+- Ben Chu, grad engr at [WSP](https://www.wsp.com/en-AU), a large engr firm
 - lots of stuff involved in railway planning
 - EIA used to be done by junior staff, using datasets like noise receivers (hospitals etc), vegetation (what areas will the train cross)
   - these add up quickly to a lot of stuff
 - so instead they are using jupyter notebook
-  - shapefiles store shapes like the railway line and vegetation and noise senstitive areas
-  - run in [Papermill](https://github.com/nteract/papermill which outputs html, csv and shapefiles
+  - shapefiles store shapes like the railway line and vegetation and noise sensitive areas
+  - run in [Papermill](https://github.com/nteract/papermill) which outputs html, csv and shapefiles
 - need to check DA's along the railway line which might impact on the line - there can be many thousands.
   - used to be done manually, paid $70 per DA, slow, costly and infrequent updates
   - they need to know as soon as the DA comes in as it could pose a high risk to the railway design
-- DABot automates this - it merges geocoded national address file and lot shape datasets, filters for lots on the buffer alighnment, which gives a list of addressses which they can use to search for DA's matching those addresses.
+- DABot automates this - it merges geocoded national address file and lot shape datasets, filters for lots on the buffer alignment, which gives a list of addresses which they can use to search for DA's matching those addresses.
   - majority of council websites are the same, so same scraper works on most of them
   - NLP pipeline to clean text, then they form a document term matrix, used 200 most imp features
   - ML: went with XGBoost, got 85% Accuracy with a 95% recall
@@ -395,18 +358,18 @@ Explore openbci further and hack my own neuro thingamajig.
 - Context Managers: when opening files, you had to manually close them. Easy to miss. Hence context managers.
   - the python syntax enforced correct behaviour
 
-**takeaway:** things to thing about. Convention matters.
+**takeaway:** things to think about. Convention matters.
 
 ## Profiling Pathogens with (micro) Python
 
 > We’re building professional medical diagnostics equipment with micropython. This has come with minimal challenges, many positives and a few surprises! [#](https://2019.pycon-au.org/talks/profiling-athogens-with-micro-python)
 
 - Andrew Leech, [Planet Innovation](https://planetinnovation.com)
-- working with [Lumos](https://lumosdiagnostics.com) to develop point of care diagnositcs tests (spinoff of PI)
-- Buid a medical device:
+- working with [Lumos](https://lumosdiagnostics.com) to develop point of care diagnostics tests (spinoff of PI)
+- Build a medical device:
   - hazard and risk based development: at every stage minimise risks
 - Lumos Camera Reader runs micropython, connects to a phone via bluetooth
-- SOuP: Software of unknown povidence
+- SOuP: Software of unknown provenance
   - for medical devices, you need certified code, or blackbox it.
 - use jupytermicropython kernel to run code directly on the board. Makes dev very easy.
   - use ipywidgets to do live interactions.
@@ -428,7 +391,7 @@ Explore openbci further and hack my own neuro thingamajig.
 ### Sam Bishop: Computational World Building
 
 - using processing.py to build worlds and model weather using isca
-- deep deep rabbit whole of modelling and fitting worlds into the solar system
+- deep deep rabbit hole of modelling and fitting worlds into the solar system
 
 ### data driven look at code comments
 
@@ -458,7 +421,7 @@ Explore openbci further and hack my own neuro thingamajig.
 - Chris Wilcox, dev at Google [@chriswilcox47](https://twitter.com/chriswilcox47)
 - pypi: python package index makes python great - its easy to install and use packages
 - manual steps: (don't do this)
-  - make a packakge in the format pip expects along with a setup.py
+  - make a package in the format pip expects along with a setup.py
   - make a venv and do a local install of your package and test it.
   - upload to testpypi, and install from there
   - if everything works, upload to pypi
@@ -471,7 +434,7 @@ Explore openbci further and hack my own neuro thingamajig.
 - to start a new project
   - pypi has a [sampleproject repo](https://pypi.org/project/sampleproject/)
   - can use [cookiecutter](https://cookiecutter.readthedocs.io/en/latest/) too, or just build up a good basic setup and just copy paste and change for new projects
-    -automation tools:
+- automation tools:
   - [tox](https://tox.readthedocs.io/en/latest/) is the most common
   - [nox](https://nox.thea.codes/en/stable/) is more flexible, configured with python scripts. can build docs as well.
 - really automate stuff with CI - once setup properly publishing a release to the git repo will build, test and deploy:
@@ -485,7 +448,7 @@ Explore openbci further and hack my own neuro thingamajig.
 > Entropy theory is usually thought of as something that applies to matter and energy, but it turns out that we can apply the same techniques of analysis to social media sites. Join me as we study the thermodynamic behaviour of users on Twitter, and learn how to analyse it better. [#](https://2019.pycon-au.org/talks/insights-into-social-media-data-using-entropy-theory)
 
 - Mars Geldard [github](https://github.com/TheMartianLife), honours student at U of Tas
-- awesome talk, see [preso slides here.]([pycon preso](https://github.com/TheMartianLife/PyConAU-2019))
+- awesome talk, see [preso slides here](https://github.com/TheMartianLife/PyConAU-2019)
 - Interesting application of entropy theory to social media analysis.
 
 **takeaway:** Look at other fields for ideas on how to tackle problems.
@@ -506,7 +469,7 @@ Explore openbci further and hack my own neuro thingamajig.
 > Surprisingly, we can approximate matter as a bunch of balls on springs and learn things about our bodies and the world. This talk will look at the different stages of molecular dynamics (MD) simulations and how Python is changing everything. [#](https://2019.pycon-au.org/talks/the-universe-as-balls-and-springs-molecular-dynamics-in-python)
 
 - Lily Wang, working on PhD on molecular dynamics at ANU
-- define an atom as a ball (radiaus, mass) with everything else as springs then you can use molecular dynamics to model a system of atoms. To study proteins, viruses etc
+- define an atom as a ball (radius, mass) with everything else as springs then you can use molecular dynamics to model a system of atoms. To study proteins, viruses etc
 - [openmm](http://openmm.org/) lib for molecular simulations, also [MDanalysis](https://www.mdanalysis.org)
 - [plotly](https://plot.ly/python/) for interactive viz for the win!
 - MD in the past: rubber balls stuck together
@@ -514,7 +477,7 @@ Explore openbci further and hack my own neuro thingamajig.
   - currently sims top out at millions of atoms, so long way to go to simulate bigger structures
 - [OpenForceField](https://openforcefield.org): open science initiative
 
-**takeaway:** molecular dynamics is hard. I liked how they simplified a very complex thing - proteins, viruses - to a simple system which they could model computationaly and hope it approximates the real thing.
+**takeaway:** molecular dynamics is hard. I liked how they simplified a very complex thing - proteins, viruses - to a simple system which they could model computationally and hope it approximates the real thing.
 
 ## Instant feedback, instant-debugging Python coding
 
@@ -553,8 +516,8 @@ Then you can make a state machine to watch over all your other state machines!
 
 ### Pre european potatoes
 
-- pototoes were far away from NZ. got there long time ago.
-- [growstuff](https://www.growstuff.org) is tinder for potaoes.
+- potatoes were far away from NZ. got there long time ago.
+- [growstuff](https://www.growstuff.org) is tinder for potatoes.
 
 ### Quantum Computing
 
@@ -566,7 +529,7 @@ Then you can make a state machine to watch over all your other state machines!
 ### Batteries included but leaking
 
 - talk about fear of removing old and semi dead bits of the stdlib
-- pep594 will break a lot of corporate code which doesn't have replacements - this places the burden of maintainence from the corporations to python
+- pep594 will break a lot of corporate code which doesn't have replacements - this places the burden of maintenance from the corporations to python
 - some of the libs broken can be easily updated
 - make pythons development easier, kill the nasty old bits
 
@@ -578,5 +541,5 @@ Moving forward, my biggest takeaway is to take an idea and just run with it. Man
 
 ## misc notes
 
-- Embed youtube vidoes by `{{< youtube EqQj5os3Mfw >}}` or `{{< youtube id="w7Ft2ymGmfc" autoplay="false" >}}`
+- Embed youtube videos by `{{< youtube EqQj5os3Mfw >}}` or `{{< youtube id="w7Ft2ymGmfc" autoplay="false" >}}`
 - can't use `'` or `-` in anchor links for some reason. Chrome doesn't jump to anchors! Bad chrome!

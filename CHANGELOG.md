@@ -81,9 +81,16 @@ marks a period, not an API contract. History before this file starts lives in
 
 - Timezone converter: the two hand-rolled searchable dropdowns replaced with
   bits-ui Combobox — keyboard navigation, proper aria, no blur-timing hacks.
+- TOC: top-level sections numbered, active item stays visible inside the TOC's
+  scroll box on long posts, clicking an entry puts the anchor in the URL.
+- `:::ai` is now the single convention for AI-written content; all legacy
+  ` ```ai ` fences migrated (they showed markdown as raw text). Fence styling
+  kept as a fallback. llms.txt and .md twins now show `updated` dates.
 
 ### Fixed
 
+- TOC mobile drawer never highlighted the current section (the scrollspy only
+  ever matched the hidden desktop link).
 - Big Text: tap/click on the (invisible) input could place the caret mid-text,
   making typed characters insert out of order ("mirrored" text) — caret now
   snaps to end on focus/click.
