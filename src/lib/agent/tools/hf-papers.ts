@@ -1,10 +1,11 @@
 import { Type } from "@earendil-works/pi-ai";
+import { defineTool } from "./define";
 
 /**
  * Hugging Face Daily Papers (huggingface.co/api — CORS enabled, no key).
  * Mirrors kotools' `ko hf top`: trending ML papers with upvotes.
  */
-export const hfDailyPapersTool = {
+export const hfDailyPapersTool = defineTool({
   name: "hf_daily_papers",
   label: "HF Daily Papers",
   description:
@@ -26,4 +27,4 @@ export const hfDailyPapersTool = {
       details: { count: lines.length },
     };
   },
-};
+});

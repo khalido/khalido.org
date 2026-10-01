@@ -1,4 +1,5 @@
 import { Type } from "@earendil-works/pi-ai";
+import { defineTool } from "./define";
 
 /**
  * Hacker News tools via Algolia's public API (CORS enabled, no key).
@@ -21,7 +22,7 @@ function storyLine(h: any): string {
   return `${(h.created_at ?? "").slice(0, 10)} | ${h.points} pts, ${h.num_comments} comments | ${h.title} | ${h.url ?? "(text post)"} | id:${h.objectID}`;
 }
 
-export const hnFrontPageTool = {
+export const hnFrontPageTool = defineTool({
   name: "hn_front_page",
   label: "HN Front Page",
   description:
@@ -40,9 +41,9 @@ export const hnFrontPageTool = {
       details: { count: lines.length },
     };
   },
-};
+});
 
-export const hnSearchTool = {
+export const hnSearchTool = defineTool({
   name: "hn_search",
   label: "HN Search",
   description:
@@ -76,9 +77,9 @@ export const hnSearchTool = {
       details: { count: lines.length },
     };
   },
-};
+});
 
-export const hnStoryTool = {
+export const hnStoryTool = defineTool({
   name: "hn_story",
   label: "HN Discussion",
   description:
@@ -116,4 +117,4 @@ export const hnStoryTool = {
       details: { comments: comments.length },
     };
   },
-};
+});

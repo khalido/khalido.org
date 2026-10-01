@@ -27,11 +27,6 @@
     clearKeys();
     values = {};
   }
-
-  function mask(key) {
-    if (!key || key.length < 8) return key;
-    return key.slice(0, 6) + "•".repeat(Math.min(key.length - 10, 20)) + key.slice(-4);
-  }
 </script>
 
 <div class="settings">

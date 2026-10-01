@@ -1,11 +1,12 @@
 import { Type } from "@earendil-works/pi-ai";
+import { defineTool } from "./define";
 
 /**
  * Market quotes + headlines from /data/market/market.json — a snapshot
  * written by scripts/fetch-market.ts (run manually before deploys).
  * Generic — covers whatever symbols the script is configured with.
  */
-export const marketQuotesTool = {
+export const marketQuotesTool = defineTool({
   name: "get_market_quotes",
   label: "Market Quotes",
   description:
@@ -46,4 +47,4 @@ export const marketQuotesTool = {
       details: { count: data.quotes.length, fetchedAt: data.fetchedAt },
     };
   },
-};
+});

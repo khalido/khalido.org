@@ -151,9 +151,9 @@
         agent.state.streamingMessage?.role === "assistant"
       ) {
         const content = agent.state.streamingMessage.content;
-        streamingText = content?.find((c: any) => c.type === "text")?.text || "";
+        streamingText = (content?.find((c: any) => c.type === "text") as any)?.text || "";
         streamingThinking =
-          content?.find((c: any) => c.type === "thinking")?.thinking?.length || 0;
+          (content?.find((c: any) => c.type === "thinking") as any)?.thinking?.length || 0;
       }
       if (event.type === "tool_execution_start") {
         const pending = agent.state.pendingToolCalls.size;
@@ -183,7 +183,7 @@
         // agent.abort()) isn't an error — the truncated reply is enough
         const lastAssistant = [...agent.state.messages]
           .reverse()
-          .find((m: any) => m.role === "assistant");
+          .find((m: any) => m.role === "assistant") as any;
         const wasAborted = userStopped || lastAssistant?.stopReason === "aborted";
         if (agent.state.errorMessage && !wasAborted) {
           error = agent.state.errorMessage;

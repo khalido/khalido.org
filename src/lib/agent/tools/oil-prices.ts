@@ -1,6 +1,7 @@
 import { Type } from "@earendil-works/pi-ai";
+import { defineTool } from "./define";
 
-export const oilPriceTool = {
+export const oilPriceTool = defineTool({
   name: "get_oil_prices",
   label: "Oil Prices",
   description:
@@ -50,4 +51,4 @@ export const oilPriceTool = {
       details: { count: entries.length, period: useDaily ? "daily" : "monthly" },
     };
   },
-};
+});

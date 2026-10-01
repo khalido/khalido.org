@@ -7,7 +7,20 @@
  * shape, keeping only tool-calling models since the agent needs tools.
  */
 
-import { getBuiltinModels } from "@earendil-works/pi-ai/providers/all";
+import { createModels } from "@earendil-works/pi-ai";
+import { openrouterProvider } from "@earendil-works/pi-ai/providers/openrouter";
+
+// Only the OpenRouter provider is registered — importing providers/all would pull
+// every provider's catalog into the browser bundle.
+const provider = openrouterProvider();
+const registry = createModels();
+registry.setProvider(provider);
+
+/**
+ * Pass as `streamFn` to `new Agent({...})` (required since pi-agent 0.99).
+ * Dispatches on model.provider, so live models not in the static catalog work.
+ */
+export const openrouterStreamFn = registry.streamSimple.bind(registry);
 
 const CACHE_KEY = "openrouter-models-v1";
 const CACHE_TTL_MS = 60 * 60 * 1000; // 1 hour
@@ -20,7 +33,7 @@ export interface ORModel {
   baseUrl: string;
   compat: { supportsDeveloperRole?: boolean; thinkingFormat: "openrouter"; cacheControlFormat?: "anthropic" };
   reasoning: boolean;
-  input: string[];
+  input: ("text" | "image")[];
   cost: { input: number; output: number; cacheRead: number; cacheWrite: number };
   contextWindow: number;
   maxTokens: number;
@@ -55,7 +68,7 @@ export async function getOpenRouterModels(): Promise<ORModel[]> {
   try {
     return await fetchLiveModels();
   } catch {
-    return getBuiltinModels("openrouter") as unknown as ORModel[];
+    return provider.getModels() as unknown as ORModel[];
   }
 }
 
@@ -94,7 +107,7 @@ async function fetchLiveModels(): Promise<ORModel[]> {
         ...(m.id.startsWith("anthropic/") ? { cacheControlFormat: "anthropic" as const } : {}),
       },
       reasoning: m.supported_parameters?.includes("reasoning") ?? false,
-      input: m.architecture?.input_modalities?.includes("image") ? ["text", "image"] : ["text"],
+      input: m.architecture?.input_modalities?.includes("image") ? (["text", "image"] as ("text" | "image")[]) : (["text"] as ("text" | "image")[]),
       cost: {
         // OpenRouter prices are $/token as strings; pi-ai wants $/M tokens
         input: parseFloat(m.pricing?.prompt ?? "0") * 1e6,

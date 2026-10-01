@@ -1,4 +1,5 @@
 import { Type } from "@earendil-works/pi-ai";
+import { defineTool } from "./define";
 
 /**
  * Oil news tool — reads pre-fetched news from /data/oil/news.json.
@@ -6,7 +7,7 @@ import { Type } from "@earendil-works/pi-ai";
  * Data is fetched by scripts/fetch-oil-news.ts (run manually or in CI):
  *   npx tsx scripts/fetch-oil-news.ts
  */
-export const oilNewsTool = {
+export const oilNewsTool = defineTool({
   name: "get_oil_news",
   label: "Oil News",
   description:
@@ -73,4 +74,4 @@ export const oilNewsTool = {
       details: { count: articles.length, total: (data.articles || []).length },
     };
   },
-};
+});

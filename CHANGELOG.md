@@ -19,12 +19,32 @@ marks a period, not an API contract. History before this file starts lives in
 - `:::ai` container directive — AI-written blocks with full markdown (links, lists),
   same faint styling + "AI" badge as ` ```ai ` fences.
 
+### Fixed
+
+- Canonical, `og:url` and breadcrumb URLs no longer end in `.html` in production
+  builds (`build.format: "file"` leaks it into `Astro.url`).
+- Agent tools are typed via a `defineTool` helper — clears all 18 `svelte-check` errors.
+- Sydney Clock leaked its ResizeObserver/interval (async `onMount` drops cleanup).
+- CodeRunner no longer throws when the esm.sh CDN is unreachable — falls back to
+  unhighlighted code, and code without CSV parsing still runs.
+
 ### Changed
 
 - Markdown now renders single newlines as `<br>` (Obsidian/GitHub style) via a
   custom Sätteri mdast plugin; plain `.md` files moved off the MDX pipeline onto
   Astro 7's native Rust markdown processor.
 - Tighter prose spacing: lists sit closer to the paragraph that introduces them.
+- Dependency refresh: Astro 7.3, `@astrojs/mdx` 8, Svelte 5.57, LayerChart 2.5,
+  Bits UI 2.19, astro-embed 0.14, svelte-streamdown 4, yahoo-finance2 4, and
+  `@earendil-works/pi-*` 0.80 → 0.99 (agents now pass an explicit OpenRouter
+  `streamFn`; model fallback uses only the OpenRouter catalog instead of all providers).
+  Packages imported directly but previously only installed transitively (Sätteri,
+  unified/remark/rehype, `@astrojs/markdown-remark` for astro-embed) are now declared.
+- RSS feed includes data stories and is sorted newest-first; `<head>` advertises
+  the RSS feed and `llms.txt`.
+- Word Counter: Svelte 5 runes, `Intl.Segmenter` word/sentence counts, plus
+  characters without spaces, paragraphs and reading time.
+- Timezone Converter search matches "new york" to `America/New_York`.
 - Migrated the Oil Price Agent tool from `@mariozechner/pi-agent-core`/`pi-ai` (v0.60)
   to `@earendil-works/pi-agent-core`/`pi-ai` (v0.80.3), adapting to the new model
   registry (`getBuiltinModel(s)`) and agent state API.

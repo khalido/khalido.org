@@ -228,6 +228,7 @@ src/lib/agent/tools/               # SHARED tool definitions (reusable across ag
 ├── oil-events.ts                  # with a _ prefix instead)
 ├── oil-news.ts
 ├── market-quotes.ts               # live quotes + headlines from /data/market/market.json
+├── define.ts                      # defineTool() typing helper
 ├── papers.ts                      # OpenAlex search/get/citations (CORS, no key)
 ├── hackernews.ts                  # HN Algolia search + comment threads (CORS, no key)
 ├── hf-papers.ts                   # HF Daily Papers trending (CORS, no key)
@@ -240,8 +241,9 @@ scripts/fetch-market.ts            # yahoo-finance2 quotes+news — run manually
                                    # deploying (browsers can't call Yahoo: no CORS)
 ```
 
-- **pi-ai** (`@mariozechner/pi-ai`): LLM provider abstraction. `getModels("openrouter")` returns 237+ tool-calling models from an in-memory registry (no API call, no caching needed). `getModel(provider, id)` returns a model instance for the agent.
-- **pi-agent-core** (`@mariozechner/pi-agent-core`): Agent runtime with conversation loop, tool execution, event system. `agent.subscribe()` for streaming events, `agent.prompt()` to send messages.
+- **pi-ai** (`@earendil-works/pi-ai`, 0.99): LLM provider abstraction. Models come from `getOpenRouterModels()` (live OpenRouter list); `openrouterStreamFn` from `@lib/agent/openrouter-models` wraps a `createModels()` registry with only the OpenRouter provider registered.
+- **pi-agent-core** (`@earendil-works/pi-agent-core`, 0.99): Agent runtime with conversation loop, tool execution, event system. `new Agent({ initialState, streamFn: openrouterStreamFn, getApiKey })` — `streamFn` is required since 0.99. `agent.subscribe()` for streaming events, `agent.prompt()` to send messages.
+- **Tool definitions**: wrap in `defineTool({...})` from `@lib/agent/tools/define` so `execute`'s params type-check against the TypeBox schema.
 - **AgentChat.svelte**: Two modes — `"page"` (grows with content) and `"terminal"` (fixed dark box). Uses svelte-streamdown for markdown. Activity accordion groups thinking + tool calls between messages.
 - **ModelPicker.svelte**: Bits UI Command palette with search. Shows model name, reasoning badge, cost. Free filter toggle built in.
 - Tools fetch from `public/data/` (static JSON baked at deploy time, not live APIs).

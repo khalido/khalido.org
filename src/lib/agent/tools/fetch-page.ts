@@ -1,11 +1,12 @@
 import { Type } from "@earendil-works/pi-ai";
+import { defineTool } from "./define";
 
 /**
  * URL → markdown via jina reader (r.jina.ai — CORS enabled, keyless free tier).
  * Mirrors kotools' `ko fetch`. Rate-limited without a key; fine for
  * a handful of reads per session.
  */
-export const fetchPageTool = {
+export const fetchPageTool = defineTool({
   name: "fetch_page",
   label: "Read Page",
   description:
@@ -22,4 +23,4 @@ export const fetchPageTool = {
       details: { url: params.url, chars: text.length },
     };
   },
-};
+});

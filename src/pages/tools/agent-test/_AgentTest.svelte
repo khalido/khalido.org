@@ -1,7 +1,7 @@
 <script lang="ts">
   import { onMount } from "svelte";
   import { Agent } from "@earendil-works/pi-agent-core";
-  import { getOpenRouterModel, type ORModel } from "@lib/agent/openrouter-models";
+  import { getOpenRouterModel, openrouterStreamFn, type ORModel } from "@lib/agent/openrouter-models";
   import { ToggleGroup } from "bits-ui";
   import { getKey } from "@scripts/keystore";
   import AgentChat from "@components/AgentChat.svelte";
@@ -56,6 +56,7 @@ Format responses using markdown — use **bold** for key numbers, bullet lists f
           thinkingLevel: selectedModel.reasoning ? "medium" : "off",
           tools: [marketQuotesTool, oilPriceTool, oilEventsTool, oilNewsTool],
         },
+        streamFn: openrouterStreamFn,
         getApiKey: () => getKey("openrouter"),
       });
 

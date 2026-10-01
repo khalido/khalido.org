@@ -141,9 +141,13 @@
     return `${h12}:${String(mins).padStart(2, "0")}${ampm}`;
   }
 
-  onMount(async () => {
-    Plot = await import("@observablehq/plot");
-    renderPlot();
+  // onMount must be sync for its cleanup to run — an async callback's
+  // returned function is ignored, leaking the observer and interval
+  onMount(() => {
+    import("@observablehq/plot").then((mod) => {
+      Plot = mod;
+      renderPlot();
+    });
 
     const ro = new ResizeObserver(() => renderPlot());
     if (plotEl) ro.observe(plotEl);

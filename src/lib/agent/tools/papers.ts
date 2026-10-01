@@ -1,4 +1,5 @@
 import { Type } from "@earendil-works/pi-ai";
+import { defineTool } from "./define";
 
 /**
  * Academic paper tools via OpenAlex (api.openalex.org — CORS enabled, no key).
@@ -26,7 +27,7 @@ function paperLine(w: any): string {
   return `${year} | ${cites} cites | ${w.title} | ${journal} | doi:${doi} | ${id}`;
 }
 
-export const searchPapersTool = {
+export const searchPapersTool = defineTool({
   name: "search_papers",
   label: "Paper Search",
   description:
@@ -46,9 +47,9 @@ export const searchPapersTool = {
       details: { count: lines.length },
     };
   },
-};
+});
 
-export const getPaperTool = {
+export const getPaperTool = defineTool({
   name: "get_paper",
   label: "Paper Details",
   description:
@@ -77,9 +78,9 @@ export const getPaperTool = {
       details: { title: w.title },
     };
   },
-};
+});
 
-export const papersCitingTool = {
+export const papersCitingTool = defineTool({
   name: "papers_citing",
   label: "Citation Graph",
   description:
@@ -99,4 +100,4 @@ export const papersCitingTool = {
       details: { count: lines.length },
     };
   },
-};
+});

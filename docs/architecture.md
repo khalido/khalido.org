@@ -76,7 +76,7 @@ Live editable JavaScript blocks. Uses `client:load`.
 - Props: `code`, `lang`, `collapsed`, `title`, `caption`
 
 ### LLM Content Blocks
-Use ` ```ai ` in markdown. Shiki renders with `data-language="ai"` (configured via `langAlias` in astro.config.mjs). Styled in `global.css` with faint background and "AI" badge.
+Use a `:::ai` container directive (full markdown inside), handled by the `aiDirective` Sätteri plugin in astro.config.mjs and styled as `.ai-block` in `global.css`. The legacy ` ```ai ` fence still renders (via `langAlias`) but shows raw text — don't use it for new content.
 
 ## Known Issues
 

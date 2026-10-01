@@ -1,6 +1,7 @@
 import { Type } from "@earendil-works/pi-ai";
+import { defineTool } from "./define";
 
-export const oilEventsTool = {
+export const oilEventsTool = defineTool({
   name: "get_oil_events",
   label: "Oil Events",
   description:
@@ -19,4 +20,4 @@ export const oilEventsTool = {
       details: { count: events.length },
     };
   },
-};
+});

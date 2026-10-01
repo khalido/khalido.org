@@ -1,7 +1,7 @@
 <script lang="ts">
   import { onMount } from "svelte";
   import { Agent } from "@earendil-works/pi-agent-core";
-  import { getOpenRouterModel, type ORModel } from "@lib/agent/openrouter-models";
+  import { getOpenRouterModel, openrouterStreamFn, type ORModel } from "@lib/agent/openrouter-models";
   import { getKey } from "@scripts/keystore";
   import AgentChat from "@components/AgentChat.svelte";
   import ORModelPicker from "@components/ORModelPicker.svelte";
@@ -65,6 +65,7 @@ Format in markdown. Be concise — findings first, then evidence.`;
             fetchPageTool,
           ],
         },
+        streamFn: openrouterStreamFn,
         getApiKey: () => getKey("openrouter"),
       });
 

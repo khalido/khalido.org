@@ -13,9 +13,10 @@
   let search2 = $state("");
 
   function filtered(query) {
-    const q = query.toLowerCase();
+    // Normalise spaces/underscores so "new york" matches America/New_York
+    const q = query.toLowerCase().replace(/[_\s]+/g, " ").trim();
     if (!q) return allTimezones.slice(0, 20);
-    return allTimezones.filter(tz => tz.toLowerCase().includes(q)).slice(0, 20);
+    return allTimezones.filter(tz => tz.toLowerCase().replace(/_/g, " ").includes(q)).slice(0, 20);
   }
 
   function friendlyName(tz) {

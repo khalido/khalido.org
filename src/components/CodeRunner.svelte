@@ -143,7 +143,8 @@
         try { return await import("@observablehq/plot"); }
         catch { return await import("https://esm.sh/@observablehq/plot"); }
       }),
-      getLib("dsv", () => import("https://esm.sh/d3-dsv")),
+      // CDN-only — if it's unreachable, code that doesn't parse CSV still runs
+      getLib("dsv", () => import("https://esm.sh/d3-dsv").catch(() => ({}))),
     ]);
     return { Plot, csvParse: dsv.csvParse, tsvParse: dsv.tsvParse, autoType: dsv.autoType, Inputs: createInputs() };
   }
@@ -159,7 +160,7 @@
     }).then((hl) => {
       hljs = hl;
       highlight(editableCode);
-    });
+    }).catch(() => {}); // CDN unreachable — stay on plain escaped text
   });
 
   function highlight(code) {
