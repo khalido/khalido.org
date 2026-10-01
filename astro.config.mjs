@@ -1,6 +1,7 @@
 import { defineConfig } from "astro/config";
 import { satteri } from "@astrojs/markdown-satteri";
 import { defineMdastPlugin } from "satteri";
+import satteriCallouts from "satteri-callouts";
 import embeds from "astro-embed/integration";
 import mdx from "@astrojs/mdx";
 import sitemap from "@astrojs/sitemap";
@@ -53,6 +54,9 @@ export default defineConfig({
     processor: satteri({
       features: { directive: true },
       mdastPlugins: [softBreaks, aiDirective],
+      // Obsidian/GitHub callouts: > [!note] Title. A hast plugin (its README's
+      // mdastPlugins example is wrong). Styles imported in global.css.
+      hastPlugins: [satteriCallouts({ theme: "obsidian" })],
     }),
     shikiConfig: {
       langAlias: {

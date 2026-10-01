@@ -1,5 +1,6 @@
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
+@import "satteri-callouts/theme/obsidian";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -268,4 +269,12 @@ pre.astro-code[data-language="ai"]::before {
 
 pre.astro-code[data-language="ai"] span {
     color: inherit !important;
+}
+
+/* satteri-callouts inside .prose: keep title colour on inline markup, trim trailing margin */
+.prose .callout-title :is(strong, em, code, a) {
+    color: inherit;
+}
+.prose .callout-content > :last-child {
+    margin-bottom: 0;
 }

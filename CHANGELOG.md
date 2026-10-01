@@ -13,6 +13,9 @@ marks a period, not an API contract. History before this file starts lives in
 
 ### Added
 
+- Obsidian/GitHub-style callouts (`> [!note] Title`, `> [!warning]-` collapsible) in
+  `.md` and `.mdx` via `satteri-callouts` (Obsidian theme + stylesheet).
+
 - Post filter niceties: `/` focuses the search box, Esc clears it, and the query
   syncs to the URL (`?q=`) so a filtered view is shareable and survives reload.
 - `CHANGELOG.md` (this file) and a `/release` skill for cutting CalVer releases.

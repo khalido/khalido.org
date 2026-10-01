@@ -30,6 +30,7 @@
     "remark-parse": "^11.0.0",
     "remark-rehype": "^11.1.2",
     "satteri": "^0.10.5",
+    "satteri-callouts": "^1.0.1",
     "svelte": "^5.57.1",
     "svelte-streamdown": "^4.2.0",
     "tailwindcss": "^4.1.10",

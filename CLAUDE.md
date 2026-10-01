@@ -16,6 +16,8 @@ The AI-written explanation, in normal markdown.
 
 Rules: opening `:::ai` and closing `:::` each on their own line, blank line before the block. **In `.mdx` files, bare `{...}` in the text is a JSX expression and breaks the build** — wrap code-ish snippets like `Inputs.checkbox({value})` in backticks. The legacy ` ```ai ` fence still renders styled but shows markdown as raw text — don't use it for new content.
 
+Callouts use Obsidian syntax (`satteri-callouts`, Obsidian theme): `> [!note] Optional title` then `> body` lines; append `-`/`+` (`> [!warning]-`) for collapsed/expanded. Types: note, abstract, info, todo, tip, success, question, warning, failure, danger, bug, example, quote (plus Obsidian aliases, so GitHub's `[!IMPORTANT]`/`[!CAUTION]` work too). A plain `>` blockquote stays a blockquote.
+
 Markdown renders single newlines as `<br>` (Obsidian/GitHub style, via a Sätteri mdast plugin in astro.config.mjs) — no need for trailing double-spaces.
 
 ## How to Help with Content
@@ -253,7 +255,6 @@ scripts/fetch-market.ts            # yahoo-finance2 quotes+news — run manually
 - Fuzzy search (MiniSearch or Fuse.js) for title/tag/summary matching — or Pagefind for full-content search
 - astro-embed integration for YouTube/Twitter embeds from URLs in MDX
 - PyRunner component (Pyodide WASM for Python code blocks)
-- Callout/admonition components (reference: Astro Starlight)
 
 ### Cloudflare Workers migration
 
