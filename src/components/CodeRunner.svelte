@@ -365,10 +365,11 @@
   {#if running}
     <div class="cr-running">Running...</div>
   {/if}
+  <!-- Inputs + DOM output first, console log below (Observable order) -->
+  <div use:mountHtml class="cr-html" class:cr-html-visible={htmlOutput}></div>
   {#if output}
     <div class="cr-output" class:cr-error={hasError}>{output}</div>
   {/if}
-  <div use:mountHtml class="cr-html" class:cr-html-visible={htmlOutput}></div>
   {#if !showCode}
     <button onclick={() => showCode = true} class="cr-show-code">View source</button>
   {/if}

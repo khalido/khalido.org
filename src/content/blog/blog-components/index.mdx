@@ -58,6 +58,34 @@ TODO: write this
 
 TODO: write this
 
+### Runnable code fences
+
+TODO: write this
+
+```js run title="Brent since 2015"
+const { brent } = await json("/data/oil/prices.json");
+const rows = brent
+  .filter((d) => d.value != null && d.date >= "2015")
+  .map((d) => ({ date: new Date(d.date), price: d.value }));
+
+return Plot.plot({
+  height: 220,
+  y: { label: "USD/barrel", grid: true },
+  marks: [Plot.lineY(rows, { x: "date", y: "price" })],
+});
+```
+
+```js run open
+const n = Inputs.slider(1, 10, { value: 3, label: "n" });
+console.log(Array.from({ length: n.value }, (_, i) => (i + 1) ** 2));
+```
+
+:::ai
+A fenced block marked ` ```js run ` becomes a CodeRunner — no import, works in `.md` too. Code is collapsed by default with the output showing; add `open` to show the code, `title="..."` for a heading. Without JavaScript (or in the `.md` twin) it stays a normal highlighted code block. A plain ` ```js ` fence is never executed.
+:::
+
+### CodeRunner component
+
 <CodeRunner client:visible collapsed={false} title="Inline code" code={`const words = ["observable", "notebooks", "but", "in", "a", "blog"];
 console.log(words.map((w) => w.length));
 return words.join(" ");

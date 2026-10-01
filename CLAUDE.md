@@ -29,7 +29,18 @@ Markdown renders single newlines as `<br>` (Obsidian/GitHub style, via a Sätter
 - Research the topic, suggest an outline, provide code examples — don't write the prose
 
 ### Adding a live code block
-Use CodeRunner in any `.mdx` file. Put multi-line code in a colocated `.js` file and import it with `?raw` — MDX strips leading indentation from multi-line template-literal props, so inline code loses its formatting:
+Simplest: a fenced block with `run` in its meta — works in `.md` and `.mdx`, no import:
+````md
+```js run title="Optional heading"
+const data = await csv("/data/oil/brent.csv");
+return Plot.lineY(data, { x: "date", y: "price" }).plot();
+```
+````
+- Collapsed by default (output shows, "View source" reveals code); add `open` to show the code. Plain ` ```js ` fences never run
+- Implemented by `runnableCode` in `astro.config.mjs` + `src/scripts/run-blocks.ts` (mounts CodeRunner on scroll; no JS cost on pages without one). Without JS / in the `.md` twin it's a normal highlighted block
+- Fences can't receive `vars` — fetch public URLs (`/data/...`) or use the component form below for colocated files
+
+Component form, for colocated data/code. Use CodeRunner in any `.mdx` file. Put multi-line code in a colocated `.js` file and import it with `?raw` — MDX strips leading indentation from multi-line template-literal props, so inline code loses its formatting:
 ```mdx
 import CodeRunner from '@components/CodeRunner.svelte';
 import chartCode from './chart.js?raw';
@@ -161,7 +172,7 @@ Post-specific components import their own data (`import rentsUrl from './rents.c
 
 Available building blocks:
 - **Markdown**: Obsidian callouts (`> [!note]`), `:::ai` blocks, GFM tables/footnotes, Shiki code fences — work in `.md` and `.mdx`
-- **`CodeRunner`** (`@components/CodeRunner.svelte`) — editable live JS with Observable Plot + Inputs; see "Adding a live code block"
+- **Runnable fences** (` ```js run `) and **`CodeRunner`** (`@components/CodeRunner.svelte`) — editable live JS with Observable Plot + Inputs; see "Adding a live code block"
 - **LayerChart** (`layerchart`) for charts and **Bits UI** (`bits-ui`) for controls (ToggleGroup, Select, Slider…) inside custom Svelte components. Example: `blog-components/OilChart.svelte`. Format axes with `props={{ xAxis: { format }, yAxis: { format } }}`; give the chart a sized container
 - Hydrate with `client:visible` (server-renders, hydrates on scroll). Put a component on its own line with blank lines around it — inline in a paragraph it nests inside `<p>` and breaks hydration
 - Don't name MDX imports `url` or `file` (MDX already exports those)

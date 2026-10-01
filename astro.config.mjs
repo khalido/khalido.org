@@ -43,6 +43,31 @@ const aiDirective = defineMdastPlugin({
   },
 });
 
+// ```js run fences → live CodeRunner blocks (works in .md and .mdx). Meta flags:
+// `run` (required), `open` (show code instead of collapsing it), `title="..."`.
+// The highlighted code stays in the HTML for no-JS readers / the .md twin;
+// src/scripts/run-blocks.ts mounts CodeRunner over it when scrolled into view.
+const runnableCode = defineMdastPlugin({
+  name: "runnable-code",
+  code(node, ctx) {
+    if (!["js", "javascript"].includes(node.lang) || !/(^|\s)run(\s|$)/.test(node.meta ?? "")) return;
+    const title = node.meta.match(/title="([^"]*)"/)?.[1];
+    ctx.replaceNode(node, {
+      type: "blockquote", // any flow container; rendered as a div via hName
+      data: {
+        hName: "div",
+        hProperties: {
+          className: "cr-run",
+          dataCode: node.value,
+          ...(title ? { dataTitle: title } : {}),
+          ...(/(^|\s)open(\s|$)/.test(node.meta) ? { dataOpen: "" } : {}),
+        },
+      },
+      children: [{ ...node, meta: null }],
+    });
+  },
+});
+
 // https://astro.build/config
 export default defineConfig({
   site: "https://khalido.org",
@@ -53,7 +78,7 @@ export default defineConfig({
   markdown: {
     processor: satteri({
       features: { directive: true },
-      mdastPlugins: [softBreaks, aiDirective],
+      mdastPlugins: [softBreaks, aiDirective, runnableCode],
       // Obsidian/GitHub callouts: > [!note] Title. A hast plugin (its README's
       // mdastPlugins example is wrong). Styles imported in global.css.
       hastPlugins: [satteriCallouts({ theme: "obsidian" })],

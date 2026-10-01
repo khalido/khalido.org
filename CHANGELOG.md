@@ -13,6 +13,11 @@ marks a period, not an API contract. History before this file starts lives in
 
 ### Added
 
+- Runnable code fences: ` ```js run ` in any `.md`/`.mdx` post becomes a live
+  CodeRunner (collapsed by default, `open`/`title="..."` meta), mounted on scroll;
+  stays a plain highlighted block without JS. CodeRunner now shows inputs/charts
+  above console output.
+
 - CodeRunner: cached `csv()`/`tsv()`/`json()`/`text()` helpers (Inputs re-runs no longer
   refetch), a `vars` prop for passing build-time values (e.g. a colocated CSV's URL),
   bundled CSV parser instead of esm.sh, latest-run-wins when inputs fire rapidly, one
