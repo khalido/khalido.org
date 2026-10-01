@@ -75,13 +75,36 @@ return Plot.plot({
 });
 ```
 
+```js run title="LayerChart from a code block"
+const { brent } = await json("/data/oil/prices.json");
+const data = brent
+  .filter((d) => d.value != null && d.date >= "2020")
+  .map((d) => ({ date: new Date(d.date), price: d.value }));
+
+return chart(LayerChart.AreaChart, { data, x: "date", y: "price" }, { height: 240 });
+```
+
+```js run open title="Arquero: yearly averages"
+const { brent } = await json("/data/oil/prices.json");
+const rows = brent.filter((d) => d.value != null).map((d) => ({ ...d, date: new Date(d.date) }));
+const yearly = aq.from(rows)
+  .derive({ year: (d) => op.year(d.date) })
+  .groupby("year")
+  .rollup({ avg: (d) => op.round(op.mean(d.value)) })
+  .filter((d) => d.year >= 2005)
+  .orderby("year");
+
+console.log(yearly.orderby(aq.desc("avg")).slice(0, 3).objects()); // priciest years
+return chart(LayerChart.BarChart, { data: yearly.objects(), x: "year", y: "avg" }, { height: 220 });
+```
+
 ```js run open
 const n = Inputs.slider(1, 10, { value: 3, label: "n" });
 console.log(Array.from({ length: n.value }, (_, i) => (i + 1) ** 2));
 ```
 
 :::ai
-A fenced block marked ` ```js run ` becomes a CodeRunner — no import, works in `.md` too. Code is collapsed by default with the output showing; add `open` to show the code, `title="..."` for a heading. Without JavaScript (or in the `.md` twin) it stays a normal highlighted code block. A plain ` ```js ` fence is never executed.
+A fenced block marked ` ```js run ` becomes a CodeRunner — no import, works in `.md` too. Code is collapsed by default with the output showing; add `open` to show the code, `title="..."` for a heading. Without JavaScript (or in the `.md` twin) it stays a normal highlighted code block. A plain ` ```js ` fence is never executed. Besides Observable Plot, code can use `aq` (Arquero, for table wrangling) and `chart(LayerChart.X, props)` to render the same LayerChart components the Svelte charts use — both load only when a block mentions them.
 :::
 
 ### CodeRunner component

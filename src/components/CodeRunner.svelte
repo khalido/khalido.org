@@ -1,9 +1,14 @@
 <script>
-  // Live editable JS code block for MDX posts. Usage:
-  //   <CodeRunner client:load code={`...`} />              — collapsed by default, shows output
-  //   <CodeRunner client:load code={`...`} collapsed={false} /> — code visible
+  import { mount, unmount } from "svelte";
+
+  // Live editable JS code block. Usually created from a ```js run fence (see
+  // src/scripts/run-blocks.ts); also usable directly in MDX:
+  //   <CodeRunner client:visible code={...} collapsed={false} />
   // Built-in globals: Plot (Observable Plot), csvParse, tsvParse, autoType, Inputs,
   //   csv(url), tsv(url), json(url), text(url) — cached fetch helpers (csv/tsv apply autoType)
+  //   aq — Arquero (loaded only if the code mentions `aq`)
+  //   LayerChart + chart(Component, props, {height}) — mounts a LayerChart/Svelte
+  //     component and returns its element (loaded only if the code uses them)
   // vars: extra globals for the code, e.g. vars={{ brentUrl }} to hand it a build-time import
   let { code = "", lang = "js", collapsed = true, title = "", caption = "", vars = {} } = $props();
 
@@ -139,13 +144,22 @@
   }
 
   // Built-in libraries available in code blocks without imports
-  async function loadBuiltins() {
-    const [Plot, dsv] = await Promise.all([
+  // Svelte components mounted by chart() in the previous run, unmounted before the next
+  let mounted = [];
+
+  async function loadBuiltins(src) {
+    for (const m of mounted) unmount(m);
+    mounted = [];
+    const wantsAq = /\b(aq|op)\b/.test(src);
+    const wantsLayer = /\b(LayerChart|chart)\b/.test(src);
+    const [Plot, dsv, aq, LayerChart] = await Promise.all([
       getLib("Plot", async () => {
         try { return await import("@observablehq/plot"); }
         catch { return await import("https://esm.sh/@observablehq/plot"); }
       }),
       getLib("dsv", () => import("d3-dsv")),
+      wantsAq ? getLib("aq", () => import("arquero")) : undefined,
+      wantsLayer ? getLib("layerchart", () => import("layerchart")) : undefined,
     ]);
     return {
       Plot, csvParse: dsv.csvParse, tsvParse: dsv.tsvParse, autoType: dsv.autoType, Inputs: createInputs(),
@@ -153,6 +167,16 @@
       tsv: (url) => fetchCached(url, "text").then((t) => dsv.tsvParse(t, dsv.autoType)),
       json: (url) => fetchCached(url, "json"),
       text: (url) => fetchCached(url, "text"),
+      aq,
+      op: aq?.op,
+      LayerChart,
+      // chart(LayerChart.LineChart, { data, x: "date", y: "price" }) → element to return
+      chart: (Component, props = {}, { height = 300 } = {}) => {
+        const el = document.createElement("div");
+        el.style.cssText = `height:${height}px;width:100%;padding:8px 12px;box-sizing:border-box`;
+        mounted.push(mount(Component, { target: el, props }));
+        return el;
+      },
     };
   }
 
@@ -236,7 +260,7 @@
     };
 
     try {
-      const libs = { ...(await loadBuiltins()), ...vars };
+      const libs = { ...(await loadBuiltins(editableCode)), ...vars };
       const libNames = Object.keys(libs);
       const libValues = Object.values(libs);
       const fn = new Function("console", ...libNames, `"use strict";\nreturn (async () => {\n${editableCode}\n})()`);
@@ -280,7 +304,16 @@
     if (val === null) return "null";
     if (val === undefined) return "undefined";
     if (typeof val === "object") {
-      try { return JSON.stringify(val, null, 2); } catch { return String(val); }
+      try {
+        // Arrays print one element per line (rows of data stay readable);
+        // short arrays of primitives stay on one line
+        if (Array.isArray(val)) {
+          const flat = JSON.stringify(val);
+          if (flat.length <= 80 || val.every((v) => v === null || typeof v !== "object")) return flat;
+          return "[\n" + val.map((v) => "  " + JSON.stringify(v)).join(",\n") + "\n]";
+        }
+        return JSON.stringify(val, null, 2);
+      } catch { return String(val); }
     }
     return String(val);
   }

@@ -52,6 +52,8 @@ import dataUrl from './data.csv?url';
 - Use `client:visible` (runs when scrolled into view), not `client:load`
 - `vars={{ ... }}` exposes build-time values (asset URLs, small data) as globals in the code
 - Built-in globals (no imports needed): `Plot`, `csvParse`, `tsvParse`, `autoType`, `Inputs`, and cached fetch helpers `csv(url)`/`tsv(url)` (parsed with `autoType`), `json(url)`, `text(url)` — Inputs re-run the block, the cache stops refetching
+- `aq` / `op` — [Arquero](https://idl.uw.edu/arquero/) for filter/derive/groupby/rollup; loaded only when the code mentions them
+- `chart(LayerChart.LineChart, { data, x, y }, { height })` — mounts any LayerChart (or Svelte) component and returns its element, so code blocks can use the same charts as the Svelte components; `LayerChart` is the whole module, loaded only when used
 - Return a DOM element for charts: `return Plot.plot({...})`
 - `console.log()` output appears in a dark panel below
 - `Inputs.slider(min, max, {value, label, step})`, `Inputs.select(options, {label})`, `Inputs.checkbox({label, value})`, `Inputs.text({label, placeholder})` — interactive controls that re-run the code block on change; values persist across re-renders
@@ -180,6 +182,8 @@ Available building blocks:
 ## Key Learnings
 
 ### When to use CodeRunner vs a dedicated Svelte component
+
+Default to ` ```js run ` fences — most posts need nothing else, and the data/chart code stays visible and editable for readers. Build a dedicated Svelte component only for polished, app-like pieces (custom controls, multiple linked charts, complex state).
 
 | Use case | Approach |
 | :--- | :--- |

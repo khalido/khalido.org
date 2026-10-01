@@ -13,6 +13,11 @@ marks a period, not an API contract. History before this file starts lives in
 
 ### Added
 
+- CodeRunner: Arquero (`aq`/`op`) and `chart(LayerChart.X, props)` for LayerChart output,
+  each lazy-loaded only when a block uses them; arrays of rows log one per line.
+- `coderunner.mdx` examples converted to ` ```js run open ` fences (fixes their lost
+  indentation).
+
 - Runnable code fences: ` ```js run ` in any `.md`/`.mdx` post becomes a live
   CodeRunner (collapsed by default, `open`/`title="..."` meta), mounted on scroll;
   stays a plain highlighted block without JS. CodeRunner now shows inputs/charts
