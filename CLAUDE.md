@@ -53,7 +53,8 @@ import dataUrl from './data.csv?url';
 - `vars={{ ... }}` exposes build-time values (asset URLs, small data) as globals in the code
 - Built-in globals (no imports needed): `Plot`, `csvParse`, `tsvParse`, `autoType`, `Inputs`, and cached fetch helpers `csv(url)`/`tsv(url)` (parsed with `autoType`), `json(url)`, `text(url)` — Inputs re-run the block, the cache stops refetching
 - `aq` / `op` — [Arquero](https://idl.uw.edu/arquero/) for filter/derive/groupby/rollup; loaded only when the code mentions them
-- `chart(LayerChart.LineChart, { data, x, y }, { height })` — mounts any LayerChart (or Svelte) component and returns its element, so code blocks can use the same charts as the Svelte components; `LayerChart` is the whole module, loaded only when used
+- `line(rows, opts)`, `bar(rows, opts)`, `area(rows, opts)`, `table(rows, opts)` — the site's own Chart/DataTable components (see "Site charts"); **prefer these**. Return one element, or an array to stack several: `return [line(...), table(...)]`
+- `chart(LayerChart.LineChart, { data, x, y }, { height })` — escape hatch: mounts any LayerChart (or Svelte) component and returns its element; `LayerChart` is the whole module, loaded only when used
 - Return a DOM element for charts: `return Plot.plot({...})`
 - `console.log()` output appears in a dark panel below
 - `Inputs.slider(min, max, {value, label, step})`, `Inputs.select(options, {label})`, `Inputs.checkbox({label, value})`, `Inputs.text({label, placeholder})` — interactive controls that re-run the code block on change; values persist across re-renders
@@ -172,10 +173,20 @@ src/content/blog/<post-name>/
 
 Post-specific components import their own data (`import rentsUrl from './rents.csv?url'` inside the `.svelte` file, optionally overridable via a `src` prop), so the post just writes `<RentChart client:visible />`. Only generic components like CodeRunner need the post to import the data and pass it in (`vars={{ rentsUrl }}`).
 
+### Site charts (`src/components/charts/`)
+
+Opinionated defaults on LayerChart so every chart looks the same: hover tooltip, legend for 2+ series, fixed validated colour order (`palette.ts`, max 5 series — fold the rest into "Other"), compact number formats, year-friendly x labels, 300px tall. Change a default there and every post updates.
+
+- **`Chart`** — `type="line" | "bar" | "area"`, `data` (rows) or `src` (`.csv`/`.json` URL), `x`, `y`, `series` (long data: one series per value of that column) or `y={["a","b"]}` (wide data), `format="compact" | "number" | "currency" | "percent" | fn`, `height`, `stack`, `title`, `caption`, `options` (raw LayerChart props)
+- **`DataTable`** — `data` or `src`, `columns`, `format`, `limit` (default 10, "show all" button), `title`, `filename`; sortable headers, CSV download
+- Usable three ways: in any `.mdx` post **with no import** (`<Chart src={dataUrl} x="date" y="price" />` — registered via the `.astro` wrappers in `src/components/mdx/`, passed as `<Content components={{ Chart, DataTable }}>` in `src/pages/blog/[...id].astro` and `src/pages/data/[...id].astro`, hydrates `client:visible`); in code blocks as `line()`/`bar()`/`area()`/`table()`; in Svelte via `import Chart from "@components/charts/Chart.svelte"`
+- One y-axis only. Two measures with different units → two charts
+
 Available building blocks:
 - **Markdown**: Obsidian callouts (`> [!note]`), `:::ai` blocks, GFM tables/footnotes, Shiki code fences — work in `.md` and `.mdx`
 - **Runnable fences** (` ```js run `) and **`CodeRunner`** (`@components/CodeRunner.svelte`) — editable live JS with Observable Plot + Inputs; see "Adding a live code block"
-- **LayerChart** (`layerchart`) for charts and **Bits UI** (`bits-ui`) for controls (ToggleGroup, Select, Slider…) inside custom Svelte components. Example: `blog-components/OilChart.svelte`. Format axes with `props={{ xAxis: { format }, yAxis: { format } }}`; give the chart a sized container
+- **`Chart` / `DataTable`** — site chart components, no import needed in `.mdx` (see "Site charts")
+- **LayerChart** (`layerchart`) for one-off charts and **Bits UI** (`bits-ui`) for controls (ToggleGroup, Select, Slider…) inside custom Svelte components. Example: `blog-components/OilChart.svelte`. Format axes with `props={{ xAxis: { format }, yAxis: { format } }}`; give the chart a sized container
 - Hydrate with `client:visible` (server-renders, hydrates on scroll). Put a component on its own line with blank lines around it — inline in a paragraph it nests inside `<p>` and breaks hydration
 - Don't name MDX imports `url` or `file` (MDX already exports those)
 

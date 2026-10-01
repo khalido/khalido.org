@@ -2,6 +2,9 @@
 import { CollectionEntry, getCollection, render } from "astro:content";
 import BlogPost from "@layouts/BlogPost.astro";
 import TOC from "@components/TOC.astro";
+// Available in every .mdx post without an import
+import Chart from "@components/mdx/Chart.astro";
+import DataTable from "@components/mdx/DataTable.astro";
 
 export async function getStaticPaths() {
   const posts = await getCollection("blog");
@@ -18,5 +21,5 @@ post.data["headings"] = headings;
 ---
 
 <BlogPost {...post.data}>
-  <Content />
+  <Content components={{ Chart, DataTable }} />
 </BlogPost>

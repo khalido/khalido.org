@@ -9,6 +9,8 @@
   //   aq — Arquero (loaded only if the code mentions `aq`)
   //   LayerChart + chart(Component, props, {height}) — mounts a LayerChart/Svelte
   //     component and returns its element (loaded only if the code uses them)
+  //   line/bar/area(data, {x, y, series, format, title, …}), table(data, opts) —
+  //     the site's opinionated Chart/DataTable components (src/components/charts/)
   // vars: extra globals for the code, e.g. vars={{ brentUrl }} to hand it a build-time import
   let { code = "", lang = "js", collapsed = true, title = "", caption = "", vars = {} } = $props();
 
@@ -152,7 +154,9 @@
     mounted = [];
     const wantsAq = /\b(aq|op)\b/.test(src);
     const wantsLayer = /\b(LayerChart|chart)\b/.test(src);
-    const [Plot, dsv, aq, LayerChart] = await Promise.all([
+    const wantsChart = /\b(line|bar|area)\s*\(/.test(src);
+    const wantsTable = /\btable\s*\(/.test(src);
+    const [Plot, dsv, aq, LayerChart, ChartMod, TableMod] = await Promise.all([
       getLib("Plot", async () => {
         try { return await import("@observablehq/plot"); }
         catch { return await import("https://esm.sh/@observablehq/plot"); }
@@ -160,7 +164,19 @@
       getLib("dsv", () => import("d3-dsv")),
       wantsAq ? getLib("aq", () => import("arquero")) : undefined,
       wantsLayer ? getLib("layerchart", () => import("layerchart")) : undefined,
+      wantsChart ? getLib("Chart", () => import("./charts/Chart.svelte")) : undefined,
+      wantsTable ? getLib("DataTable", () => import("./charts/DataTable.svelte")) : undefined,
     ]);
+    const mountInto = (Component, props, style = "") => {
+      const el = document.createElement("div");
+      el.style.cssText = `width:100%;box-sizing:border-box;padding:8px 12px;${style}`;
+      mounted.push(mount(Component, { target: el, props }));
+      return el;
+    };
+    const siteChart = (type) => (data, opts = {}) => {
+      if (!ChartMod) throw new Error(`${type}() not loaded`);
+      return mountInto(ChartMod.default, { type, data, ...opts });
+    };
     return {
       Plot, csvParse: dsv.csvParse, tsvParse: dsv.tsvParse, autoType: dsv.autoType, Inputs: createInputs(),
       csv: (url) => fetchCached(url, "text").then((t) => dsv.csvParse(t, dsv.autoType)),
@@ -171,11 +187,14 @@
       op: aq?.op,
       LayerChart,
       // chart(LayerChart.LineChart, { data, x: "date", y: "price" }) → element to return
-      chart: (Component, props = {}, { height = 300 } = {}) => {
-        const el = document.createElement("div");
-        el.style.cssText = `height:${height}px;width:100%;padding:8px 12px;box-sizing:border-box`;
-        mounted.push(mount(Component, { target: el, props }));
-        return el;
+      chart: (Component, props = {}, { height = 300 } = {}) => mountInto(Component, props, `height:${height}px`),
+      // Site defaults: line(rows, { x: "year", y: "students", series: "type" })
+      line: siteChart("line"),
+      bar: siteChart("bar"),
+      area: siteChart("area"),
+      table: (data, opts = {}) => {
+        if (!TableMod) throw new Error("table() not loaded");
+        return mountInto(TableMod.default, { data, ...opts });
       },
     };
   }
@@ -264,8 +283,14 @@
       const libNames = Object.keys(libs);
       const libValues = Object.values(libs);
       const fn = new Function("console", ...libNames, `"use strict";\nreturn (async () => {\n${editableCode}\n})()`);
-      const result = await fn(fakeConsole, ...libValues);
+      let result = await fn(fakeConsole, ...libValues);
       if (id !== runId) return;
+      // return [chartEl, tableEl] → render them stacked
+      if (Array.isArray(result) && result.length && result.every((r) => r instanceof Element)) {
+        const wrap = document.createElement("div");
+        wrap.append(...result);
+        result = wrap;
+      }
 
       if (result instanceof HTMLElement || result instanceof SVGElement) {
         // If inputs were created, wrap them above the result

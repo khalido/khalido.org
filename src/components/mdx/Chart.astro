@@ -1,0 +1,6 @@
+---
+// MDX-facing wrapper: lets posts write <Chart … /> with no import and no client
+// directive (registered in <Content components={...}> on the post pages).
+import Chart from "@components/charts/Chart.svelte";
+---
+<Chart client:visible {...Astro.props} />

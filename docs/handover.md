@@ -11,6 +11,7 @@ Notes for the next session. Newest first; prune when stale.
 - **Fixes:** canonical/og/breadcrumb URLs no longer end in `.html` (`src/scripts/url.ts`); SydneyClock cleanup leak; CodeRunner survives CDN failure; agent tools typed via `defineTool`.
 - **Content features:** Obsidian callouts (`> [!note]`); ` ```js run ` fences → live CodeRunner (`runnableCode` in `astro.config.mjs` + `src/scripts/run-blocks.ts`); CodeRunner gained `csv/tsv/json/text` cached helpers, `vars` prop, `aq`/`op` (Arquero), `chart(LayerChart.X, props)` — Arquero/LayerChart lazy-loaded only when a block mentions them.
 - **Posts:** new draft `src/content/blog/blog-components/` (test page for every feature; prose is `TODO`). `coderunner.mdx` examples converted to `js run open` fences (fixes stripped indentation).
+- **Site charts:** `src/components/charts/Chart.svelte` + `DataTable.svelte` (+ `palette.ts`), no-import in MDX via `src/components/mdx/`, and `line/bar/area/table()` in code blocks. Demos in the `blog-components` post.
 - **Tools:** Word Counter on runes + more stats; timezone search matches "new york".
 - **Docs:** CLAUDE.md "Interactive posts" section, CodeRunner how-to, corrected notes on `_` prefixes / client:only props / Bits UI SSR / colocated data.
 
@@ -27,7 +28,8 @@ Notes for the next session. Newest first; prune when stale.
 - `satteri-callouts` is a **hast** plugin (its README's `mdastPlugins` example is wrong).
 
 ### Open / next
-- Shared `Chart`/`DataTable`/`Stat` components available in every post without an import (via `<Content components={{...}} />` + `.astro` wrappers); optional filename-based data resolution (`<Chart src="brent.csv">` → resolve via `import.meta.glob` against the post folder).
+- `Stat` (big-number tile) component; optional filename-based data resolution (`<Chart src="brent.csv">` → resolve via `import.meta.glob` against the post folder).
+- Charts have no dark-mode palette yet (site has no dark mode toggle in use).
 - Scheduled GitHub Action to refresh `public/data/` and redeploy.
 - ` ```python run ` via Pyodide (same fence + lazy-mount pattern).
 - Optional: `astro check` in CI (needs `@astrojs/check`), woff→woff2 fonts, real OG image.

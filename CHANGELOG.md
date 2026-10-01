@@ -13,6 +13,11 @@ marks a period, not an API contract. History before this file starts lives in
 
 ### Added
 
+- Site chart components `Chart` (line/bar/area) and `DataTable` in `src/components/charts/`:
+  opinionated LayerChart defaults (tooltip, legend, validated palette, number formats),
+  usable without import in MDX, as `line()/bar()/area()/table()` in code blocks, or in
+  Svelte. Code blocks can return an array of elements.
+
 - CodeRunner: Arquero (`aq`/`op`) and `chart(LayerChart.X, props)` for LayerChart output,
   each lazy-loaded only when a block uses them; arrays of rows log one per line.
 - `coderunner.mdx` examples converted to ` ```js run open ` fences (fixes their lost

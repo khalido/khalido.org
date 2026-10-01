@@ -54,6 +54,54 @@ TODO: write this
 `OilChart.svelte` lives next to this post and imports its own data — `import brentUrl from './brent.csv?url'` inside the component (Vite copies the file to `/_astro/` with a content hash) — so the post only writes `<OilChart client:visible />`. It draws the data with LayerChart's `LineChart`, and uses a Bits UI `ToggleGroup` for the range picker. `client:visible` server-renders it and hydrates when scrolled into view.
 :::
 
+## Site chart components
+
+TODO: write this
+
+<Chart src={brentUrl} x="date" y="price" format="currency" title="Brent crude, monthly (USD/barrel)" caption="Source: FRED" />
+
+```js run title="Brent: nominal vs inflation-adjusted"
+const [{ brent }, { cpi }] = await Promise.all([json("/data/oil/prices.json"), json("/data/cpi.json")]);
+const cpiByMonth = new Map(cpi.map((d) => [d.date, d.value]));
+const latestCpi = cpi.at(-1).value;
+
+// long format: one row per (month, kind), then yearly means
+const rows = [];
+for (const d of brent) {
+  const c = cpiByMonth.get(d.date);
+  if (d.value == null || !c) continue;
+  const year = +d.date.slice(0, 4);
+  rows.push({ year, kind: "Nominal $", price: d.value });
+  rows.push({ year, kind: "Today's $", price: (d.value * latestCpi) / c });
+}
+const avg = aq.from(rows).groupby("year", "kind").rollup({ price: (d) => op.mean(d.price) }).orderby("year").objects();
+
+return [
+  line(avg, { x: "year", y: "price", series: "kind", format: "currency" }),
+  table(avg.filter((d) => d.kind === "Today's $").reverse(), { columns: ["year", "price"], format: "currency", limit: 5, title: "In today's dollars" }),
+];
+```
+
+```js run title="Yearly average, bar"
+const { brent } = await json("/data/oil/prices.json");
+const rows = aq.from(brent.filter((d) => d.value != null))
+  .derive({ year: (d) => op.year(op.parse_date(d.date)) })
+  .filter((d) => d.year >= 2010)
+  .groupby("year").rollup({ price: (d) => op.mean(d.value) })
+  .orderby("year").objects();
+return bar(rows, { x: "year", y: "price", format: "currency", height: 240 });
+```
+
+:::ai
+`Chart` and `DataTable` (in `src/components/charts/`) are the site's opinionated chart components on LayerChart: hover tooltip, legend for 2+ series, a fixed colour order validated for colourblind readers, compact number formats (`format="currency" | "percent" | "number"`), year-friendly x labels. They're available three ways:
+
+- In any `.mdx` post with no import: `<Chart src={dataUrl} x="date" y="price" />`, `<DataTable data={rows} />`
+- In code blocks: `line(rows, opts)`, `bar(...)`, `area(...)`, `table(rows, opts)` — return one, or an array to stack several
+- In Svelte components: `import Chart from "@components/charts/Chart.svelte"`
+
+Multiple series: long data with `series: "kind"` (one line per value), or wide data with `y: ["a", "b"]`. Bars group by default; `stack: true` stacks.
+:::
+
 ## Live code
 
 TODO: write this
