@@ -2,8 +2,10 @@
   // Live editable JS code block for MDX posts. Usage:
   //   <CodeRunner client:load code={`...`} />              — collapsed by default, shows output
   //   <CodeRunner client:load code={`...`} collapsed={false} /> — code visible
-  // Built-in globals: Plot (Observable Plot), csvParse, tsvParse, autoType, Inputs
-  let { code = "", lang = "js", collapsed = true, title = "", caption = "" } = $props();
+  // Built-in globals: Plot (Observable Plot), csvParse, tsvParse, autoType, Inputs,
+  //   csv(url), tsv(url), json(url), text(url) — cached fetch helpers (csv/tsv apply autoType)
+  // vars: extra globals for the code, e.g. vars={{ brentUrl }} to hand it a build-time import
+  let { code = "", lang = "js", collapsed = true, title = "", caption = "", vars = {} } = $props();
 
   const initialCode = code.trim();
   let editableCode = $state(initialCode);
@@ -143,14 +145,44 @@
         try { return await import("@observablehq/plot"); }
         catch { return await import("https://esm.sh/@observablehq/plot"); }
       }),
-      // CDN-only — if it's unreachable, code that doesn't parse CSV still runs
-      getLib("dsv", () => import("https://esm.sh/d3-dsv").catch(() => ({}))),
+      getLib("dsv", () => import("d3-dsv")),
     ]);
-    return { Plot, csvParse: dsv.csvParse, tsvParse: dsv.tsvParse, autoType: dsv.autoType, Inputs: createInputs() };
+    return {
+      Plot, csvParse: dsv.csvParse, tsvParse: dsv.tsvParse, autoType: dsv.autoType, Inputs: createInputs(),
+      csv: (url) => fetchCached(url, "text").then((t) => dsv.csvParse(t, dsv.autoType)),
+      tsv: (url) => fetchCached(url, "text").then((t) => dsv.tsvParse(t, dsv.autoType)),
+      json: (url) => fetchCached(url, "json"),
+      text: (url) => fetchCached(url, "text"),
+    };
+  }
+
+  // Inputs re-run the whole block on every change — cache fetches per page so a
+  // slider drag doesn't refetch. Returns a fresh copy so code can mutate freely.
+  const fetchCache = globalThis.__cr_fetch ??= new Map();
+  async function fetchCached(url, kind) {
+    const key = kind + ":" + url;
+    if (!fetchCache.has(key)) {
+      const p = fetch(url).then((r) => {
+        if (!r.ok) throw new Error(`${r.status} fetching ${url}`);
+        return kind === "json" ? r.json() : r.text();
+      });
+      p.catch(() => fetchCache.delete(key)); // don't cache failures
+      fetchCache.set(key, p);
+    }
+    const v = await fetchCache.get(key);
+    return typeof v === "string" ? v : structuredClone(v);
   }
 
   // Load highlight.js from CDN (just core + JS, ~5KB gzipped), shared across instances
   $effect(() => {
+    // One stylesheet per page, however many CodeRunners
+    if (!document.querySelector("link[data-cr-hljs]")) {
+      const link = Object.assign(document.createElement("link"), {
+        rel: "stylesheet", href: "https://esm.sh/highlight.js@11/styles/github.min.css",
+      });
+      link.dataset.crHljs = "";
+      document.head.append(link);
+    }
     getLib("hljs", async () => {
       const mod = await import("https://esm.sh/highlight.js@11/es/core");
       const hl = mod.default;
@@ -186,7 +218,11 @@
     }
   });
 
+  let runId = 0;
+
   async function run() {
+    // Slider drags fire many runs; only the latest one may write output
+    const id = ++runId;
     running = true;
     output = "";
     htmlOutput = null;
@@ -200,11 +236,12 @@
     };
 
     try {
-      const libs = await loadBuiltins();
+      const libs = { ...(await loadBuiltins()), ...vars };
       const libNames = Object.keys(libs);
       const libValues = Object.values(libs);
       const fn = new Function("console", ...libNames, `"use strict";\nreturn (async () => {\n${editableCode}\n})()`);
       const result = await fn(fakeConsole, ...libValues);
+      if (id !== runId) return;
 
       if (result instanceof HTMLElement || result instanceof SVGElement) {
         // If inputs were created, wrap them above the result
@@ -230,6 +267,7 @@
         htmlOutput = inputRow;
       }
     } catch (err) {
+      if (id !== runId) return;
       hasError = true;
       logs.push(err.message);
     }
@@ -295,7 +333,6 @@
   }
 </script>
 
-<link rel="stylesheet" href="https://esm.sh/highlight.js@11/styles/github.min.css" />
 
 <div class="cr-wrap not-prose">
   {#if title}

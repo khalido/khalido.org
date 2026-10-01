@@ -13,6 +13,13 @@ marks a period, not an API contract. History before this file starts lives in
 
 ### Added
 
+- CodeRunner: cached `csv()`/`tsv()`/`json()`/`text()` helpers (Inputs re-runs no longer
+  refetch), a `vars` prop for passing build-time values (e.g. a colocated CSV's URL),
+  bundled CSV parser instead of esm.sh, latest-run-wins when inputs fire rapidly, one
+  highlight.js stylesheet per page.
+- Draft `blog-components` post: a test page for callouts, `:::ai`, a colocated
+  LayerChart + Bits UI component with colocated CSV, and CodeRunner variants.
+
 - Obsidian/GitHub-style callouts (`> [!note] Title`, `> [!warning]-` collapsible) in
   `.md` and `.mdx` via `satteri-callouts` (Obsidian theme + stylesheet).
 

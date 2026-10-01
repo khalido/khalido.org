@@ -29,15 +29,18 @@ Markdown renders single newlines as `<br>` (Obsidian/GitHub style, via a Sätter
 - Research the topic, suggest an outline, provide code examples — don't write the prose
 
 ### Adding a live code block
-Use CodeRunner in any `.mdx` file:
+Use CodeRunner in any `.mdx` file. Put multi-line code in a colocated `.js` file and import it with `?raw` — MDX strips leading indentation from multi-line template-literal props, so inline code loses its formatting:
 ```mdx
 import CodeRunner from '@components/CodeRunner.svelte';
+import chartCode from './chart.js?raw';
+import dataUrl from './data.csv?url';
 
-<CodeRunner client:load code={`const data = [1, 2, 3];
-console.log(data.reduce((a, b) => a + b));
-`} />
+<CodeRunner client:visible code={chartCode} vars={{ dataUrl }} />
+<CodeRunner client:visible code={`console.log([1, 2, 3].reduce((a, b) => a + b))`} />
 ```
-- Built-in globals (no imports needed): `Plot`, `csvParse`, `tsvParse`, `autoType`, `Inputs`
+- Use `client:visible` (runs when scrolled into view), not `client:load`
+- `vars={{ ... }}` exposes build-time values (asset URLs, small data) as globals in the code
+- Built-in globals (no imports needed): `Plot`, `csvParse`, `tsvParse`, `autoType`, `Inputs`, and cached fetch helpers `csv(url)`/`tsv(url)` (parsed with `autoType`), `json(url)`, `text(url)` — Inputs re-run the block, the cache stops refetching
 - Return a DOM element for charts: `return Plot.plot({...})`
 - `console.log()` output appears in a dark panel below
 - `Inputs.slider(min, max, {value, label, step})`, `Inputs.select(options, {label})`, `Inputs.checkbox({label, value})`, `Inputs.text({label, placeholder})` — interactive controls that re-run the code block on change; values persist across re-renders
@@ -142,6 +145,25 @@ ls src/content/data/*/index.mdx
 - In `.mdx`, don't name an import `url` or `file` — MDX modules export those, and the build fails with "already declared"
 - For architecture details, see `docs/architecture.md`
 
+## Interactive posts (components)
+
+Posts are `.mdx` when they use components. Custom components for a single post live in the post's folder — the human usually asks a coding agent to build them. Reference post exercising everything: `src/content/blog/blog-components/` (draft).
+
+```
+src/content/blog/<post-name>/
+├── index.mdx          # the post (id = <post-name>)
+├── RentChart.svelte   # post-specific component — no _ prefix needed (only .md/.mdx are loaded as posts)
+├── rents.csv          # colocated data: import rentsUrl from './rents.csv?url'
+└── chart.js           # CodeRunner source: import chartCode from './chart.js?raw'
+```
+
+Available building blocks:
+- **Markdown**: Obsidian callouts (`> [!note]`), `:::ai` blocks, GFM tables/footnotes, Shiki code fences — work in `.md` and `.mdx`
+- **`CodeRunner`** (`@components/CodeRunner.svelte`) — editable live JS with Observable Plot + Inputs; see "Adding a live code block"
+- **LayerChart** (`layerchart`) for charts and **Bits UI** (`bits-ui`) for controls (ToggleGroup, Select, Slider…) inside custom Svelte components. Example: `blog-components/OilChart.svelte`. Format axes with `props={{ xAxis: { format }, yAxis: { format } }}`; give the chart a sized container
+- Hydrate with `client:visible` (server-renders, hydrates on scroll). Put a component on its own line with blank lines around it — inline in a paragraph it nests inside `<p>` and breaks hydration
+- Don't name MDX imports `url` or `file` (MDX already exports those)
+
 ## Key Learnings
 
 ### When to use CodeRunner vs a dedicated Svelte component
@@ -160,7 +182,7 @@ Both render client-side — Observable Plot needs browser DOM APIs, so Astro can
 ### Where data goes
 
 - **JSON for charts**: Always `public/data/<topic>/` — served as static files, fetchable via `fetch("/data/...")`
-- **Colocated JSON in post folders does NOT work** — content collection files aren't served as static assets
+- **Colocated data in post folders works via imports**, not by path: `import dataUrl from './data.csv?url'` (Vite copies it to `/_astro/` with a hash; fetch that URL) or `import raw from './data.csv?raw'` / `import data from './data.json'` (inlined into the page at build). `fetch("./data.csv")` does not work
 - **External URLs work fine** — CodeRunner can fetch from any URL (GitHub raw, APIs, etc.)
 - **Fetch scripts** go in `scripts/` and write to `public/data/`. Run manually, not on every build.
 

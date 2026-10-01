@@ -1,0 +1,91 @@
+---
+title: "Blog components"
+date: 2026-10-01
+draft: true
+tags:
+  - blogging
+  - astro
+  - dataviz
+---
+import OilChart from './OilChart.svelte';
+import brentUrl from './brent.csv?url';
+import fibCode from './fib.js?raw';
+import brentChartCode from './brent-chart.js?raw';
+import CodeRunner from '@components/CodeRunner.svelte';
+
+TODO: write this — intro: modern blogging, my own Observable-notebook-style setup.
+
+:::ai
+**Working scaffold, not prose.** Each section below exercises one piece of the setup so this page doubles as a visual test. Files in this folder:
+
+| File | What it is |
+| --- | --- |
+| `index.mdx` | this post |
+| `OilChart.svelte` | post-specific LayerChart + Bits UI component |
+| `brent.csv` | colocated data, imported with `?url` |
+| `fib.js`, `brent-chart.js` | CodeRunner sources, imported with `?raw` |
+:::
+
+## Callouts
+
+TODO: write this
+
+> [!note]
+> TODO: write this
+
+> [!tip] A custom title with **markdown**
+> TODO: write this
+
+> [!warning]- Collapsed by default
+> TODO: write this
+
+> [!example]+ Expanded, but collapsible
+> TODO: write this
+
+> A plain blockquote stays a blockquote.
+
+## A custom chart
+
+TODO: write this
+
+<OilChart client:visible src={brentUrl} />
+
+:::ai
+`OilChart.svelte` lives next to this post. It fetches `brent.csv` via the URL from `import brentUrl from './brent.csv?url'` (Vite copies the file to `/_astro/` with a content hash), draws it with LayerChart's `LineChart`, and uses a Bits UI `ToggleGroup` for the range picker. `client:visible` server-renders it and hydrates when scrolled into view.
+:::
+
+## Live code
+
+TODO: write this
+
+<CodeRunner client:visible collapsed={false} title="Inline code" code={`const words = ["observable", "notebooks", "but", "in", "a", "blog"];
+console.log(words.map((w) => w.length));
+return words.join(" ");
+`} />
+
+<CodeRunner client:visible collapsed={false} title="Code from a .js file" code={fibCode} />
+
+<CodeRunner client:visible collapsed={false} title="Same CSV as the chart" code={brentChartCode} vars={{ brentUrl }} />
+
+:::ai
+CodeRunner built-ins: `Plot`, `Inputs`, `csvParse`/`tsvParse`/`autoType`, and cached fetch helpers `csv(url)`, `tsv(url)`, `json(url)`, `text(url)` — dragging the slider above re-runs the block without refetching the CSV. Multi-line code belongs in a colocated `.js` file imported with `?raw`: MDX strips leading indentation from multi-line template-literal props, so inline ``code={`...`}`` loses its formatting. Pass build-time values into the code with `vars`, e.g. `vars={{ brentUrl }}`.
+:::
+
+## Plain markdown
+
+TODO: write this
+
+| Thing | Syntax |
+| --- | --- |
+| Callout | `> [!note] Title` |
+| AI block | `:::ai` … `:::` |
+| Chart | colocated `.svelte` + `client:visible` |
+
+```python
+def hello(name: str) -> str:
+    return f"hello {name}"
+```
+
+A footnote reference.[^1]
+
+[^1]: TODO: write this
