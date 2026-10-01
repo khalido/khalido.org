@@ -153,9 +153,11 @@ Posts are `.mdx` when they use components. Custom components for a single post l
 src/content/blog/<post-name>/
 ├── index.mdx          # the post (id = <post-name>)
 ├── RentChart.svelte   # post-specific component — no _ prefix needed (only .md/.mdx are loaded as posts)
-├── rents.csv          # colocated data: import rentsUrl from './rents.csv?url'
+├── rents.csv          # colocated data, imported by the component itself
 └── chart.js           # CodeRunner source: import chartCode from './chart.js?raw'
 ```
+
+Post-specific components import their own data (`import rentsUrl from './rents.csv?url'` inside the `.svelte` file, optionally overridable via a `src` prop), so the post just writes `<RentChart client:visible />`. Only generic components like CodeRunner need the post to import the data and pass it in (`vars={{ rentsUrl }}`).
 
 Available building blocks:
 - **Markdown**: Obsidian callouts (`> [!note]`), `:::ai` blocks, GFM tables/footnotes, Shiki code fences — work in `.md` and `.mdx`

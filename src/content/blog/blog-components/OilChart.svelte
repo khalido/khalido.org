@@ -1,10 +1,11 @@
 <script lang="ts">
-  // Post-specific chart: LayerChart line + Bits UI range picker, data from a
-  // colocated CSV passed in as a URL (`import brentUrl from './brent.csv?url'`).
+  // Post-specific chart: LayerChart line + Bits UI range picker. Imports its own
+  // colocated CSV, so the post just writes <OilChart client:visible />.
   import { ToggleGroup } from "bits-ui";
   import { LineChart } from "layerchart";
+  import brentUrl from "./brent.csv?url";
 
-  let { src }: { src: string } = $props();
+  let { src = brentUrl }: { src?: string } = $props();
 
   type Row = { date: Date; price: number };
   let rows = $state<Row[]>([]);

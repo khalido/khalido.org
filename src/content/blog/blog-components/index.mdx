@@ -48,10 +48,10 @@ TODO: write this
 
 TODO: write this
 
-<OilChart client:visible src={brentUrl} />
+<OilChart client:visible />
 
 :::ai
-`OilChart.svelte` lives next to this post. It fetches `brent.csv` via the URL from `import brentUrl from './brent.csv?url'` (Vite copies the file to `/_astro/` with a content hash), draws it with LayerChart's `LineChart`, and uses a Bits UI `ToggleGroup` for the range picker. `client:visible` server-renders it and hydrates when scrolled into view.
+`OilChart.svelte` lives next to this post and imports its own data — `import brentUrl from './brent.csv?url'` inside the component (Vite copies the file to `/_astro/` with a content hash) — so the post only writes `<OilChart client:visible />`. It draws the data with LayerChart's `LineChart`, and uses a Bits UI `ToggleGroup` for the range picker. `client:visible` server-renders it and hydrates when scrolled into view.
 :::
 
 ## Live code
