@@ -137,8 +137,9 @@ ls src/content/data/*/index.mdx
 - **Don't write prose** for the human (see Writing Policy above)
 - Use context7 MCP to fetch current docs when needed
 - Prefer editing existing files over creating new ones
-- Svelte components in `src/pages/` must be prefixed with `_`
-- `client:only="svelte"` components can't receive server-side props — use client-side fetch
+- Non-page files in `src/pages/` (e.g. `.svelte`) must be prefixed with `_` — Astro warns about them otherwise. In content folders (`src/content/**`) the loader only picks up `.md`/`.mdx`, so colocated `.svelte`/`.astro`/`.csv` files need no prefix (only `.md`/`.mdx` files you want ignored do)
+- `client:only="svelte"` components still receive serializable props (strings, numbers, arrays); they just skip server rendering
+- In `.mdx`, don't name an import `url` or `file` — MDX modules export those, and the build fails with "already declared"
 - For architecture details, see `docs/architecture.md`
 
 ## Key Learnings
@@ -167,7 +168,7 @@ Both render client-side — Observable Plot needs browser DOM APIs, so Astro can
 
 - `.md` — plain markdown, no components. Use for regular blog posts, links, quotes.
 - `.mdx` — markdown + JSX. Required when importing Svelte components (CodeRunner, charts). Use for TILs with code blocks, data stories.
-- Files prefixed with `_` are ignored by Astro's glob loader — use for colocated components and examples.
+- Files prefixed with `_` are ignored by Astro's glob loader — only matters for `.md`/`.mdx`; other file types in a post folder are never loaded as posts.
 
 ### Observable Plot + Astro
 
@@ -202,7 +203,7 @@ Tools are standalone interactive pages, not content collections. Each tool lives
   - `ToggleGroup` — segmented control for single/multi select (page/terminal mode)
   - `Combobox` — searchable single-select dropdown
   - Other available: Accordion, Dialog, Popover, Select, Slider, Tabs, Tooltip, etc.
-  - **Important**: Bits UI components can't SSR — always use `client:only="svelte"`, not `client:load`
+  - Bits UI `ToggleGroup` inside a LayerChart component server-renders and hydrates fine with `client:visible` (tested). Portal-based components (Select, Combobox, Popover) are untested with SSR — use `client:only="svelte"` for those if hydration misbehaves
 - **[svelte-streamdown](https://github.com/nicholascostadev/svelte-streamdown)** — markdown rendering for streamed LLM output. Props: `content`, `controls` (`{ table: false, code: false }` to hide buttons), `theme` for custom styling.
 - **[LayerChart](https://next.layerchart.com)** (`layerchart` 2.0) — Svelte 5 native charts (runes/snippets), ships its own default styles, Tailwind optional. Simplified components: `<AreaChart {data} x="date" y="value" />`, also LineChart/BarChart/PieChart + composable primitives. Needs a sized container (`style="height: 320px"`). Test page: `/tools/layerchart-test`. Preferred for new dedicated chart components; Observable Plot stays for CodeRunner blocks.
 
